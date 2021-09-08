@@ -565,14 +565,6 @@ public class runActivity extends AppCompatActivity implements
 
     private void galleryAddPic(String Image_Path) {
 
-        Log.d("","갱신 : "+Image_Path);
-
-        // 이전 사용 방식
-        /*Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-        File f = new File(Image_Path);
-        Uri contentUri = Uri.fromFile(f);
-        mediaScanIntent.setData(contentUri);
-        this.context.sendBroadcast(mediaScanIntent);*/
         String SaveFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+Image_Path;
         Log.e("galleryaddpic_Image_Path",Image_Path);
         arr_storageimg.add(SaveFolderPath);
@@ -581,7 +573,6 @@ public class runActivity extends AppCompatActivity implements
         MediaScannerConnection.scanFile(runActivity.this,
                 new String[]{file.toString()},
                 null, null);
-
 
         Log.e("save",file.toString());
     }
