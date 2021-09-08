@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/fragment1"
+        android:icon="@drawable/ic_baseline_directions_run_24"
+        android:title="러닝" />
+
+    <item
+        android:id="@+id/fragment2"
+        android:icon="@drawable/ic_baseline_library_books_24"
+        android:title="활동" />
+    <item
+        android:id="@+id/fragment3"
+        android:icon="@drawable/ic_baseline_people_alt_24"
+        android:title="챌린지" />
+    <item
+        android:id="@+id/fragment4"
+        android:icon="@drawable/ic_baseline_account_circle_24"
+        android:title="프로필" />
+</menu>

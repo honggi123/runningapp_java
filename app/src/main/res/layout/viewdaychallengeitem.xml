@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="400dp"
+    android:layout_height="80dp"
+    android:layout_marginBottom="10dp"
+    android:background="#F1F1F1"
+    android:paddingEnd="10dp">
+
+    <TextView
+        android:id="@+id/date_daychitem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020/00/00"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/time_daychitem"
+        app:layout_constraintEnd_toStartOf="@+id/btn_viewruninfo"
+        app:layout_constraintTop_toTopOf="@+id/time_daychitem" />
+
+    <TextView
+        android:id="@+id/time_daychitem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:text="시간"
+        android:textColor="#F8000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView27"
+        app:layout_constraintEnd_toStartOf="@+id/date_daychitem"
+        app:layout_constraintTop_toTopOf="@+id/textView27" />
+
+    <TextView
+        android:id="@+id/textView27"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="km"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewdistance_daychitem"
+        app:layout_constraintStart_toEndOf="@+id/viewdistance_daychitem"
+        app:layout_constraintTop_toTopOf="@+id/viewdistance_daychitem" />
+
+    <ImageView
+        android:id="@+id/btn_viewruninfo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
+
+    <TextView
+        android:id="@+id/viewdistance_daychitem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="거리"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

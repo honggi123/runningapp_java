@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.myapplication">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION"
+        tools:node="replace" />
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION"
+        tools:node="replace" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".Join.GlobalApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+
+        android:theme="@style/Theme.MyApplication"
+        android:usesCleartextTraffic="true">
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+
+        <meta-data
+            android:name="com.kakao.sdk.AppKey"
+            android:value="@string/kakao_app_key" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCki227mHoxxHowwrWe6BJmRPshcK0_IaA" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.myapplication.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+
+        <activity android:name=".Loign.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Join.JoinActivity" />
+        <activity android:name=".MainAct" />
+        <activity android:name=".Join.EmailChkActivity" />
+        <activity android:name=".Run.runActivity" />
+        <activity android:name=".Join.snsjoinActivity" />
+        <activity android:name=".Run.Runbeforetimer_Activity" />
+        <activity
+            android:name=".Run.RuncompleteActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity android:name=".Run.distancegoalset_Activity"></activity>
+        <activity android:name=".Challenge.Challengemake"></activity>
+        <activity android:name=".Challenge.Challengedatemk_Activity"></activity>
+        <activity android:name=".Challenge.Challengedistancemk_Activity"></activity>
+<activity android:name=".Profile.frinedsearchActivity"></activity>
+        <activity android:name=".Challenge.viewchallenge_Activity"></activity>
+        <activity android:name=".Challenge.ChModify"></activity>
+        <activity android:name=".viewact.viewrecentactActivity"></activity>
+        <activity android:name=".Challenge.LeaderBoard_Activity"></activity>
+        <activity android:name=".viewact.viewrunact"></activity>
+        <activity android:name=".Challenge.viewexchallenge"></activity>
+        <activity android:name=".viewact.addruninfo"></activity>
+        <activity android:name=".Profile.Myshoes"></activity>
+        <activity android:name=".Profile.addshoes"></activity>
+        <service android:name=".Run.runService" />
+    </application>
+
+</manifest>
