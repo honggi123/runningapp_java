@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 import com.example.myapplication.Run.runActivity;
 
@@ -77,7 +76,7 @@ public class dayviewact_Adapter extends RecyclerView.Adapter<dayviewact_Adapter.
             super(itemView);
             viewdistance = itemView.findViewById(R.id.viewdistance_daychitem);
             viewtime = itemView.findViewById(R.id.time_daychitem);
-            viewdate = itemView.findViewById(R.id.date_daychitem);
+            viewdate = itemView.findViewById(R.id.name_shoeitem);
             btn_viewruninfo = itemView.findViewById(R.id.btn_viewruninfo);
         }
     }

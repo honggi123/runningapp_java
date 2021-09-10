@@ -81,7 +81,6 @@ public class frinedsearchActivity extends AppCompatActivity {
         edit_frdid.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -91,7 +90,6 @@ public class frinedsearchActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -236,7 +234,6 @@ public class frinedsearchActivity extends AppCompatActivity {
                     }else{    // 친구 신청 취소
                         btn_addfrd.setImageResource(R.drawable.ic_baseline_person_add_24);
                     }
-
                 } else {
                 }
 

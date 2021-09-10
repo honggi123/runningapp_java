@@ -16,10 +16,10 @@
         android:text="목표거리"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/btn_viewruninfo"
-        app:layout_constraintTop_toTopOf="@+id/date_daychitem" />
+        app:layout_constraintTop_toTopOf="@+id/name_shoeitem" />
 
     <TextView
-        android:id="@+id/date_daychitem"
+        android:id="@+id/name_shoeitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"

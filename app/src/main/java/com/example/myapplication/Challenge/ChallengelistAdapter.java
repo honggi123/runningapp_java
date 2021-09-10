@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class ChallengelistAdapter extends RecyclerView.Adapter<ChallengelistAdapter.Holder> {
 
@@ -100,7 +96,7 @@ public class ChallengelistAdapter extends RecyclerView.Adapter<ChallengelistAdap
 
         public Holder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.date_daychitem);
+            name = itemView.findViewById(R.id.name_shoeitem);
             date = itemView.findViewById(R.id.time_daychitem);
             g_distance = itemView.findViewById(R.id.g_distance_chitem);
             btn_viewch = itemView.findViewById(R.id.btn_viewruninfo);

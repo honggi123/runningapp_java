@@ -21,12 +21,12 @@
         android:id="@+id/textView58"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="32dp"
         android:text="이름"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/textView62"
-        app:layout_constraintTop_toBottomOf="@+id/btn_camera" />
+        app:layout_constraintTop_toBottomOf="@+id/viewshoe" />
 
     <TextView
         android:id="@+id/textView62"
@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView59" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_reg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -53,7 +53,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/edit_shoename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -63,13 +63,26 @@
         app:layout_constraintStart_toEndOf="@+id/textView58" />
 
     <ImageView
-        android:id="@+id/btn_camera"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/viewshoe"
+        android:layout_width="300dp"
+        android:layout_height="250dp"
         android:layout_marginTop="16dp"
+        android:src="@drawable/ic_baseline_camera_alt_24"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView62"
-        app:srcCompat="@drawable/ic_baseline_camera_alt_24" />
+
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <ImageView
+        android:id="@+id/btn_camera"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="70dp"
+        android:src="@drawable/ic_baseline_camera_alt_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView62" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

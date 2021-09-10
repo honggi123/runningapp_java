@@ -10,12 +10,20 @@ import com.android.volley.toolbox.Volley;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -28,28 +36,45 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.loader.content.CursorLoader;
 
+import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class addshoes extends AppCompatActivity {
 
     EditText edit_shoesname;
-    Button btn_search;
+    Button btn_reg;
     ImageView btn_camera;
     File photofile;
     String mCurrentPhotoPath;
+    ImageView viewshoe;
+    SharedPreferences loginshared;
+    String mid;
+    Uri imgurl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.addshoes);
         btn_camera = findViewById(R.id.btn_camera);
+        viewshoe = findViewById(R.id.viewshoe);
+        btn_reg = findViewById(R.id.btn_reg);
+        edit_shoesname = findViewById(R.id.edit_shoename);
+
+        loginshared = getSharedPreferences("Login", MODE_PRIVATE);
+        mid = loginshared.getString("id", null);
+
 
         btn_camera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,16 +142,22 @@ public class addshoes extends AppCompatActivity {
                                     } else {
                                         Intent intent = new Intent(Intent.ACTION_PICK);
                                         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                                        startActivityForResult(intent, 101);
+                                        startActivityForResult(intent, 102);
                                     }
                         }
-
                     }
                 });
                 oDialog.setCancelable(false);
                 oDialog.show();
             }
         });
+        btn_reg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addshoes(edit_shoesname.getText().toString());
+            }
+        });
+
 
         super.onCreate(savedInstanceState);
     }
@@ -137,13 +168,105 @@ public class addshoes extends AppCompatActivity {
             super.onActivityResult(requestCode, resultCode, data);
                     if(requestCode == 101 && resultCode == RESULT_OK) {
                     Uri test = Uri.fromFile(new File(mCurrentPhotoPath));
+                        viewshoe.setVisibility(View.VISIBLE);
+                        Glide.with(addshoes.this)
+                                .load(test)
+                                .into(viewshoe);
+                             saveFile(test);
+                        imgurl = test;
                     }
+
+               if (requestCode == 102) {
+                   if (resultCode == RESULT_OK) {
+                       Uri fileUri = data.getData();
+                       Log.e("fileurl",String.valueOf(fileUri));
+                       try {
+                           viewshoe.setVisibility(View.VISIBLE);
+                                   Glide.with(addshoes.this)
+                                   .load(fileUri)
+                                   .into(viewshoe);
+
+//                       adapter.additem(fileUri,addshoes.this);
+                       } catch (Exception e) {
+                       Toast.makeText(getApplicationContext(), "파일 불러오기 실패", Toast.LENGTH_SHORT).show();
+                       }
+                       imgurl = fileUri;
+                   }
+
+               }
+    }
+
+
+    // 파일 저장
+    private void saveFile(Uri image_uri) {
+        String fileName;
+            ContentValues values = new ContentValues();
+            fileName =  "Run"+System.currentTimeMillis()+".png";
+            values.put(MediaStore.Images.Media.DISPLAY_NAME,fileName);
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/*");
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.IS_PENDING, 1);
+            }
+
+            ContentResolver contentResolver = getContentResolver();
+            Uri item = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+            try {
+            ParcelFileDescriptor pdf = contentResolver.openFileDescriptor(item, "w", null);
+            if (pdf == null) {
+            Log.d("Run", "null");
+            } else {
+            byte[] inputData = getBytes(image_uri);
+                FileOutputStream fos = new FileOutputStream(pdf.getFileDescriptor());
+                fos.write(inputData);
+                fos.close();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                values.clear();
+                values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                contentResolver.update(item, values, null, null);
+            }
+                // 갱신
+                galleryAddPic(fileName);
+            }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Log.d("Run", "FileNotFoundException  : "+e.getLocalizedMessage());
+            } catch (Exception e) {
+                Log.d("Run", "FileOutputStream = : " + e.getMessage());
+            }
+            }
+
+    private void galleryAddPic(String Image_Path) {
+
+                String SaveFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+Image_Path;
+                Log.e("galleryaddpic_Image_Path",Image_Path);
+
+                File file = new File(Image_Path);
+                MediaScannerConnection.scanFile(addshoes.this,
+                new String[]{file.toString()},
+                null, null);
+
+                Log.e("save",file.toString());
             }
 
 
-    public void searchshoes(String shoesname){
+    public byte[] getBytes(Uri image_uri) throws IOException {
+        InputStream iStream = getContentResolver().openInputStream(image_uri);
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024; // 버퍼 크기
+        byte[] buffer = new byte[bufferSize]; // 버퍼 배열
+
+        int len = 0;
+        // InputStream에서 읽어올 게 없을 때까지 바이트 배열에 쓴다.
+        while ((len = iStream.read(buffer)) != -1)
+            byteBuffer.write(buffer, 0, len);
+        return byteBuffer.toByteArray();
+    }
+
+    public void addshoes(String shoesname){
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-            String serverUrl="http://3.143.9.214/shoessearch.php";
+            String serverUrl="http://3.143.9.214/addshoes.php";
 
             // 파일 전송 요청 객체 생성[결과를 String으로 받음]
             SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -153,8 +276,6 @@ public class addshoes extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject(response);
             boolean success = jsonObject.getBoolean("success");
             if(success) {
-
-
             } else {
 
             }
@@ -169,7 +290,26 @@ public class addshoes extends AppCompatActivity {
             }
             });
 
+            //이미지 파일 추가 (pathList는 첨부된 사진의 내부 uri string 리스트)
+                    // uri 절대 경로 구하기
+                    String[] proj= {MediaStore.Images.Media.DATA};
+                    CursorLoader loader= new CursorLoader(addshoes.this, imgurl, proj, null, null, null);
+                    Cursor cursor = loader.loadInBackground();
+                    if(cursor != null){
+                    int column_index= cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cursor.moveToFirst();
+                    String abUri= cursor.getString(column_index);
+                    Log.e("aburi",abUri);
+                    cursor.close();
+
+                    // 이미지 파일 첨부
+                    smpr.addFile("image", abUri);
+                    }else{
+                    }
+
+            // 서버에 데이터 보내고
             // 요청 객체에 보낼 데이터를 추가
+            smpr.addStringParam("id",mid);
             smpr.addStringParam("shoesname", shoesname);
 
             // 서버에 데이터 보내고 응답 요청

@@ -7,7 +7,7 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/addruninfo.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/addshoes.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengedatesel.xml" value="0.23802083333333332" />
-        <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengeitem.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengeitem.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengemodify.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengmake.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/chdistancesel.xml" value="0.23802083333333332" />
@@ -37,6 +37,7 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runact.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runbefore_timer.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runcomplete.xml" value="0.2375" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/shoesitem.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/snsjoin.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/tdistancegoal_set.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/viewchallenge.xml" value="0.4" />

@@ -9,7 +9,7 @@
     android:paddingEnd="10dp">
 
     <TextView
-        android:id="@+id/date_daychitem"
+        android:id="@+id/name_shoeitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2020/00/00"
@@ -30,7 +30,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView27"
-        app:layout_constraintEnd_toStartOf="@+id/date_daychitem"
+        app:layout_constraintEnd_toStartOf="@+id/name_shoeitem"
         app:layout_constraintTop_toTopOf="@+id/textView27" />
 
     <TextView
