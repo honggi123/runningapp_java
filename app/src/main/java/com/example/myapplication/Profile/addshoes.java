@@ -10,6 +10,8 @@ import com.android.volley.toolbox.Volley;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -27,9 +29,11 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -40,6 +44,7 @@ import androidx.loader.content.CursorLoader;
 
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
+import com.example.myapplication.viewact.addruninfo;
 
 import org.json.JSONObject;
 
@@ -63,6 +68,12 @@ public class addshoes extends AppCompatActivity {
     SharedPreferences loginshared;
     String mid;
     Uri imgurl;
+    ImageView btn_setdistance;
+    TextView edit_shoedistacne;
+    String result;
+    int gdis;
+    Boolean setd;
+    Boolean setn;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,9 +82,26 @@ public class addshoes extends AppCompatActivity {
         viewshoe = findViewById(R.id.viewshoe);
         btn_reg = findViewById(R.id.btn_reg);
         edit_shoesname = findViewById(R.id.edit_shoename);
+        btn_setdistance = findViewById(R.id.btn_setshoedistance);
+        edit_shoedistacne = findViewById(R.id.edit_shoedistacne);
+
 
         loginshared = getSharedPreferences("Login", MODE_PRIVATE);
         mid = loginshared.getString("id", null);
+        result = null;
+
+        btn_setdistance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new customdialog().calldialog();
+                if(result != null) {
+                    edit_shoedistacne.setText(result + "km");
+
+                }
+
+            }
+        });
+
 
 
         btn_camera.setOnClickListener(new View.OnClickListener() {
@@ -154,7 +182,27 @@ public class addshoes extends AppCompatActivity {
         btn_reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addshoes(edit_shoesname.getText().toString());
+
+
+                if(!edit_shoesname.getText().toString().equals("") && !edit_shoedistacne.getText().toString().equals("")){
+                    addshoes(edit_shoesname.getText().toString());
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(addshoes.this);
+                    builder.setTitle("이름 또는 목표거리를 설정해주세요.")        // 제목 설정
+                            .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                                // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
+                                public void onClick(DialogInterface dialog, int whichButton){
+                                    //원하는 클릭 이벤트를 넣으시면 됩니다.
+                                }
+                            });
+
+                    AlertDialog dialog = builder.create();    // 알림창 객체 생성
+                    dialog.show();    // 알림창 띄우기
+                }
+
+
+
             }
         });
 
@@ -163,17 +211,50 @@ public class addshoes extends AppCompatActivity {
     }
 
 
+     public class customdialog {
+            Dialog dig;
+            Button btn_setdistance;
+            EditText picker1_time;
+            EditText picker2_time;
+
+
+            public void calldialog() {
+                dig = new Dialog(addshoes.this);
+                // 액티비티의 타이틀바를 숨긴다.
+                dig.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                // 커스텀 다이얼로그의 레이아웃을 설정한다.
+                dig.setContentView(R.layout.pickdistance_dialog);
+                picker1_time = dig.findViewById(R.id.picker1_time);
+                picker2_time = dig.findViewById(R.id.picker2_time);
+                btn_setdistance = dig.findViewById(R.id.btn_setdistance);
+
+                btn_setdistance.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dig.dismiss();
+                        result = picker1_time.getText().toString()+"."+picker2_time.getText().toString();
+                        edit_shoedistacne.setText(result+" km");
+                        gdis = (int) (Float.parseFloat(result) * 1000);
+                    }
+                });
+
+                dig.show();
+            }
+        }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
                     if(requestCode == 101 && resultCode == RESULT_OK) {
                     Uri test = Uri.fromFile(new File(mCurrentPhotoPath));
                         viewshoe.setVisibility(View.VISIBLE);
+                        btn_camera.setVisibility(View.INVISIBLE);
                         Glide.with(addshoes.this)
                                 .load(test)
                                 .into(viewshoe);
                              saveFile(test);
                         imgurl = test;
+
                     }
 
                if (requestCode == 102) {
@@ -181,6 +262,7 @@ public class addshoes extends AppCompatActivity {
                        Uri fileUri = data.getData();
                        Log.e("fileurl",String.valueOf(fileUri));
                        try {
+                           btn_camera.setVisibility(View.INVISIBLE);
                            viewshoe.setVisibility(View.VISIBLE);
                                    Glide.with(addshoes.this)
                                    .load(fileUri)
@@ -267,6 +349,10 @@ public class addshoes extends AppCompatActivity {
     public void addshoes(String shoesname){
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
             String serverUrl="http://3.143.9.214/addshoes.php";
+            ProgressDialog progressDialog;
+                    progressDialog = ProgressDialog.show(addshoes.this,
+                    "기다려주세요..", null, true, true);
+                    progressDialog.show();
 
             // 파일 전송 요청 객체 생성[결과를 String으로 받음]
             SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -274,14 +360,20 @@ public class addshoes extends AppCompatActivity {
     public void onResponse(String response) {
             try {
             JSONObject jsonObject = new JSONObject(response);
-            boolean success = jsonObject.getBoolean("success");
-            if(success) {
-            } else {
-
-            }
-            } catch (Exception e) {
-            e.printStackTrace();
-            }
+            Log.e("json",jsonObject+"");
+                boolean success = jsonObject.getBoolean("success");
+                if(success) {
+                    Toast.makeText(addshoes.this, "등록 되었습니다.", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
+                    Intent intentR = new Intent();
+                            setResult(RESULT_OK,intentR); //결과를 저장
+                    finish();
+                } else {
+                    Toast.makeText(addshoes.this, "등록이 되지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }
+                } catch (Exception e) {
+                e.printStackTrace();
+                }
             }
             }, new Response.ErrorListener() {
     @Override
@@ -292,24 +384,28 @@ public class addshoes extends AppCompatActivity {
 
             //이미지 파일 추가 (pathList는 첨부된 사진의 내부 uri string 리스트)
                     // uri 절대 경로 구하기
-                    String[] proj= {MediaStore.Images.Media.DATA};
-                    CursorLoader loader= new CursorLoader(addshoes.this, imgurl, proj, null, null, null);
-                    Cursor cursor = loader.loadInBackground();
-                    if(cursor != null){
-                    int column_index= cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    cursor.moveToFirst();
-                    String abUri= cursor.getString(column_index);
-                    Log.e("aburi",abUri);
-                    cursor.close();
+        if(imgurl!= null){
+            String[] proj= {MediaStore.Images.Media.DATA};
+            CursorLoader loader= new CursorLoader(addshoes.this, imgurl, proj, null, null, null);
+            Cursor cursor = loader.loadInBackground();
+            if(cursor != null){
+                int column_index= cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                cursor.moveToFirst();
+                String abUri= cursor.getString(column_index);
+                Log.e("aburi",abUri);
+                cursor.close();
 
-                    // 이미지 파일 첨부
-                    smpr.addFile("image", abUri);
-                    }else{
-                    }
+                // 이미지 파일 첨부
+                smpr.addFile("image", abUri);
+            }else{
+            }
+        }
 
+            Log.e("shoename",shoesname+"shoe");
             // 서버에 데이터 보내고
             // 요청 객체에 보낼 데이터를 추가
             smpr.addStringParam("id",mid);
+            smpr.addStringParam("gdistance", String.valueOf(gdis));
             smpr.addStringParam("shoesname", shoesname);
 
             // 서버에 데이터 보내고 응답 요청

@@ -26,7 +26,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/textView62"
-        app:layout_constraintTop_toBottomOf="@+id/viewshoe" />
+        app:layout_constraintTop_toBottomOf="@+id/textView59" />
 
     <TextView
         android:id="@+id/textView62"
@@ -37,7 +37,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/textView59"
-        app:layout_constraintTop_toBottomOf="@+id/textView59" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_shoedistacne" />
 
     <Button
         android:id="@+id/btn_reg"
@@ -50,13 +50,14 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewshoe" />
 
     <EditText
         android:id="@+id/edit_shoename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="60dp"
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="@+id/textView58"
@@ -84,5 +85,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView62" />
+
+    <TextView
+        android:id="@+id/textView61"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="목표거리"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/textView58"
+        app:layout_constraintTop_toBottomOf="@+id/textView58" />
+
+    <ImageView
+        android:id="@+id/btn_setshoedistance"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_shoedistacne"
+        app:layout_constraintStart_toEndOf="@+id/edit_shoedistacne"
+        app:layout_constraintTop_toTopOf="@+id/edit_shoedistacne" />
+
+    <EditText
+        android:id="@+id/edit_shoedistacne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/textView61"
+        app:layout_constraintEnd_toEndOf="@+id/edit_shoename"
+        app:layout_constraintStart_toStartOf="@+id/edit_shoename" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

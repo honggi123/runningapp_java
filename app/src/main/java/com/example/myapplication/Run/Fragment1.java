@@ -114,26 +114,7 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
         btn_goalset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final CharSequence[] oItems = {"거리", "시간"};
-
-                AlertDialog.Builder oDialog = new AlertDialog.Builder(context,
-                        android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
-
-                oDialog.setTitle("목표 종류를 선택하세요")
-                        .setItems(oItems, new DialogInterface.OnClickListener()
-                        {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                if(oItems[which].equals("거리")){
-                                    choicedt();
-                                }else{
-                                }
-
-                            }
-                        })
-                        .setCancelable(false)
-                        .show();
+                choicedt();
             }
         });
 

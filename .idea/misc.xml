@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.24427083333333333" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.24427083333333333" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.25416666666666665" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/addruninfo.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/addshoes.xml" value="0.264" />

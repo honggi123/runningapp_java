@@ -1,6 +1,8 @@
 package com.example.myapplication.Profile;
 
 
+import static android.app.Activity.RESULT_OK;
+
 import com.android.volley.Request;
 
 
@@ -22,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -159,7 +162,8 @@ public class Fragment4 extends Fragment {
 
 
 
-      public void frdlistrequest(String mid){
+
+    public void frdlistrequest(String mid){
               // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
               String serverUrl="http://3.143.9.214/myfriendinfo.php";
 

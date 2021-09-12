@@ -27,7 +27,7 @@ public class Pickdistance_Dialog  {
             dig.requestWindowFeature(Window.FEATURE_NO_TITLE);
             // 커스텀 다이얼로그의 레이아웃을 설정한다.
             dig.setContentView(R.layout.pickdistance_dialog);
-            btn_setdistance = dig.findViewById(R.id.btn_settime);
+            btn_setdistance = dig.findViewById(R.id.btn_setdistance);
             pickerkm_distance  = dig.findViewById(R.id.picker1_time);
             pickerm_distance = dig.findViewById(R.id.picker2_time);
 

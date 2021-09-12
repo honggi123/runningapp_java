@@ -3,6 +3,8 @@ package com.example.myapplication.viewact;
 
 
 
+
+
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -18,7 +20,9 @@ import com.android.volley.toolbox.Volley;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.Image;
 import android.os.Bundle;
+import android.util.EventLogTags;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,12 +41,16 @@ import com.example.myapplication.Challenge.ChallengeInfo;
 import com.example.myapplication.Challenge.Challengemake;
 import com.example.myapplication.R;
 import com.example.myapplication.Run.runActivity;
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.ViewPortHandler;
@@ -74,8 +82,18 @@ public class Fragment2 extends Fragment {
     int[] weeks_distance= new int[7];
     TextView minuteTextview;
     String mid;
-
+    PieChart pieChart;
     ImageView btn_addruninfo;
+
+    // 요일 별 목표 이미지 뷰
+    ImageView mongoal;
+    ImageView tuegoal;
+    ImageView wedgoal;
+    ImageView thugoal;
+    ImageView frigoal;
+    ImageView satgoal;
+    ImageView sungoal;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,6 +105,14 @@ public class Fragment2 extends Fragment {
         viewruncount = view.findViewById(R.id.view_runcount);
         btn_addruninfo = view.findViewById(R.id.addruninfo);
 
+        mongoal = view.findViewById(R.id.mongoal);
+        tuegoal = view.findViewById(R.id.tuegoal);
+        wedgoal = view.findViewById(R.id.wedgoal);
+        thugoal = view.findViewById(R.id.thugoal);
+        frigoal = view.findViewById(R.id.frigoal);
+        satgoal = view.findViewById(R.id.satgoal);
+        sungoal = view.findViewById(R.id.sungoal);
+
         loginshared = getContext().getSharedPreferences("Login", MODE_PRIVATE);
         mid = loginshared.getString("id", null);
         viewtotalrun = view.findViewById(R.id.viewtotalrunweek);
@@ -95,6 +121,7 @@ public class Fragment2 extends Fragment {
         getweekruninfo(mid);
         request(mid);
 
+        getgoalinfo(mid);
 
         btn_addruninfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,8 +131,74 @@ public class Fragment2 extends Fragment {
             }
         });
 
+
         return view;
     }
+
+
+
+
+    public void getgoalinfo(String mid){
+            // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
+            String serverUrl="http://3.143.9.214/getgoalinfo.php";
+
+            // 파일 전송 요청 객체 생성[결과를 String으로 받음]
+            SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
+    @Override
+    public void onResponse(String response) {
+            try {
+            JSONObject jsonObject = new JSONObject(response);
+            Log.e("json",jsonObject+"");
+            boolean success = jsonObject.getBoolean("success");
+            if(success) {
+                    String mon = jsonObject.getString("mon");
+                    String tue = jsonObject.getString("tue");
+                    String wed = jsonObject.getString("wed");
+                    String thu = jsonObject.getString("thu");
+                    String fri = jsonObject.getString("fri");
+                    String sat = jsonObject.getString("sat");
+                    String sun = jsonObject.getString("sun");
+
+                    chggoalview(mon,mongoal);
+                    chggoalview(tue,tuegoal);
+                    chggoalview(wed,wedgoal);
+                    chggoalview(thu,thugoal);
+                    chggoalview(fri,frigoal);
+                    chggoalview(sat,satgoal);
+                    chggoalview(sun,sungoal);
+
+            } else {
+            }
+            } catch (Exception e) {
+            e.printStackTrace();
+            }
+            }
+            }, new Response.ErrorListener() {
+    @Override
+    public void onErrorResponse(VolleyError error) {
+            Toast.makeText(getContext(), "서버와 통신 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+            }
+            });
+
+            // 요청 객체에 보낼 데이터를 추가
+            smpr.addStringParam("id", mid);
+
+            // 서버에 데이터 보내고 응답 요청
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue.add(smpr);
+            }
+
+
+    public void chggoalview(String day, ImageView imageView){
+        if(day.equals("true")){
+            imageView.setImageResource(R.drawable.ic_baseline_check_circle_24);
+        }else if(day.equals("false")){
+            imageView.setImageResource(R.drawable.ic_baseline_clear_24);
+        }else {
+            imageView.setImageResource(R.drawable.ic_baseline_more_horiz_24);
+        }
+    }
+
 
 
     public void request(String mid){

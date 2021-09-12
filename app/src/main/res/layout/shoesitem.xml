@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:background="#F1F1F1"
     android:paddingEnd="10dp">
@@ -12,13 +12,12 @@
         android:id="@+id/name_shoeitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         android:text="이름"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/bar_shoeitem"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/viewshoe_shoeitem"
+        app:layout_constraintStart_toStartOf="@+id/bar_shoeitem"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -37,7 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="7dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,15 +44,45 @@
         app:layout_constraintStart_toEndOf="@+id/viewshoe_shoeitem"
         app:layout_constraintTop_toBottomOf="@+id/name_shoeitem" />
 
+    <ImageView
+        android:id="@+id/wear_checkitem"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/bar_shoeitem"
+        app:layout_constraintEnd_toEndOf="@+id/bar_shoeitem"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_check_circle_24" />
+
     <TextView
-        android:id="@+id/wearornot_shoeitem"
+        android:id="@+id/tdistance_shoeitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="(착용중)"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/name_shoeitem"
-        app:layout_constraintStart_toEndOf="@+id/name_shoeitem"
-        app:layout_constraintTop_toTopOf="@+id/name_shoeitem" />
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="5dp"
+        android:text="0 km"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView78"
+        app:layout_constraintTop_toTopOf="@+id/distance_shoeitem" />
+
+    <TextView
+        android:id="@+id/distance_shoeitem"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:text="0km"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bar_shoeitem"
+        tools:layout_editor_absoluteX="159dp" />
+
+    <TextView
+        android:id="@+id/textView78"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text="/"
+        app:layout_constraintStart_toEndOf="@+id/distance_shoeitem"
+        app:layout_constraintTop_toTopOf="@+id/distance_shoeitem" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

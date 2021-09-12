@@ -128,7 +128,6 @@ public class Fragment3 extends Fragment {
     }
 
 
-
     @Override
     public void onStart() {
         super.onStart();
