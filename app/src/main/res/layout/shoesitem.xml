@@ -69,12 +69,13 @@
         android:id="@+id/distance_shoeitem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="90dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:text="0km"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bar_shoeitem"
-        tools:layout_editor_absoluteX="159dp" />
+        app:layout_constraintStart_toStartOf="@+id/bar_shoeitem"
+        app:layout_constraintTop_toBottomOf="@+id/bar_shoeitem" />
 
     <TextView
         android:id="@+id/textView78"

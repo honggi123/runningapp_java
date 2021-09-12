@@ -194,6 +194,7 @@
                 android:layout_width="0dp"
                 android:layout_height="120dp"
                 android:layout_marginTop="16dp"
+                android:background="#66635A58"
                 android:gravity="center_vertical"
                 app:layout_constraintBottom_toTopOf="@+id/textView41"
                 app:layout_constraintEnd_toEndOf="@+id/fragment_bluetooth_chat_barchart"
@@ -336,7 +337,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="달성"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView64"
                 app:layout_constraintStart_toEndOf="@+id/textView64" />
 
@@ -345,8 +346,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:text="미 달성"
-                android:textSize="20sp"
+                android:text="미달성"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView15"
                 app:layout_constraintStart_toEndOf="@+id/imageView15"
                 app:layout_constraintTop_toTopOf="@+id/imageView15" />
@@ -367,7 +368,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="미등록"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@+id/textView74"
                 app:layout_constraintStart_toEndOf="@+id/imageView17"
                 app:layout_constraintTop_toTopOf="@+id/textView74"

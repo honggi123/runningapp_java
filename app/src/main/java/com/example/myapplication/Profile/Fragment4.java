@@ -37,7 +37,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Fragment4 extends Fragment {
-    Button btn_logout;
+
     String mid;
     TextView id;
     MainAct context;
@@ -48,6 +48,7 @@ public class Fragment4 extends Fragment {
     reqfrdlist_Adapter adapter;
     RecyclerView rq_recyclerView;
     ImageView btn_myshoes;
+    ImageView btn_setting;
     myfriendlist_Adapter myfriend_adapter;
     RecyclerView myfrd_recyclerView;
 
@@ -58,11 +59,11 @@ public class Fragment4 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment4,container,false);
-        btn_logout = view.findViewById(R.id.btn_logout);
+
         id = view.findViewById(R.id.id);
         btn_plusfrined = view.findViewById(R.id.btn_plusfrined);
         btn_myshoes = view.findViewById(R.id.btn_myshoes);
-
+        btn_setting = view.findViewById(R.id.btn_set);
         // 내친구 리사이클러뷰
         myfrd_recyclerView = view.findViewById(R.id.rc_myfriend);
 
@@ -73,14 +74,7 @@ public class Fragment4 extends Fragment {
         mid = context.getMid();
         id.setText(mid);
 
-        // 로그아웃
-        btn_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.logout();
-                context.finish();
-            }
-        });
+
 
         btn_plusfrined.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,6 +91,13 @@ public class Fragment4 extends Fragment {
                 startActivity(intent);
             }
         });
+        btn_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, viewsetting.class);
+                startActivityForResult(intent,200);
+            }
+        });
 
         return view;
     }
@@ -106,6 +107,23 @@ public class Fragment4 extends Fragment {
         super.onStart();
         frdlistrequest(context.getMid());
         reqreqfriendinfo(context.getMid());
+    }
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+         if(requestCode == 200){
+                    if(resultCode != RESULT_OK){ // 값이 성공적으로 반환되었을때
+                        return;
+                    }
+                    // 코드 작성
+                   Boolean logout = data.getBooleanExtra("logout",false); //  수정 여부 확인
+                    if(logout){
+                        logout();
+                    }
+                }
     }
 
 
@@ -210,5 +228,9 @@ public class Fragment4 extends Fragment {
               requestQueue.add(smpr);
         }
 
+    public void logout(){
+        context.logout();
+        context.finish();
+    }
 
 }

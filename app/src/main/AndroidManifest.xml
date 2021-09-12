@@ -80,9 +80,9 @@
         <activity android:name=".Challenge.viewexchallenge"></activity>
         <activity android:name=".viewact.addruninfo"></activity>
         <activity android:name=".Profile.Myshoes"></activity>
-        <activity
-            android:name=".Profile.addshoes"
-            ></activity>
+        <activity android:name=".Profile.viewsetting"></activity>
+        <activity android:name=".Profile.addshoes"></activity>
+        <activity android:name=".Profile.myinfo"></activity>
         <service android:name=".Run.runService" />
     </application>
 

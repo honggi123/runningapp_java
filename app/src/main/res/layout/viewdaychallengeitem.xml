@@ -31,6 +31,7 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/textView27"
         app:layout_constraintEnd_toStartOf="@+id/name_shoeitem"
+        app:layout_constraintStart_toEndOf="@+id/textView27"
         app:layout_constraintTop_toTopOf="@+id/textView27" />
 
     <TextView

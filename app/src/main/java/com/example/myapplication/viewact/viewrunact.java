@@ -66,6 +66,10 @@ public class viewrunact extends AppCompatActivity {
             arr_img.add(ja.getString(i));
                 Log.e("json"+i,ja.getString(i));
             }
+            if(arr_img.size() == 0){
+                // noimg 처리
+                arr_img.add("http://3.143.9.214/uploads/run.PNG");
+            }
             adapter = new ImageAdapter_viewact(arr_img,viewrunact.this);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -256,7 +256,6 @@ public class Fragment2 extends Fragment {
                 recyclerView.setAdapter(adapter);
 
             } else {
-
             }
             } catch (Exception e) {
             e.printStackTrace();

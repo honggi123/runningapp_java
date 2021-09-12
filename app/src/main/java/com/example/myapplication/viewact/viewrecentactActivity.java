@@ -37,6 +37,7 @@ public class viewrecentactActivity extends AppCompatActivity {
                 linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
+
     }
 
 
