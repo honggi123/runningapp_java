@@ -13,6 +13,26 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
+            android:id="@+id/viewkcal"
+            android:layout_width="wrap_content"
+            android:layout_height="22dp"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="@+id/view_date_viewch"
+            app:layout_constraintStart_toStartOf="@+id/textView83"
+            app:layout_constraintTop_toTopOf="@+id/viewdistance" />
+
+        <TextView
+            android:id="@+id/textView83"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
+            android:text="칼로리"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/textView36"
+            app:layout_constraintTop_toTopOf="@+id/textView36" />
+
+        <TextView
             android:id="@+id/textView35"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

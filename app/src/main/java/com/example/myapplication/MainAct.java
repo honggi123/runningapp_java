@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 
+import com.android.volley.RequestQueue;
 import com.example.myapplication.Challenge.Fragment3;
 import com.example.myapplication.Loign.LoginActivity;
 import com.example.myapplication.Profile.Fragment4;
@@ -34,6 +35,7 @@ import java.util.Date;
 
 public class MainAct extends AppCompatActivity {
 
+    static RequestQueue requestQueue;
 
     Button btn_logout;
     String mid;
@@ -164,5 +166,9 @@ public class MainAct extends AppCompatActivity {
             e.printStackTrace();
         }
         return newdate;
+    }
+
+    public static RequestQueue getRequestQueue() {
+        return requestQueue;
     }
 }

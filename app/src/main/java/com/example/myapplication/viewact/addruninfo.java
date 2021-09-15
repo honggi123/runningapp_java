@@ -41,7 +41,9 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.myapplication.Challenge.viewchallenge_Activity;
 import com.example.myapplication.ImageAdapter;
+import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONArray;
@@ -263,9 +265,9 @@ public class addruninfo extends AppCompatActivity implements DatePickerDialog.On
             Date currentDate =  mSimpleDateFormat.parse( oTime );
 
             Log.e("date",c_date.compareTo(currentDate)+"");
-            if(c_date.compareTo(currentDate) < 0){
+            if(c_date.compareTo(currentDate) > 0){
                     AlertDialog.Builder builder = new AlertDialog.Builder(addruninfo.this);
-                    builder.setTitle("현재 날짜보다 늦게 설정해주십시오. ")        // 제목 설정
+                    builder.setTitle("현재 날짜 또는 현재 날짜 전으로 설정해주십시오. ")        // 제목 설정
                     .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
                     .setPositiveButton("확인", new DialogInterface.OnClickListener(){
                                 // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
@@ -273,6 +275,7 @@ public class addruninfo extends AppCompatActivity implements DatePickerDialog.On
                                         //원하는 클릭 이벤트를 넣으시면 됩니다.
                                         }
                     });
+
                         AlertDialog dialog = builder.create();    // 알림창 객체 생성
                         dialog.show();    // 알림창 띄우기
                            return false;
@@ -359,8 +362,17 @@ public class addruninfo extends AppCompatActivity implements DatePickerDialog.On
             }
         }
         // 서버에 데이터 보내고 응답 요청
-        RequestQueue requestQueue = Volley.newRequestQueue(addruninfo.this);
-        requestQueue.add(smpr);
+//        RequestQueue requestQueue = Volley.newRequestQueue(addruninfo.this);
+//        requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(addruninfo.this);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
+
     }
 
 

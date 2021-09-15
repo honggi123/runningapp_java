@@ -31,6 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.Challenge.viewchallenge_Activity;
 import com.example.myapplication.ImageAdapter;
 import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
@@ -44,6 +45,7 @@ public class shoes_Adapter extends RecyclerView.Adapter<shoes_Adapter.Holder> {
     ArrayList<Shoe> arr_shoes;
     Context context;
     View view;
+
     SharedPreferences loginshared;
     String mid;
 
@@ -65,10 +67,8 @@ public class shoes_Adapter extends RecyclerView.Adapter<shoes_Adapter.Holder> {
                 return new shoes_Adapter.Holder(view);
             }
 
-
         @Override
-        public void onBindViewHolder(@NonNull Holder holder, @SuppressLint("RecyclerView") int position) {
-
+        public void onBindViewHolder(@NonNull Holder holder, int position) {
             holder.name.setText(arr_shoes.get(position).getName());
             Log.e("imgurl",arr_shoes.get(position).getImageurl());
             Glide.with(context)
@@ -89,40 +89,12 @@ public class shoes_Adapter extends RecyclerView.Adapter<shoes_Adapter.Holder> {
             }else{
                 holder.wearview.setVisibility(View.VISIBLE);
             }
+            int nposition = position;
 
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                        builder.setTitle("운동화로 설정하시겠습니까?")        // 제목 설정
-                                                .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
-                                                .setPositiveButton("확인", new DialogInterface.OnClickListener(){
-                                                    // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
-                                                    public void onClick(DialogInterface dialog, int whichButton){
-                                                      //원하는 클릭 이벤트를 넣으시면 됩니다.
-                                                        wearshoerequest(mid,arr_shoes.get(position).shoe_id,position);
-
-                                                    }
-                                                })
-                                                .setNegativeButton("취소", new DialogInterface.OnClickListener(){
-                                                    // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
-                                                    public void onClick(DialogInterface dialog, int whichButton){
-                                                      //원하는 클릭 이벤트를 넣으시면 됩니다.
-                                                    }
-                                                });
-
-                                        AlertDialog dialog = builder.create();    // 알림창 객체 생성
-                                        dialog.show();    // 알림창 띄우기
-                }
-            });
         }
 
-
-            @Override
-            public int getItemCount() {
-                return arr_shoes.size();
-            }
-
+        @Override
+        public int getItemCount() { return arr_shoes.size(); }
 
 
             class Holder extends RecyclerView.ViewHolder {
@@ -141,11 +113,42 @@ public class shoes_Adapter extends RecyclerView.Adapter<shoes_Adapter.Holder> {
                     progressBar = itemView.findViewById(R.id.bar_shoeitem);
                     distance = itemView.findViewById(R.id.distance_shoeitem);
                     tdistance = itemView.findViewById(R.id.tdistance_shoeitem);
+                    view = itemView;
 
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v){
+                            int nposition = getAdapterPosition();
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                            builder.setTitle("운동화로 설정하시겠습니까?")        // 제목 설정
+                                    .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
+                                    .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                                        // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
+                                        public void onClick(DialogInterface dialog, int whichButton){
+                                            //원하는 클릭 이벤트를 넣으시면 됩니다.
+                                            wearshoerequest(mid,arr_shoes.get(nposition).shoe_id,nposition);
+                                            Log.e("position",nposition+"");
+                                        }
+                                    })
+                                    .setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                                        // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
+                                        public void onClick(DialogInterface dialog, int whichButton){
+                                            //원하는 클릭 이벤트를 넣으시면 됩니다.
+                                        }
+                                    });
+                            AlertDialog dialog = builder.create();    // 알림창 객체 생성
+                            dialog.show();    // 알림창 띄우기
+                        }
+                    });
                 }
+
+                View Viewreturn()
+                {
+                    return view;
+                }
+
             }
-
-
 
 
             public void wearshoerequest(String mid,String shoe_id,int position){
@@ -189,8 +192,18 @@ public class shoes_Adapter extends RecyclerView.Adapter<shoes_Adapter.Holder> {
                         smpr.addStringParam("shoe_id", shoe_id);
 
                         // 서버에 데이터 보내고 응답 요청
-                        RequestQueue requestQueue = Volley.newRequestQueue(context);
-                        requestQueue.add(smpr);
+//                        RequestQueue requestQueue = Volley.newRequestQueue(context);
+//                        requestQueue.add(smpr);
+                RequestQueue requestQueue = MainAct.getRequestQueue();
+
+                if (requestQueue == null) {
+                    requestQueue = Volley.newRequestQueue(context);
+                    requestQueue.add(smpr);
+                } else {
+                    requestQueue.add(smpr);
+                }
+
+
                     }
 
 

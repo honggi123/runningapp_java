@@ -29,6 +29,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Challenge.viewchallenge_Activity;
 import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
@@ -174,8 +175,17 @@ public class Fragment4 extends Fragment {
                 smpr.addStringParam("userID", id);
 
                 // 서버에 데이터 보내고 응답 요청
-                RequestQueue requestQueue = Volley.newRequestQueue(context);
-                requestQueue.add(smpr);
+//                RequestQueue requestQueue = Volley.newRequestQueue(context);
+//                requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
+
     }
 
 
@@ -224,9 +234,18 @@ public class Fragment4 extends Fragment {
               smpr.addStringParam("f_id", mid);
 
               // 서버에 데이터 보내고 응답 요청
-              RequestQueue requestQueue = Volley.newRequestQueue(context);
-              requestQueue.add(smpr);
+//              RequestQueue requestQueue = Volley.newRequestQueue(context);
+//              requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
         }
+
+    }
 
     public void logout(){
         context.logout();

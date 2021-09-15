@@ -39,6 +39,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Challenge.ChallengeInfo;
 import com.example.myapplication.Challenge.Challengemake;
+import com.example.myapplication.Challenge.viewchallenge_Activity;
+import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 import com.example.myapplication.Run.runActivity;
 import com.github.mikephil.charting.animation.Easing;
@@ -225,6 +227,9 @@ public class Fragment2 extends Fragment {
                     Log.e("dis",dataJSONObject.getString("distance"));
                     runInfo.setDistance(Integer.parseInt(dataJSONObject.getString("distance")));
                     runInfo.setRating(Float.parseFloat(dataJSONObject.getString("rating")));
+
+                    runInfo.setKacl(Integer.parseInt(dataJSONObject.getString("kcal")));
+
                     runInfo.setReg_date(dataJSONObject.getString("reg_date"));
                     runInfo.setTime(Integer.parseInt(dataJSONObject.getString("time")));
                     runInfo.setImgList(dataJSONObject.getString("imgList"));
@@ -337,7 +342,7 @@ public class Fragment2 extends Fragment {
                     }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getContext(), "서버와 통신 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "서버와 통신 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
                     }
                     });
 
@@ -345,9 +350,18 @@ public class Fragment2 extends Fragment {
                     smpr.addStringParam("userID", mid);
 
                     // 서버에 데이터 보내고 응답 요청
-                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//                    requestQueue.add(smpr);
+                RequestQueue requestQueue = MainAct.getRequestQueue();
+
+                if (requestQueue == null) {
+                    requestQueue = Volley.newRequestQueue(getContext());
                     requestQueue.add(smpr);
-                    }
+                } else {
+                    requestQueue.add(smpr);
+                }
+
+            }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -380,7 +394,6 @@ public class Fragment2 extends Fragment {
         labelList.add("금");
         labelList.add("토");
         labelList.add("일");
-
 
         for(int i=0; i <= weeks_distance.length-1; i++){
             if(weeks_distance[i] == 0){

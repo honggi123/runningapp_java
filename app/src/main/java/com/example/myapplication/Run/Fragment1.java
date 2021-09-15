@@ -149,8 +149,6 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
             return;
         }
         mMap.setMyLocationEnabled(true);
-
-
     }
 
 
@@ -262,11 +260,17 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
         smpr.addStringParam("id", context.getMid());
         smpr.addStringParam("date", String.valueOf(tdate));
 
-
         // 서버에 데이터 보내고 응답 요청
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(smpr);
+//        RequestQueue requestQueue = Volley.newRequestQueue(context);
+//        requestQueue.add(smpr);
+
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(context);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
     }
-
-
 }

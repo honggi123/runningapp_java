@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Challenge.ChallengeInfo;
+import com.example.myapplication.Challenge.viewchallenge_Activity;
+import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONArray;
@@ -108,35 +110,35 @@ public class Myshoes extends AppCompatActivity {
                 //  성공
                 arr_shoe = new ArrayList<Shoe>();
                 JSONArray data = jsonObject.getJSONArray("data");
-                for(int i= 0; i < num; i++){
-                    Shoe shoe = new Shoe();
-                    JSONObject dataJSONObject = data.getJSONObject(i);
-                    shoe.setShoe_id(dataJSONObject.getString("shoe_id"));
-                    shoe.setName(dataJSONObject.getString("shoe_name"));
-                    shoe.setDistance(Integer.parseInt(dataJSONObject.getString("distance")));
-                    shoe.setG_distance(Integer.parseInt(dataJSONObject.getString("g_distance")));
-                    shoe.setWear(dataJSONObject.getString("wear"));
-                    JSONArray jsonArray = new JSONArray(dataJSONObject.getString("img"));
-                    shoe.setImageurl(jsonArray.getString(0));
-                    shoe.setReg_date(dataJSONObject.getString("reg_date"));
+                    for(int i= 0; i < num; i++){
+                        Shoe shoe = new Shoe();
+                        JSONObject dataJSONObject = data.getJSONObject(i);
+                        shoe.setShoe_id(dataJSONObject.getString("shoe_id"));
+                        shoe.setName(dataJSONObject.getString("shoe_name"));
+                        shoe.setDistance(Integer.parseInt(dataJSONObject.getString("distance")));
+                        shoe.setG_distance(Integer.parseInt(dataJSONObject.getString("g_distance")));
+                        shoe.setWear(dataJSONObject.getString("wear"));
+                        JSONArray jsonArray = new JSONArray(dataJSONObject.getString("img"));
+                        shoe.setImageurl(jsonArray.getString(0));
+                        shoe.setReg_date(dataJSONObject.getString("reg_date"));
 
-                    arr_shoe.add(shoe);
-                }
+                        arr_shoe.add(shoe);
+                    }
 
-                my_adapter = new shoes_Adapter(arr_shoe,Myshoes.this);
+                    my_adapter = new shoes_Adapter(arr_shoe,Myshoes.this);
 
-                LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(Myshoes.this);
-                linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                my_recyclerView.setLayoutManager(linearLayoutManager);
-                // 어댑터 추가
-                my_recyclerView.setAdapter(my_adapter);
+                    LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(Myshoes.this);
+                    linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                    my_recyclerView.setLayoutManager(linearLayoutManager);
+                    // 어댑터 추가
+                    my_recyclerView.setAdapter(my_adapter);
 
             } else {
                 //  실패
                 Toast.makeText(Myshoes.this, "데이터를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show();
             }
-            } catch (Exception e) {
-            e.printStackTrace();
+                } catch (Exception e) {
+                e.printStackTrace();
             }
             }
             }, new Response.ErrorListener() {
@@ -150,8 +152,17 @@ public class Myshoes extends AppCompatActivity {
             smpr.addStringParam("userID", mid);
 
             // 서버에 데이터 보내고 응답 요청
-            RequestQueue requestQueue = Volley.newRequestQueue(Myshoes.this);
+//            RequestQueue requestQueue = Volley.newRequestQueue(Myshoes.this);
+//            requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(Myshoes.this);
             requestQueue.add(smpr);
-            }
+        } else {
+            requestQueue.add(smpr);
+        }
+
+    }
 
 }

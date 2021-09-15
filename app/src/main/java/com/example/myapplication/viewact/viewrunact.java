@@ -30,6 +30,7 @@ public class viewrunact extends AppCompatActivity {
     TextView viewdistance;
     TextView viewtime;
     TextView viewdate;
+    TextView viewkcal;
 
     ImageAdapter_viewact adapter;
     RecyclerView recyclerView;
@@ -45,6 +46,8 @@ public class viewrunact extends AppCompatActivity {
         viewdistance = findViewById(R.id.viewdistance);
         viewtime = findViewById(R.id.viewtime);
         viewdate = findViewById(R.id.viewdate);
+        viewkcal = findViewById(R.id.viewkcal);
+
         recyclerView = findViewById(R.id.rc_runinfo);
 
         viewrating.setText(String.valueOf(runInfo.rating));
@@ -57,6 +60,7 @@ public class viewrunact extends AppCompatActivity {
         viewtime.setText(timeformat);
         viewmemo.setText(runInfo.memo);
         viewdate.setText(runInfo.reg_date);
+        viewkcal.setText(String.valueOf(runInfo.kacl));
 
         arr_img = new ArrayList<>();
         Log.e("json",runInfo.imgList);

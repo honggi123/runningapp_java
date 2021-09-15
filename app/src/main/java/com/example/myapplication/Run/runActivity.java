@@ -97,6 +97,7 @@ public class runActivity extends AppCompatActivity implements
     Boolean startset = true;
     private Location mCurrentLocation;
     Handler timehandler;
+    Handler Kcalhandler;
     TextView view_time;
     Thread timethread;
     double latitude, longitude;
@@ -122,7 +123,8 @@ public class runActivity extends AppCompatActivity implements
     File photofile = null; // 사진 촬영 후 저장 할 파일
     private TextToSpeech tts;
     Intent serviceIntent;
-
+    TextView viewkcal_runact;
+    double kcal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +142,8 @@ public class runActivity extends AppCompatActivity implements
         MapView mapView = (MapView) findViewById(R.id.map);
         viewpace = findViewById(R.id.viewpace_runact);
         viewdistance = findViewById(R.id.distance_runActivity);
+        viewkcal_runact = findViewById(R.id.viewkcal_runact);
+
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
@@ -159,6 +163,15 @@ public class runActivity extends AppCompatActivity implements
         createLocationRequest();
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
+        Kcalhandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle bundle = msg.getData();
+                int time = bundle.getInt("time");
+            }
+        };
+
         timehandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -170,6 +183,8 @@ public class runActivity extends AppCompatActivity implements
             }
         };
         time_start();
+
+
 
         mapView.getMapAsync(this);
 
@@ -239,6 +254,7 @@ public class runActivity extends AppCompatActivity implements
                 intent.putStringArrayListExtra("arr_storageimg",arr_storageimg);
                 intent.putExtra("distance",wholedistance);
                 intent.putExtra("time",time);
+                intent.putExtra("kcal",kcal);
 
                 Toast.makeText(runActivity.this,"러닝종료 합니다.",Toast.LENGTH_SHORT).show();
                 startActivity(intent);
@@ -278,10 +294,13 @@ public class runActivity extends AppCompatActivity implements
     @Override
     public void onMapReady(GoogleMap googleMap){
         mMap = googleMap;
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         mMap.setMyLocationEnabled(true);
+        LatLng SEOUL = new LatLng(37.56, 126.97);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 15));
     }
 
     public void time_start() {
@@ -362,8 +381,11 @@ public class runActivity extends AppCompatActivity implements
 
             double tt = distance / t;
             viewpace.setText(String.format("%.2f",tt));
-        }
 
+            kcal =calKcal((float) tt,time,60);
+
+            viewkcal_runact.setText(String.format("%.2f",kcal));
+        }
     }
 
     // googleapiclient 연결 상태가 변경 될때
@@ -394,26 +416,23 @@ public class runActivity extends AppCompatActivity implements
     public void onPointerCaptureChanged(boolean hasCapture) {
     }
 
-    private void enableMyLocation() {
+    private void enableMyLocation(){
         if (mMap != null) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 return;
             }else{
-
                 fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
                 locationCallback = new LocationCallback(){
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
                         super.onLocationResult(locationResult);
-                        Location locationA =new Location("point A");
-                        Location locationB =new Location("point B");
+                        Location locationA = new Location("point A");
+                        Location locationB = new Location("point B");
 
                         mCurrentLocation = locationResult.getLastLocation();
 
                         lat = mCurrentLocation.getLatitude();
                         lng = mCurrentLocation.getLongitude();
-
                         if(startset){
                             setfirstmarker(lat,lng);
                         };
@@ -440,6 +459,12 @@ public class runActivity extends AppCompatActivity implements
 
 
         protected void createLocationRequest(){
+        if(startset){
+            mLocationRequest = new LocationRequest();
+            mLocationRequest.setInterval(1);    // 위치가 update되는 주기
+            mLocationRequest.setFastestInterval(1);  // 위치 획득 후 update되는 주기
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        }
             mLocationRequest = new LocationRequest();
             mLocationRequest.setInterval(100);    // 위치가 update되는 주기
             mLocationRequest.setFastestInterval(100);  // 위치 획득 후 update되는 주기
@@ -460,6 +485,7 @@ public class runActivity extends AppCompatActivity implements
             mMap.addMarker(makerOptions);
             startset = false;
         }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -602,6 +628,39 @@ public class runActivity extends AppCompatActivity implements
         });
     }
 
+    public double calKcal(float pace,int time, int weight){
+         double met;
+
+         if( pace <=4 && pace >= 3){
+             met = 3;
+
+         }else if( pace <=5 && pace >= 4 ){
+             met = 3.5;
+
+         }else if( pace <= 6.4 && pace >= 5){
+            met = 4;
+
+         }else if(pace <= 7 && pace >= 6.5){
+            met = 5;
+
+         }else if(pace <= 7 && pace <= 8){
+            met = 7;
+
+         }else if(pace <= 16 && pace >= 8){
+            met = 10;
+         }else if(pace >= 16){
+            met = 16;
+         }else{
+             met = 1;
+         }
+         Log.e("met",met+"");
+        Log.e("time",time+"");
+        double kcal = ((3.5 * met  * weight * (time / 60.0))/1000.0) * 5;
+
+
+
+        return  kcal;
+    }
 
 }
 

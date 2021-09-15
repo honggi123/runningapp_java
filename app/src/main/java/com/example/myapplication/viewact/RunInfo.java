@@ -10,7 +10,15 @@ public class RunInfo implements Serializable {
     String reg_date;
     String memo;
     String imgList;
+    int kacl;
 
+    public int getKacl() {
+        return kacl;
+    }
+
+    public void setKacl(int kacl) {
+        this.kacl = kacl;
+    }
 
     public void setRating(float rating) {
         this.rating = rating;

@@ -67,6 +67,7 @@
         <activity
             android:name=".Run.RuncompleteActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+
         <activity android:name=".Run.distancegoalset_Activity"></activity>
         <activity android:name=".Challenge.Challengemake"></activity>
         <activity android:name=".Challenge.Challengedatemk_Activity"></activity>
@@ -78,7 +79,10 @@
         <activity android:name=".Challenge.LeaderBoard_Activity"></activity>
         <activity android:name=".viewact.viewrunact"></activity>
         <activity android:name=".Challenge.viewexchallenge"></activity>
-        <activity android:name=".viewact.addruninfo"></activity>
+
+        <activity android:name=".viewact.addruninfo"
+            android:windowSoftInputMode="adjustResize"></activity>
+
         <activity android:name=".Profile.Myshoes"></activity>
         <activity android:name=".Profile.viewsetting"></activity>
         <activity android:name=".Profile.addshoes"></activity>

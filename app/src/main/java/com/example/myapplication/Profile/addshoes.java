@@ -43,6 +43,8 @@ import androidx.core.content.FileProvider;
 import androidx.loader.content.CursorLoader;
 
 import com.bumptech.glide.Glide;
+import com.example.myapplication.Challenge.viewchallenge_Activity;
+import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 import com.example.myapplication.viewact.addruninfo;
 
@@ -96,7 +98,6 @@ public class addshoes extends AppCompatActivity {
                 new customdialog().calldialog();
                 if(result != null) {
                     edit_shoedistacne.setText(result + "km");
-
                 }
 
             }
@@ -183,7 +184,6 @@ public class addshoes extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 if(!edit_shoesname.getText().toString().equals("") && !edit_shoedistacne.getText().toString().equals("")){
                     addshoes(edit_shoesname.getText().toString());
                 }else{
@@ -200,9 +200,6 @@ public class addshoes extends AppCompatActivity {
                     AlertDialog dialog = builder.create();    // 알림창 객체 생성
                     dialog.show();    // 알림창 띄우기
                 }
-
-
-
             }
         });
 
@@ -346,6 +343,7 @@ public class addshoes extends AppCompatActivity {
         return byteBuffer.toByteArray();
     }
 
+
     public void addshoes(String shoesname){
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
             String serverUrl="http://3.143.9.214/addshoes.php";
@@ -409,7 +407,16 @@ public class addshoes extends AppCompatActivity {
             smpr.addStringParam("shoesname", shoesname);
 
             // 서버에 데이터 보내고 응답 요청
-            RequestQueue requestQueue = Volley.newRequestQueue(addshoes.this);
+//            RequestQueue requestQueue = Volley.newRequestQueue(addshoes.this);
+//            requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(addshoes.this);
             requestQueue.add(smpr);
-            }
+        } else {
+            requestQueue.add(smpr);
+        }
+
+    }
 }

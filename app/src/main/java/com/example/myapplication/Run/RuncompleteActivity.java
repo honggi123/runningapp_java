@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +32,7 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.myapplication.Challenge.viewchallenge_Activity;
 import com.example.myapplication.ImageAdapter;
 import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
@@ -64,6 +64,8 @@ public class RuncompleteActivity extends AppCompatActivity {
     SharedPreferences loginshared;
     String mid;
     RatingBar howrunrating;
+    TextView kcalview;
+    double kcal;
     private TextToSpeech tts;
 
     @Override
@@ -71,8 +73,10 @@ public class RuncompleteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         arr_photopath = new ArrayList<String>();
         setContentView(R.layout.runcomplete);
+         kcalview = findViewById(R.id.kcalview_complete);
+
         btn_plusimg = findViewById(R.id.btn_plusimg);
-        distanceView = findViewById(R.id.distanceview_complete);
+        distanceView = findViewById(R.id.kcalview_complete);
         timeView = findViewById(R.id.timeview_complete);
         dateView = findViewById(R.id.dateView_complete);
         btn_upload = findViewById(R.id.btn_upload_runcomp);
@@ -82,6 +86,8 @@ public class RuncompleteActivity extends AppCompatActivity {
         // 러닝 시간, 거리 받아오기
         time = getIntent().getIntExtra("time",0);
         distance = getIntent().getIntExtra("distance",0);
+        kcal = getIntent().getDoubleExtra("kcal",0.0);
+
         // 로그인 한 유저의 아이디 가졍오기
         loginshared = getSharedPreferences("Login", MODE_PRIVATE);
         mid = loginshared.getString("id", null);
@@ -89,11 +95,11 @@ public class RuncompleteActivity extends AppCompatActivity {
         String timeformat =new runActivity().TimeToFormat(time);
         timeView.setText(timeformat);
 
-        double kmdistance = (distance / 1000.00);
+        double kmdistance = (distance / 1000.0);
         distanceView.setText(String.format("%.2f",kmdistance));
 
         dateView.setText(new MainAct().getdate());
-
+        kcalview.setText(String.format("%.2f",kcal));
 
         arr_photopath = getIntent().getStringArrayListExtra("arr_photopath");
         arr_storagepath = getIntent().getStringArrayListExtra("arr_storageimg");
@@ -230,6 +236,7 @@ public class RuncompleteActivity extends AppCompatActivity {
         smpr.addStringParam("memo", memo.getText().toString());
         smpr.addStringParam("distance", String.valueOf(distance));
         smpr.addStringParam("time", String.valueOf(time));
+        smpr.addStringParam("kcal", String.valueOf(kcal));
 
         long now = System.currentTimeMillis();
         Date mDate = new Date(now);
@@ -258,8 +265,18 @@ public class RuncompleteActivity extends AppCompatActivity {
             }
         }
         // 서버에 데이터 보내고 응답 요청
-        RequestQueue requestQueue = Volley.newRequestQueue(RuncompleteActivity.this);
-        requestQueue.add(smpr);
+//        RequestQueue requestQueue = Volley.newRequestQueue(RuncompleteActivity.this);
+//        requestQueue.add(smpr);
+
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(RuncompleteActivity.this);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
+
     }
     public void display_imgview(){
         if(arr_photopath.size() == 0){

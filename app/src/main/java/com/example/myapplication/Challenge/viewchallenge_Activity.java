@@ -259,8 +259,16 @@ public class viewchallenge_Activity extends AppCompatActivity {
 
 
                 // 서버에 데이터 보내고 응답 요청
-                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-                requestQueue.add(smpr);
+//                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+//                requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
 
     }
 
@@ -302,8 +310,17 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 smpr.addStringParam("cno",String.valueOf(cno));
 
                 // 서버에 데이터 보내고 응답 요청
-                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-                requestQueue.add(smpr);
+//                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+//                requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
+
 
     }
 
@@ -350,8 +367,17 @@ public class viewchallenge_Activity extends AppCompatActivity {
             smpr.addStringParam("cno",String.valueOf(cno));
 
             // 서버에 데이터 보내고 응답 요청
-            RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-            requestQueue.add(smpr);
+//            RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+//            requestQueue.add(smpr);
+            RequestQueue requestQueue = MainAct.getRequestQueue();
+
+            if (requestQueue == null) {
+                requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+                requestQueue.add(smpr);
+            } else {
+                requestQueue.add(smpr);
+            }
+
         }
 
     public void chkjoinch(){
@@ -400,8 +426,17 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 Log.e("id",mid);
         Log.e("cno",String.valueOf(challengeInfo.cno));
                 // 서버에 데이터 보내고 응답 요청
-                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-                requestQueue.add(smpr);
+//                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+//                requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
+
 
     }
 

@@ -156,7 +156,7 @@ public class Challengedatemk_Activity extends AppCompatActivity implements DateP
         Log.e("date",s_date.compareTo(currentDate)+"");
         if(s_date.compareTo(currentDate) < 0){
             AlertDialog.Builder builder = new AlertDialog.Builder(Challengedatemk_Activity.this);
-            builder.setTitle("현재 날짜보다 늦게 설정해주십시오. ")        // 제목 설정
+            builder.setTitle("현재 날짜 또는 현재날짜 보다 늦게 설정해주십시오. ")        // 제목 설정
                     .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
                     .setPositiveButton("확인", new DialogInterface.OnClickListener(){
                         // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.

@@ -244,8 +244,16 @@ public class ChModify extends AppCompatActivity {
         smpr.addStringParam("name", name);
 
         // 서버에 데이터 보내고 응답 요청
-        RequestQueue requestQueue = Volley.newRequestQueue(ChModify.this);
-        requestQueue.add(smpr);
+//        RequestQueue requestQueue = Volley.newRequestQueue(ChModify.this);
+//        requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(ChModify.this);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
 
 
 
