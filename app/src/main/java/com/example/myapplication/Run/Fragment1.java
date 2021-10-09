@@ -200,8 +200,8 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
                     // 활동 받아오기
                     if(jsonObject.getString("info").equals("null")){
                         // 오늘의 활동이 없어서 데이터들 못 받아 온 경우
-                        view_ttime.setText("활동 없음");
-                        view_tdistance.setText("활동 없음");
+                        view_ttime.setText("00:00");
+                        view_tdistance.setText("0");
                     }else{
                         // 오늘의 활동 데이터 받아 온 경우
                         boolean success = jsonObject.getBoolean("isuccess");
@@ -231,6 +231,7 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
                              int dgoal = jsonObject.getInt("Dgoal");
                              if(distance>=dgoal){
                                  view_goalchk.setVisibility(View.VISIBLE);
+                                 btn_goalset.setEnabled(false);
                              }else{
                                  view_goalchk.setVisibility(View.INVISIBLE);
                              }
@@ -273,4 +274,7 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
             requestQueue.add(smpr);
         }
     }
+
+
+
 }

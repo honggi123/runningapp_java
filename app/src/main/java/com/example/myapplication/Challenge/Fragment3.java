@@ -56,8 +56,6 @@ import java.util.Date;
 
 
 public class Fragment3 extends Fragment {
-
-
     Button btn_challengmake;
 
     Context context;
@@ -99,9 +97,6 @@ public class Fragment3 extends Fragment {
         mid = loginshared.getString("id", null);
 
         super.onCreate(savedInstanceState);
-
-
-
 
 
         btn_challengmake.setOnClickListener(new View.OnClickListener() {
@@ -173,7 +168,6 @@ public class Fragment3 extends Fragment {
                                return (rhs.getReg_date()).compareTo(lhs.getReg_date());
                            }
                            };
-
                         //정렬 실행
                         Collections.sort(arr_mych, compare);
 
@@ -200,9 +194,18 @@ public class Fragment3 extends Fragment {
         smpr.addStringParam("userID",id);
 
         // 서버에 데이터 보내고 응답 요청
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(smpr);
+//        RequestQueue requestQueue = Volley.newRequestQueue(context);
+//        requestQueue.add(smpr);
 
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            Log.e("requestQueue","null");
+            requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
     }
 
     public void getrecentcchinfo(){
@@ -256,9 +259,17 @@ public class Fragment3 extends Fragment {
                 });
 
                 // 서버에 데이터 보내고 응답 요청
-                RequestQueue requestQueue = Volley.newRequestQueue(context);
-                requestQueue.add(smpr);
+//                RequestQueue requestQueue = Volley.newRequestQueue(context);
+//                requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
 
+        if (requestQueue == null) {
+            Log.e("requestQueue","nulll");
+            requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
     }
 
 
@@ -307,7 +318,6 @@ public class Fragment3 extends Fragment {
                         };
                         //정렬 실행
                         Collections.sort(arr_chfamous, compare);
-
 
                         adapterfam = new ChallengelistAdapter(arr_chfamous,2);
                         adapterfam.setfrg(Fragment3.this);
@@ -385,8 +395,6 @@ public class Fragment3 extends Fragment {
             getrecentcchinfo();
             getfamchinfo();
         }
-
-
     }
 
     public void modifych(int cno,String name){

@@ -250,8 +250,7 @@ public class addshoes extends AppCompatActivity {
                                 .load(test)
                                 .into(viewshoe);
                              saveFile(test);
-                        imgurl = test;
-
+                        Log.e("imgurl",imgurl+"");
                     }
 
                if (requestCode == 102) {
@@ -290,7 +289,7 @@ public class addshoes extends AppCompatActivity {
 
             ContentResolver contentResolver = getContentResolver();
             Uri item = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
+        imgurl = item;
             try {
             ParcelFileDescriptor pdf = contentResolver.openFileDescriptor(item, "w", null);
             if (pdf == null) {

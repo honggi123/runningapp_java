@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/android studio/myapp/app/src/main/res/drawable/borderline.xml" value="0.25416666666666665" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.25416666666666665" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.24427083333333333" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.24427083333333333" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.25416666666666665" />
@@ -13,8 +15,11 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengemodify.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengmake.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/chdistancesel.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/choachingitem.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachingitem.xml" value="0.17083333333333334" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/dialog_chgpw.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/dialog_distancegoal.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/dialog_friends.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/dialog_idfind.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/dialog_pwfind.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/example.xml" value="0.35052083333333334" />
@@ -40,6 +45,7 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runact.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runbefore_timer.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runcomplete.xml" value="0.2375" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/runmsgitem.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/setting.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/setting_item.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/shoesitem.xml" value="0.25364583333333335" />

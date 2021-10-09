@@ -18,6 +18,7 @@ public class myfriendlist_Adapter extends RecyclerView.Adapter<myfriendlist_Adap
     ArrayList<User> arr_myfriend;
     String f_id;
     Context context;
+    int fromwhere;
 
     public myfriendlist_Adapter(String f_id, ArrayList<User> arr_id) {
         this.arr_myfriend = arr_id;

@@ -107,7 +107,6 @@ public class JoinActivity extends AppCompatActivity {
                     pwchktxt.setVisibility(View.VISIBLE);
                     pwchk = false;
                 }
-
             }
 
             @Override

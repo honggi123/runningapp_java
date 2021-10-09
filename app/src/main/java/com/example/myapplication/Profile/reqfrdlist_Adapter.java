@@ -42,7 +42,6 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
         this.f_id = f_id;
         this.fragment4 = fragment4;
     }
-
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -61,8 +60,6 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
             @Override
             public void onClick(View v) {
                 accept(arr_friend.get(position).getId(),position);
-
-
             }
         });
 
@@ -72,7 +69,6 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
                 notaccept(arr_friend.get(position).getId(),position);
             }
         });
-
     }
 
 
@@ -96,7 +92,6 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
 
 
     public void accept(String id,int position){
-
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
             String serverUrl="http://3.143.9.214/friendaccept.php";
 
@@ -133,8 +128,6 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
             // 서버에 데이터 보내고 응답 요청
             RequestQueue requestQueue = Volley.newRequestQueue(context);
             requestQueue.add(smpr);
-
-
     }
 
     public void notaccept(String id,int position){
@@ -184,7 +177,6 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
         } else {
             requestQueue.add(smpr);
         }
-
     }
 
 }

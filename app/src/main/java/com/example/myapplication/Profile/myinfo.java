@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONArray;
@@ -150,8 +151,16 @@ public class myinfo extends AppCompatActivity {
             smpr.addStringParam("userID", mid);
 
             // 서버에 데이터 보내고 응답 요청
-            RequestQueue requestQueue = Volley.newRequestQueue(myinfo.this);
+//            RequestQueue requestQueue = Volley.newRequestQueue(myinfo.this);
+//            requestQueue.add(smpr);
+                    RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(myinfo.this);
             requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
             }
 
 
@@ -194,8 +203,16 @@ public class myinfo extends AppCompatActivity {
                     smpr.addStringParam("weight", String.valueOf(weight));
 
                     // 서버에 데이터 보내고 응답 요청
-                    RequestQueue requestQueue = Volley.newRequestQueue(myinfo.this);
-                    requestQueue.add(smpr);
+//                    RequestQueue requestQueue = Volley.newRequestQueue(myinfo.this);
+//                    requestQueue.add(smpr);
+                RequestQueue requestQueue = MainAct.getRequestQueue();
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(myinfo.this);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
+
                     }
 
 }

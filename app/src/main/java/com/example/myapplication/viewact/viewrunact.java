@@ -1,4 +1,12 @@
 package com.example.myapplication.viewact;
+import com.android.volley.Request;
+
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.error.VolleyError;
+import com.android.volley.toolbox.Volley;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -48,12 +56,13 @@ public class viewrunact extends AppCompatActivity {
         viewdate = findViewById(R.id.viewdate);
         viewkcal = findViewById(R.id.viewkcal);
 
+
         recyclerView = findViewById(R.id.rc_runinfo);
 
         viewrating.setText(String.valueOf(runInfo.rating));
 
         double kmdistance = (runInfo.distance / 1000.00);
-        viewdistance.setText(String.format("%.2f",kmdistance)+ " km");
+        viewdistance.setText(String.format("%.2f",kmdistance));
 
 
         String timeformat =new runActivity().TimeToFormat(runInfo.time);

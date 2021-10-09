@@ -132,12 +132,10 @@
 
             <TextView
                 android:id="@+id/kcalview_complete"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:text="0 "
+                android:gravity="center"
+                android:text="0"
                 android:textSize="30sp"
                 android:textStyle="bold" />
 
@@ -159,7 +157,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/kcalview_complete"
+                android:id="@+id/distanceview_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -15,6 +15,8 @@ import androidx.core.app.ActivityCompat;
 
 
 import com.android.volley.RequestQueue;
+import com.android.volley.request.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.myapplication.Challenge.Fragment3;
 import com.example.myapplication.Loign.LoginActivity;
 import com.example.myapplication.Profile.Fragment4;
@@ -27,6 +29,7 @@ import com.gun0912.tedpermission.PermissionListener;
 import com.kakao.usermgmt.UserManagement;
 import com.kakao.usermgmt.callback.LogoutResponseCallback;
 
+import java.io.StringReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ import java.util.Date;
 public class MainAct extends AppCompatActivity {
 
     static RequestQueue requestQueue;
-
+    public static final String TAG = "MyTag";
     Button btn_logout;
     String mid;
     String logintype;
@@ -44,11 +47,18 @@ public class MainAct extends AppCompatActivity {
     static final int MY_PERMISSION_STORAGE = 101;
     PermissionListener permissionlistener;
     SharedPreferences loginshared;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         loginshared = getSharedPreferences("Login", MODE_PRIVATE);
+
+        requestQueue = Volley.newRequestQueue(MainAct.this);
+
+
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         // 로그인 정보
@@ -72,7 +82,6 @@ public class MainAct extends AppCompatActivity {
 
     //처음화면
     getSupportFragmentManager().beginTransaction().add(R.id.mainframe, new Fragment1(MainAct.this)).commit(); //FrameLayout에 fragment.xml 띄우기
-
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
@@ -93,7 +102,6 @@ public class MainAct extends AppCompatActivity {
                 return true;
             }
         });
-
     }
 
     public void logout(){
@@ -115,8 +123,12 @@ public class MainAct extends AppCompatActivity {
 
     public String getMid() {
         return mid;
+
     }
 
+    public void cancelreq(){
+        requestQueue.cancelAll(TAG);
+    }
 
     public void checkPermission(int resquestcode){
         if (ActivityCompat.checkSelfPermission(MainAct.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainAct.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

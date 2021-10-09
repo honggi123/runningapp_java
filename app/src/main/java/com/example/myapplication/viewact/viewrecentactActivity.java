@@ -22,26 +22,19 @@ public class viewrecentactActivity extends AppCompatActivity {
     ArrayList<RunInfo> arr_runinfo;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.viewrecentmyact);
 
-        arr_runinfo = (ArrayList<RunInfo> ) getIntent().getSerializableExtra("arr_runinfo");
+        arr_runinfo = (ArrayList<RunInfo> ) getIntent  ().getSerializableExtra("arr_runinfo");
         adapter = new dayviewact_Adapter(arr_runinfo,arr_runinfo.size());
-
 
         recyclerView = findViewById(R.id.rc_allrecentact);
 
-    LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(viewrecentactActivity.this);
-                linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
-                recyclerView.setLayoutManager(linearLayoutManager);
-                recyclerView.setAdapter(adapter);
-
+        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(viewrecentactActivity.this);
+        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.setAdapter(adapter);
     }
-
-
-
-
-
 }

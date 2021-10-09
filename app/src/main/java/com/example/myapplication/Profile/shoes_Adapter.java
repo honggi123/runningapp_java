@@ -121,7 +121,7 @@ public class shoes_Adapter extends RecyclerView.Adapter<shoes_Adapter.Holder> {
                             int nposition = getAdapterPosition();
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                            builder.setTitle("운동화로 설정하시겠습니까?")        // 제목 설정
+                            builder.setTitle("해당 러닝화를 장착하시겠습니까?")        // 제목 설정
                                     .setCancelable(true)        // 뒤로 버튼 클릭시 취소 가능 설정
                                     .setPositiveButton("확인", new DialogInterface.OnClickListener(){
                                         // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.

@@ -75,8 +75,6 @@ public class Fragment4 extends Fragment {
         mid = context.getMid();
         id.setText(mid);
 
-
-
         btn_plusfrined.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -244,7 +242,6 @@ public class Fragment4 extends Fragment {
         } else {
             requestQueue.add(smpr);
         }
-
     }
 
     public void logout(){

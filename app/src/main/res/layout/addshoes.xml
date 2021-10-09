@@ -61,7 +61,8 @@
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="@+id/textView58"
-        app:layout_constraintStart_toEndOf="@+id/textView58" />
+        app:layout_constraintStart_toEndOf="@+id/textView58"
+        app:layout_constraintTop_toTopOf="@+id/textView58" />
 
     <ImageView
         android:id="@+id/viewshoe"

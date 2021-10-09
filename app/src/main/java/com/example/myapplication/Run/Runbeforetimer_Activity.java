@@ -37,6 +37,7 @@ public class Runbeforetimer_Activity extends AppCompatActivity {
             public void onAnimationEnd(Animator animation) {
 
                 Intent intent = new Intent(Runbeforetimer_Activity.this,runActivity.class);
+                intent.putExtra("coachjson",getIntent().getStringExtra("coachjson"));
                 startActivity(intent);
                 finish();
             }

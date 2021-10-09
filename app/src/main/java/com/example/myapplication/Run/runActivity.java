@@ -1,11 +1,13 @@
 package com.example.myapplication.Run;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -30,6 +32,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,8 +45,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.misc.AsyncTask;
+import com.android.volley.request.SimpleMultiPartRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.myapplication.Coaching;
+import com.example.myapplication.MainAct;
+import com.example.myapplication.Profile.User;
+import com.example.myapplication.Profile.myfriendlist_Adapter;
 import com.example.myapplication.R;
+import com.example.myapplication.Request.RequestHttpURLConnection;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -63,18 +82,26 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 
 public class runActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
@@ -125,12 +152,36 @@ public class runActivity extends AppCompatActivity implements
     Intent serviceIntent;
     TextView viewkcal_runact;
     double kcal;
+    double lastlat;
+    double lastlag;
+    JSONObject root;
+    String uu;
+    ArrayList<Double> arr_lat = new ArrayList<>();
+    ArrayList<Double> arr_lng = new ArrayList<>();
+    final int[] walk = {0};
+    String coachcontent;
+    FrameLayout runcoach;
+    FrameLayout walkcoach;
+    FrameLayout restcoach;
+    JSONObject coachjson;
+    ImageView btn_viewfriends;
+    int prev_coachstate=999;
+    int coachpass = 0;
+    boolean polystate = true;
+    boolean run = false;
+
+    // myfriend
+    ArrayList<User> myfrindInfoArrayList;
+    myfriendlist_Adapter myfriend_adapter;
+    RecyclerView myfrd_recyclerView;
+
+    SharedPreferences loginshared;
+    String mid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.runact);
-
 
         Toast.makeText(runActivity.this,"러닝시작 합니다.",Toast.LENGTH_SHORT).show();
         serviceIntent = new Intent(runActivity.this, runService.class);
@@ -139,6 +190,8 @@ public class runActivity extends AppCompatActivity implements
         btn_run = findViewById(R.id.btn_run);
         btn_stop = findViewById(R.id.btn_stop);
         view_time = findViewById(R.id.time);
+        btn_viewfriends = findViewById(R.id.btn_viewfriends);
+
         MapView mapView = (MapView) findViewById(R.id.map);
         viewpace = findViewById(R.id.viewpace_runact);
         viewdistance = findViewById(R.id.distance_runActivity);
@@ -163,6 +216,24 @@ public class runActivity extends AppCompatActivity implements
         createLocationRequest();
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
+
+
+        if(getIntent().getStringExtra("coachjson")!= null){
+            coachcontent = getIntent().getStringExtra("coachjson");
+            runcoach = findViewById(R.id.coach_run);
+            walkcoach = findViewById(R.id.coach_walk);
+            restcoach = findViewById(R.id.coach_rest);
+
+            coachjson = null;
+            try {
+                coachjson = new JSONObject(coachcontent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.e("coachjson",coachjson+"");
+        }
+
+
         Kcalhandler = new Handler(Looper.getMainLooper()){
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -180,11 +251,69 @@ public class runActivity extends AppCompatActivity implements
                 int time = bundle.getInt("time");
                 String totaltime = TimeToFormat(time);
                 view_time.setText(totaltime);
+
+                if(coachjson != null){
+                    try {
+                        JSONArray jsonObject1 = null;
+                        jsonObject1 = coachjson.getJSONArray("rundata");
+
+                        JSONObject data = null;
+                        data = jsonObject1.getJSONObject(coachpass);
+                        Log.e("data",data.toString());
+
+                        Log.e("datatime",data.getInt("time")+"");
+                        Log.e("time",time+"");
+                        if(data.getInt("time") == time){
+                            Log.e("behave",data.getInt("behave")+"");
+
+                            switch(data.getInt("behave")){
+                              case 0:       // 휴식
+                                  if(prev_coachstate != data.getInt("behave")){
+                                  restcoach.setVisibility(View.VISIBLE);
+                                  walkcoach.setVisibility(View.INVISIBLE);
+                                  runcoach.setVisibility(View.INVISIBLE);
+                                      speech("잠시 휴식 하십시오.");
+                                  }
+                                  run= false;
+                                  polystate = false;
+                                break;
+                              case 1:           // 걷기
+                                  if(prev_coachstate != data.getInt("behave")) {
+                                      walkcoach.setVisibility(View.VISIBLE);
+                                      restcoach.setVisibility(View.INVISIBLE);
+                                      runcoach.setVisibility(View.INVISIBLE);
+                                      speech("걷기를 시작합니다.");
+                                  }
+                                  run= false;
+                                  polystate = true;
+                                 break;
+                              case 2:           // 뛰기
+                                  if(prev_coachstate != data.getInt("behave")) {
+                                      runcoach.setVisibility(View.VISIBLE);
+                                      restcoach.setVisibility(View.INVISIBLE);
+                                      walkcoach.setVisibility(View.INVISIBLE);
+                                      speech("빠른 달리기를 시작합니다.");
+
+                                  }
+                                  run = true;
+                                  polystate = true;
+                                 break;
+                              default:
+                                break;
+                            }
+                            prev_coachstate = data.getInt("behave");
+                            Log.e("prev_coachstate",prev_coachstate+"");
+                            coachpass++;
+                        }
+
+
+                    }catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         };
         time_start();
-
-
 
         mapView.getMapAsync(this);
 
@@ -197,11 +326,23 @@ public class runActivity extends AppCompatActivity implements
                     .build();
         }
 
+        // 활동중인 친구보기
+
+        btn_viewfriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginshared = getSharedPreferences("Login", MODE_PRIVATE);
+                // 로그인 정보
+                mid = loginshared.getString("id", null);
+
+                frdlistrequest(mid);
+            }
+        });
+
         // 카메라 모양 클릭 버튼
         btn_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 int permission = ContextCompat.checkSelfPermission(runActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
                 int permission2 = ContextCompat.checkSelfPermission(runActivity.this, Manifest.permission.CAMERA);
                 // 권한이 열려있는지 확인
@@ -211,6 +352,7 @@ public class runActivity extends AppCompatActivity implements
                         // 권한 체크(READ_PHONE_STATE의 requestCode를 1000으로 세팅
                         requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);
                     } return;
+
                 }else{
                     Intent captureintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // 임시로 사용할 파일
@@ -240,9 +382,10 @@ public class runActivity extends AppCompatActivity implements
                         startActivityForResult(captureintent, 101);
                     }
                 }
-
             }
         });
+
+
 
 
         // 러닝 정지하고 완료하기 버튼
@@ -271,16 +414,19 @@ public class runActivity extends AppCompatActivity implements
                     timethread.interrupt();
                     btn_stop.setVisibility(View.VISIBLE);
                     runstate = false;
+                    polystate = false;
                     stopService(serviceIntent);
-
                     speech("러닝을 일시 중단합니다.");
+                    fusedLocationClient.removeLocationUpdates(locationCallback);
                 } else {
 
                     btn_run.setImageResource(R.drawable.ic_baseline_pause_circle_filled_24);
                     runstate = true;
                     restart = true;
+                    polystate = true;
                     btn_stop.setVisibility(View.GONE);
                     enableMyLocation();
+
                     time_start();
                     startService(serviceIntent);
                     Toast.makeText(runActivity.this,"러닝을 다시 시작 합니다!",Toast.LENGTH_SHORT).show();
@@ -288,6 +434,7 @@ public class runActivity extends AppCompatActivity implements
                 }
             }
         });
+
     }
 
 
@@ -298,9 +445,48 @@ public class runActivity extends AppCompatActivity implements
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        mMap.setMyLocationEnabled(true);
+       // mMap.setMyLocationEnabled(true);
         LatLng SEOUL = new LatLng(37.56, 126.97);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 15));
+
+        URL url = null;
+        HttpURLConnection urlConn = null;
+        try {
+            String appKey = "l7xx5b0db2becaa848d483d7711ea0d3614c";
+            String startX = "126.968773";
+            String startY = "37.4847422";
+            String endX = "127.109999";
+            String endY = "37.325168";
+            String reqCoordType = "WGS84GEO";
+            String resCoordType = "EPSG3857";
+            String startName = URLEncoder.encode("남성역", "UTF-8");
+
+            String endName = URLEncoder.encode("죽전역", "UTF-8");
+            uu = "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&callback=result&appKey=" + appKey
+                    + "&startX=" + startX + "&startY=" + startY + "&endX=" + endX + "&endY=" + endY
+                    + "&startName=" + startName + "&endName=" + endName;
+            url = new URL(uu);
+
+        } catch (MalformedURLException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        try {
+            //uri를 담아서 데이터를 보내면
+            urlConn = (HttpURLConnection) url.openConnection();
+            urlConn.setRequestMethod("POST");
+            urlConn.setRequestProperty("Accept-Charset", "utf-8");
+            urlConn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+            //여기서 통신한 데이터의 결과값이 반환된다.
+            System.out.println("뭘 가지고 오냐" + urlConn);
+            NetworkTask networkTask = new NetworkTask(uu, null);
+            networkTask.execute();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     public void time_start() {
@@ -328,8 +514,7 @@ public class runActivity extends AppCompatActivity implements
     @Override
     protected void onStart(){
         super.onStart();
-        mGoogleApiClient.connect();
-        enableMyLocation();
+
     }
 
     @Override
@@ -360,7 +545,6 @@ public class runActivity extends AppCompatActivity implements
     }
 
 
-
     // 거리 계산
     private double distanceTo(Location LatLng1,Location LatLng2){
         double distance = 0;
@@ -370,7 +554,6 @@ public class runActivity extends AppCompatActivity implements
         Log.e("kmdistance",""+kmdistance);
         viewdistance.setText(String.format("%.2f",kmdistance));
 
-
         setpace(kmdistance);
         return distance;
     }
@@ -378,11 +561,11 @@ public class runActivity extends AppCompatActivity implements
     public void setpace(double distance){
         if(distance > 0){
             double t =((time/60.00)/60.00);
-
             double tt = distance / t;
+
             viewpace.setText(String.format("%.2f",tt));
 
-            kcal =calKcal((float) tt,time,60);
+            kcal += calKcal((float) tt,time,60)/time;
 
             viewkcal_runact.setText(String.format("%.2f",kcal));
         }
@@ -391,7 +574,6 @@ public class runActivity extends AppCompatActivity implements
     // googleapiclient 연결 상태가 변경 될때
     @Override
     public void onConnected(Bundle bundle) {
-        enableMyLocation();
     }
 
     @Override
@@ -425,19 +607,21 @@ public class runActivity extends AppCompatActivity implements
                 locationCallback = new LocationCallback(){
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
-                        super.onLocationResult(locationResult);
+                         super.onLocationResult(locationResult);
                         Location locationA = new Location("point A");
                         Location locationB = new Location("point B");
 
-                        mCurrentLocation = locationResult.getLastLocation();
+                       // lat = mCurrentLocation.getLatitude();
+                        //lng = mCurrentLocation.getLongitude();
 
-                        lat = mCurrentLocation.getLatitude();
-                        lng = mCurrentLocation.getLongitude();
+                        lat = arr_lng.get(walk[0]);
+                        lng = arr_lat.get(walk[0]);
+                        Log.e("lat",walk[0]+"");
+
                         if(startset){
                             setfirstmarker(lat,lng);
                         };
-
-                        if (runstate) {
+                        if (polystate) {
                             locationB.setLatitude(lat);
                             locationB.setLongitude(lng);
 
@@ -449,25 +633,29 @@ public class runActivity extends AppCompatActivity implements
 
                             // 거리 측정
                             distanceTo(locationA,locationB);
+                            walk[0]++;
                         }
                     }
                 };
-                fusedLocationClient.requestLocationUpdates( mLocationRequest, locationCallback,Looper.myLooper() );
+
+               fusedLocationClient.requestLocationUpdates( mLocationRequest, locationCallback,Looper.myLooper() );
             }
         }
     }
 
-
         protected void createLocationRequest(){
         if(startset){
+            Log.e("startset?",startset+"1");
             mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(1);    // 위치가 update되는 주기
-            mLocationRequest.setFastestInterval(1);  // 위치 획득 후 update되는 주기
+            mLocationRequest.setInterval(0);    // 위치가 update되는 주기
+            mLocationRequest.setFastestInterval(0);  // 위치 획득 후 update되는 주기
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         }
+            Log.e("startset?",startset+"2");
+
             mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(100);    // 위치가 update되는 주기
-            mLocationRequest.setFastestInterval(100);  // 위치 획득 후 update되는 주기
+            mLocationRequest.setInterval(4000);    // 위치가 update되는 주기
+            mLocationRequest.setFastestInterval(4000);  // 위치 획득 후 update되는 주기
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
 //        PRIORITY_HIGH_ACCURACY : 배터리소모를 고려하지 않으며 정확도를 최우선으로 고려
@@ -521,8 +709,6 @@ public class runActivity extends AppCompatActivity implements
         }
 
     }
-
-
 
 
     @Override
@@ -590,7 +776,6 @@ public class runActivity extends AppCompatActivity implements
     }
 
     private void galleryAddPic(String Image_Path) {
-
         String SaveFolderPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/"+Image_Path;
         Log.e("galleryaddpic_Image_Path",Image_Path);
         arr_storageimg.add(SaveFolderPath);
@@ -630,7 +815,7 @@ public class runActivity extends AppCompatActivity implements
 
     public double calKcal(float pace,int time, int weight){
          double met;
-
+         Log.e("pace, time",pace+" : "+time+"");
          if( pace <=4 && pace >= 3){
              met = 3;
 
@@ -657,10 +842,197 @@ public class runActivity extends AppCompatActivity implements
         Log.e("time",time+"");
         double kcal = ((3.5 * met  * weight * (time / 60.0))/1000.0) * 5;
 
-
-
         return  kcal;
     }
 
+
+        public class NetworkTask extends AsyncTask<Void, Void, String> {
+            private String url;
+            private ContentValues values;
+            public NetworkTask(String url, ContentValues values) {
+                this.url = url;
+                this.values = values;
+            }
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                String result;
+                // 요청 결과를 저장할 변수.
+                RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
+                result = requestHttpURLConnection.request(url, values);
+                // 해당 URL로 부터 결과물을 얻어온다.
+                return result;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                //doInBackground()로 부터 리턴된 값이 onPostExecute()의 매개변수로 넘어오므로 s를 출력한다.
+                try {
+                    //전체 데이터를 제이슨 객체로 변환
+                     root = new JSONObject(s);
+                    System.out.println("제일 상위 "+root);
+                    int length =root.getJSONArray("features").length()-1;
+                    Log.e("length",length+"");
+                                for(int i = 0; i<=length;i++){
+                                    //전체 데이터중에 features리스트의 첫번째 객체를 가지고 오기
+                                    JSONObject features = null;
+                                    try {
+                                      //  System.out.println(i);
+                                        features = (JSONObject) root.getJSONArray("features").get(i);
+
+                                   // System.out.println("상위에서 "+i+" 리스트 "+features);
+
+                                    //리스트의 첫번째 객체에 있는 geometry가져오기
+                                    JSONObject geometry =  features.getJSONObject("geometry");
+                                    //System.out.println("리스트에서 geometry 객체 "+geometry);
+                                    if(geometry.getString("type").equals("LineString")){
+                                        for(int j = 0; j<=geometry.getJSONArray("coordinates").length()-1;j++){
+                                            //최종적으로 위도와 경도를 가져온다.
+                                            String loc = geometry.getJSONArray("coordinates").get(j).toString();
+                                           // Log.e("loc"+j,loc+"");
+                                            String[] latlong =  loc.split(",");
+                                            int idx = latlong[0].indexOf("[");
+                                            int idx2 = latlong[1].indexOf("]");
+                                            latlong[0] = latlong[0].substring(idx+1);
+                                           // Log.e("latlong0",latlong[0]);
+                                            double lat = Double.parseDouble(latlong[0]);
+                                            //Log.e("double",lat+"");
+                                            latlong[1] = latlong[1].substring(0,idx2);
+                                           // Log.e("latlong1",latlong[1]);
+                                            double lag = Double.parseDouble(latlong[1]);
+                                          //  chglocation(Double.parseDouble(latlong[0]),Double.parseDouble(latlong[1]));
+                                            arr_lat.add(lat);
+                                            arr_lng.add(lag);
+                                            Log.e("lat",lat+"");
+                                        }
+                                        }
+                                        }catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+                    mGoogleApiClient.connect();
+                    enableMyLocation();
+
+//                textView.setText((CharSequence) root);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public void chglocation(double lat,double lag){
+            Log.e("lat",lat+"");
+            Log.e("lag",lag+"");
+
+            Location locationA = new Location("point A");
+            Location locationB = new Location("point B");
+
+            if(startset){
+                setfirstmarker(lat,lag);
+            };
+
+            if (polystate) {
+                locationB.setLatitude(lat);
+                locationB.setLongitude(lag);
+
+                endLatLng = new LatLng(lat, lag);        //현재 위치를 끝점으로 설정
+                drawPath();                                            //polyline 그리기
+                locationA.setLatitude(startLatLng.latitude);
+                locationA.setLongitude(startLatLng.longitude);
+                startLatLng = new LatLng(lat, lag);        //시작점을 끝점으로 다시 설정
+
+                // 거리 측정
+                distanceTo(locationA,locationB);
+            }
+        }
+
+    public class viewfriendsdialog {
+        Dialog dig;
+        Button btn_setdistance;
+
+
+        public void calldialog() {
+
+            dig = new Dialog(runActivity.this);
+            // 액티비티의 타이틀바를 숨긴다.
+            dig.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            // 커스텀 다이얼로그의 레이아웃을 설정한다.
+            dig.setContentView(R.layout.dialog_friends);
+            myfrd_recyclerView = dig.findViewById(R.id.rc_friends);
+
+            // 라사이클러뷰에 넣기
+            myfriend_adapter = new myfriendlist_Adapter(mid,myfrindInfoArrayList);
+
+            LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(runActivity.this);
+            linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+            myfrd_recyclerView.setLayoutManager(linearLayoutManager);
+            myfrd_recyclerView.setAdapter(myfriend_adapter);
+
+            dig.show();
+        }
+    }
+
+
+    public void frdlistrequest(String mid){
+        // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
+        String serverUrl="http://3.143.9.214/myfriendinfo.php";
+
+        // 파일 전송 요청 객체 생성[결과를 String으로 받음]
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    Log.e("json",String.valueOf(jsonObject));
+                    int fnum = jsonObject.getInt("fnum");
+                    if(fnum>0){
+                        myfrindInfoArrayList = new ArrayList<>();
+                        for(int i=0;i<fnum;i++){
+                            User user = new User();
+                            user.setId(jsonObject.getString("friend"+i));
+                            myfrindInfoArrayList.add(user);
+                        }
+                    }
+
+                    viewfriendsdialog viewfriendsdialog = new viewfriendsdialog();
+                    viewfriendsdialog.calldialog();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+        // 요청 객체에 보낼 데이터를 추가
+        smpr.addStringParam("f_id", mid);
+
+        // 서버에 데이터 보내고 응답 요청
+//              RequestQueue requestQueue = Volley.newRequestQueue(context);
+//              requestQueue.add(smpr);
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            requestQueue = Volley.newRequestQueue(runActivity.this);
+            requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
+    }
+
+
 }
+
+
+
 

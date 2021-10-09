@@ -32,7 +32,6 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.myapplication.Challenge.viewchallenge_Activity;
 import com.example.myapplication.ImageAdapter;
 import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
@@ -76,7 +75,7 @@ public class RuncompleteActivity extends AppCompatActivity {
          kcalview = findViewById(R.id.kcalview_complete);
 
         btn_plusimg = findViewById(R.id.btn_plusimg);
-        distanceView = findViewById(R.id.kcalview_complete);
+        distanceView = findViewById(R.id.distanceview_complete);
         timeView = findViewById(R.id.timeview_complete);
         dateView = findViewById(R.id.dateView_complete);
         btn_upload = findViewById(R.id.btn_upload_runcomp);

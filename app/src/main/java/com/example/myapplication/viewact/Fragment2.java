@@ -5,6 +5,8 @@ package com.example.myapplication.viewact;
 
 
 
+
+
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
@@ -20,9 +22,7 @@ import com.android.volley.toolbox.Volley;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.Image;
 import android.os.Bundle;
-import android.util.EventLogTags;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,33 +37,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.Challenge.ChallengeInfo;
-import com.example.myapplication.Challenge.Challengemake;
-import com.example.myapplication.Challenge.viewchallenge_Activity;
 import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 import com.example.myapplication.Run.runActivity;
-import com.github.mikephil.charting.animation.Easing;
+import com.example.myapplication.Coaching;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.formatter.ValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class Fragment2 extends Fragment {
 
@@ -74,6 +63,10 @@ public class Fragment2 extends Fragment {
     Button btn_moreact;
     TextView viewtotalrun;
     TextView viewtotlatime;
+
+    RecyclerView chrecyclerView;
+    ArrayList<Coaching> arr_coach;
+    CoachAdapter coachAdapter;
 
     TextView viewruncount;
     int max = 0;
@@ -86,6 +79,7 @@ public class Fragment2 extends Fragment {
     String mid;
     PieChart pieChart;
     ImageView btn_addruninfo;
+
 
     // 요일 별 목표 이미지 뷰
     ImageView mongoal;
@@ -101,7 +95,7 @@ public class Fragment2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment2,container,false);
 
-        recyclerView = view.findViewById(R.id.rc_recentact_fr2);
+        recyclerView = view.findViewById(R.id.rc_coaching);
         btn_moreact = view.findViewById(R.id.btn_viewrecentact_fr2);
         viewtotlatime = view.findViewById(R.id.view_totaltime);
         viewruncount = view.findViewById(R.id.view_runcount);
@@ -124,6 +118,8 @@ public class Fragment2 extends Fragment {
         request(mid);
 
         getgoalinfo(mid);
+        arr_coach = new ArrayList<Coaching>();
+        getcoachinfo();
 
         btn_addruninfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +129,20 @@ public class Fragment2 extends Fragment {
             }
         });
 
+
+
+        //  리사이클러뷰 xml id
+        chrecyclerView = view.findViewById(R.id.rc_coaching1);
+        // 라사이클러뷰에 넣기
+        // 어댑터 객체 생성
+
+        coachAdapter = new CoachAdapter(arr_coach);
+
+        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        chrecyclerView.setLayoutManager(linearLayoutManager);
+                // 어댑터 추가
+        chrecyclerView.setAdapter(coachAdapter);
 
         return view;
     }
@@ -186,8 +196,18 @@ public class Fragment2 extends Fragment {
             smpr.addStringParam("id", mid);
 
             // 서버에 데이터 보내고 응답 요청
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//            requestQueue.add(smpr);
+
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            Log.e("requestQueue","nulll");
+            requestQueue = Volley.newRequestQueue(getContext());
             requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
             }
 
 
@@ -277,8 +297,18 @@ public class Fragment2 extends Fragment {
             smpr.addStringParam("userID", mid);
 
             // 서버에 데이터 보내고 응답 요청
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+//            requestQueue.add(smpr);
+
+        RequestQueue requestQueue = MainAct.getRequestQueue();
+
+        if (requestQueue == null) {
+            Log.e("requestQueue","nulll");
+            requestQueue = Volley.newRequestQueue(getContext());
             requestQueue.add(smpr);
+        } else {
+            requestQueue.add(smpr);
+        }
             }
 
 
@@ -342,7 +372,7 @@ public class Fragment2 extends Fragment {
                     }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "서버와 통신 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+
                     }
                     });
 
@@ -468,7 +498,55 @@ public class Fragment2 extends Fragment {
         barChart.getLegend().setTextSize(10f);
     }
 
+    public void getcoachinfo(){
+                // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
+                String serverUrl="http://3.143.9.214/getcoach.php";
 
+                // 파일 전송 요청 객체 생성[결과를 String으로 받음]
+                SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
+        @Override
+        public void onResponse(String response) {
+                try {
+                JSONObject jsonObject = new JSONObject(response);
+                boolean success = jsonObject.getBoolean("success");
+                Log.e("coachjson",jsonObject.toString());
+
+                if(success) {
+                    int num = jsonObject.getInt("num");
+
+                    for(int i= 0; i< num; i++){
+                        JSONArray jsonObject1 = jsonObject.getJSONArray("data");
+                        JSONObject data = jsonObject1.getJSONObject(i);
+
+                        Coaching coaching =  new Coaching();
+                        coaching.setName(data.getString("name"));
+                        coaching.setEndtime(data.getInt("time"));
+                        coaching.setDescription(data.getString("description"));
+                        coaching.setChoachingjson(data.getString("coachjson"));
+                        coaching.setReg_date(data.getString("reg_date"));
+                        arr_coach.add(coaching);
+                        Log.e("coachjson",coaching.getChoachingjson());
+                        Log.e("weeks_distance",String.valueOf( weeks_distance[i]));
+
+                    }
+                } else {
+                }
+                } catch (Exception e) {
+                e.printStackTrace();
+                }
+                }
+                }, new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getContext(), "서버와 통신 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
+                }
+                });
+
+                // 서버에 데이터 보내고 응답 요청
+                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                requestQueue.add(smpr);
+
+    }
 
 
 
