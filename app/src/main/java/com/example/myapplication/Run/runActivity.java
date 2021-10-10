@@ -1,11 +1,13 @@
 package com.example.myapplication.Run;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -34,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -86,15 +89,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
@@ -169,19 +177,49 @@ public class runActivity extends AppCompatActivity implements
     int coachpass = 0;
     boolean polystate = true;
     boolean run = false;
+    String addmsg;
 
-    // myfriend
+    Button btn_msgsend;
+    // myfriend rc
     ArrayList<User> myfrindInfoArrayList;
     myfriendlist_Adapter myfriend_adapter;
     RecyclerView myfrd_recyclerView;
 
+    // runmsg rc
+    ArrayList<Msg> arr_msg;
+    RunMsgAdapter msgAdapter;
+    RecyclerView rc_msg;
+
     SharedPreferences loginshared;
-    String mid;
+    String UserID;
+
+    // 소켓 통신
+    private Handler mHandler;
+    InetAddress serverAddr;
+    Socket socket;
+    PrintWriter sendWriter;
+    private String ip = "3.143.9.214";
+    private int port = 5001;
+
+    TextView textView;
+    Button connectbutton;
+    Button chatbutton;
+    TextView chatView;
+    EditText message;
+    String sendmsg;
+    String read;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.runact);
+
+        // 로그인 정보
+        loginshared = getSharedPreferences("Login", MODE_PRIVATE);
+        UserID = loginshared.getString("id", null);
+
+        mHandler = new Handler();
+
 
         Toast.makeText(runActivity.this,"러닝시작 합니다.",Toast.LENGTH_SHORT).show();
         serviceIntent = new Intent(runActivity.this, runService.class);
@@ -217,6 +255,27 @@ public class runActivity extends AppCompatActivity implements
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
 
 
+        // 메시지 전송 위한 소켓 생성
+        new Thread() {
+            public void run() {
+                try {
+                    InetAddress serverAddr = InetAddress.getByName(ip);
+                    socket = new Socket(serverAddr, port);
+                    sendWriter = new PrintWriter(socket.getOutputStream());
+                    BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    sendWriter.println(UserID);
+                    sendWriter.flush();
+
+                    while(true){
+                        read = input.readLine();
+
+                        if(read!=null){
+                            mHandler.post(new msgUpdate(read));
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } }}.start();
 
         if(getIntent().getStringExtra("coachjson")!= null){
             coachcontent = getIntent().getStringExtra("coachjson");
@@ -331,11 +390,7 @@ public class runActivity extends AppCompatActivity implements
         btn_viewfriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginshared = getSharedPreferences("Login", MODE_PRIVATE);
-                // 로그인 정보
-                mid = loginshared.getString("id", null);
-
-                frdlistrequest(mid);
+                frdlistrequest(UserID);
             }
         });
 
@@ -352,7 +407,6 @@ public class runActivity extends AppCompatActivity implements
                         // 권한 체크(READ_PHONE_STATE의 requestCode를 1000으로 세팅
                         requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);
                     } return;
-
                 }else{
                     Intent captureintent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     // 임시로 사용할 파일
@@ -453,13 +507,13 @@ public class runActivity extends AppCompatActivity implements
         HttpURLConnection urlConn = null;
         try {
             String appKey = "l7xx5b0db2becaa848d483d7711ea0d3614c";
-            String startX = "126.968773";
-            String startY = "37.4847422";
+            String startX = "126.9726353116142";
+            String startY = "37.55535952338017";
             String endX = "127.109999";
             String endY = "37.325168";
             String reqCoordType = "WGS84GEO";
             String resCoordType = "EPSG3857";
-            String startName = URLEncoder.encode("남성역", "UTF-8");
+            String startName = URLEncoder.encode("서울역", "UTF-8");
 
             String endName = URLEncoder.encode("죽전역", "UTF-8");
             uu = "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&callback=result&appKey=" + appKey
@@ -485,8 +539,6 @@ public class runActivity extends AppCompatActivity implements
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void time_start() {
@@ -521,7 +573,15 @@ public class runActivity extends AppCompatActivity implements
     protected void onStop(){
         super.onStop();
         mGoogleApiClient.disconnect();
-        fusedLocationClient.removeLocationUpdates(locationCallback);
+        //fusedLocationClient.removeLocationUpdates(locationCallback);
+
+        // 소켓 끊기
+        sendWriter.close();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -647,15 +707,15 @@ public class runActivity extends AppCompatActivity implements
         if(startset){
             Log.e("startset?",startset+"1");
             mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(0);    // 위치가 update되는 주기
-            mLocationRequest.setFastestInterval(0);  // 위치 획득 후 update되는 주기
+            mLocationRequest.setInterval(2000);    // 위치가 update되는 주기
+            mLocationRequest.setFastestInterval(2000);  // 위치 획득 후 update되는 주기
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         }
             Log.e("startset?",startset+"2");
 
             mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(4000);    // 위치가 update되는 주기
-            mLocationRequest.setFastestInterval(4000);  // 위치 획득 후 update되는 주기
+            mLocationRequest.setInterval(8000);    // 위치가 update되는 주기
+            mLocationRequest.setFastestInterval(8000);  // 위치 획득 후 update되는 주기
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
 //        PRIORITY_HIGH_ACCURACY : 배터리소모를 고려하지 않으며 정확도를 최우선으로 고려
@@ -953,10 +1013,13 @@ public class runActivity extends AppCompatActivity implements
             }
         }
 
+
+        // 친구에게 메시지전송 메소드
     public class viewfriendsdialog {
         Dialog dig;
         Button btn_setdistance;
-
+        ImageView
+                btn_addmsg;
 
         public void calldialog() {
 
@@ -967,14 +1030,64 @@ public class runActivity extends AppCompatActivity implements
             dig.setContentView(R.layout.dialog_friends);
             myfrd_recyclerView = dig.findViewById(R.id.rc_friends);
 
+            btn_msgsend = (Button) dig.findViewById(R.id.btn_msgsend);
+
             // 라사이클러뷰에 넣기
-            myfriend_adapter = new myfriendlist_Adapter(mid,myfrindInfoArrayList);
+            myfriend_adapter = new myfriendlist_Adapter(UserID,myfrindInfoArrayList,2);
 
             LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(runActivity.this);
-            linearLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+            linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
             myfrd_recyclerView.setLayoutManager(linearLayoutManager);
             myfrd_recyclerView.setAdapter(myfriend_adapter);
 
+            // 라사이클러뷰에 넣기
+            rc_msg = dig.findViewById(R.id.rc_message);
+            btn_addmsg = dig.findViewById(R.id.btn_addmsg);
+            arr_msg = new ArrayList<>();
+            Msg msg = new Msg();
+            msg.setMsg("안녕하세요1");
+            arr_msg.add(msg);
+            Msg msg1 = new Msg();
+            msg1.setMsg("안녕하세요2");
+            arr_msg.add(msg1);
+
+            msgAdapter = new RunMsgAdapter(arr_msg);
+
+            LinearLayoutManager linearLayoutManager2 =  new LinearLayoutManager(runActivity.this);
+            linearLayoutManager2.setOrientation(RecyclerView.HORIZONTAL);
+            rc_msg.setLayoutManager(linearLayoutManager2);
+            rc_msg.setAdapter(msgAdapter);
+
+            btn_addmsg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    new inputmsgdialog().calldialog();
+
+                }
+            });
+
+            btn_msgsend.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String ToUserId;
+                    ToUserId = myfrindInfoArrayList.get(myfriend_adapter.getselectpos()).getId();
+
+                    sendmsg = arr_msg.get(msgAdapter.getselpos()).getMsg();
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sendWriter.println(UserID +"@"+ToUserId+"@"+sendmsg);
+                                sendWriter.flush();
+                                message.setText("");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
+            });
             dig.show();
         }
     }
@@ -1030,6 +1143,57 @@ public class runActivity extends AppCompatActivity implements
         }
     }
 
+    // 메시지 받고 뷰 업데이트 메소드
+    class msgUpdate implements Runnable{
+        private String msg;
+        AlertDialog.Builder builder;
+
+        public msgUpdate(String str) {this.msg=str;
+        }
+
+        @Override
+        public void run() {
+            builder = new AlertDialog.Builder(runActivity.this);
+            builder.setTitle("메시지")        // 제목 설정
+                    .setMessage(msg)        // 메세지 설정
+                    .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                    .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                        // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
+                        public void onClick(DialogInterface dialog, int whichButton){
+                            //원하는 클릭 이벤트를 넣으시면 됩니다.
+                        }
+                    });
+            AlertDialog dialog = builder.create();    // 알림창 객체 생성
+            dialog.show();    // 알림창 띄우기
+        }
+    }
+
+     public class inputmsgdialog {
+            Dialog dig;
+            EditText editmsg;
+            Button btn_msgsend;
+
+            public void calldialog() {
+                dig = new Dialog(runActivity.this);
+                // 액티비티의 타이틀바를 숨긴다.
+                dig.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                // 커스텀 다이얼로그의 레이아웃을 설정한다.
+                dig.setContentView(R.layout.dialog_inputmsg);
+                editmsg = dig.findViewById(R.id.editmsg);
+                btn_msgsend = dig.findViewById(R.id.btn_msgsend);
+
+                btn_msgsend.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addmsg = editmsg.getText().toString();
+                        msgAdapter.addmsg(addmsg);
+                        dig.dismiss();
+                    }
+                });
+
+                dig.show();
+            }
+        }
 
 }
 

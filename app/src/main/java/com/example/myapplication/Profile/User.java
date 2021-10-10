@@ -6,7 +6,15 @@ public class User {
     int alldistance;
     int t_rundistance;
     int t_time;
+    Boolean select =false;
 
+    public Boolean getSelect() {
+        return select;
+    }
+
+    public void setSelect(Boolean select) {
+        this.select = select;
+    }
 
     public String getId() {
         return id;

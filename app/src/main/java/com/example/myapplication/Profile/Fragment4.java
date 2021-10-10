@@ -211,7 +211,7 @@ public class Fragment4 extends Fragment {
                         }
 
                         // 라사이클러뷰에 넣기
-                        myfriend_adapter = new myfriendlist_Adapter(mid,myfrindInfoArrayList);
+                        myfriend_adapter = new myfriendlist_Adapter(mid,myfrindInfoArrayList,1);
 
                         LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(context);
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);

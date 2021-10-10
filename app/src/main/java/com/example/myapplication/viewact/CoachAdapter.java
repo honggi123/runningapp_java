@@ -51,7 +51,6 @@ public class CoachAdapter extends RecyclerView.Adapter<CoachAdapter.Holder> {
     }
 
 
-
     @Override
     public int getItemCount() { return arr_coach.size(); }
 
@@ -60,9 +59,8 @@ public class CoachAdapter extends RecyclerView.Adapter<CoachAdapter.Holder> {
             TextView description;
             public Holder(View itemView){
                 super(itemView);
-                coachname = itemView.findViewById(R.id.coachname);
+                coachname = itemView.findViewById(R.id.msg);
                 description = itemView.findViewById(R.id.coaching_des);
-
             }
     }
 
