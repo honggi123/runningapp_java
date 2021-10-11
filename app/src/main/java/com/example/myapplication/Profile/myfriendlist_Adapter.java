@@ -87,5 +87,8 @@ public class myfriendlist_Adapter extends RecyclerView.Adapter<myfriendlist_Adap
         return selpos;
     }
 
+    public void notifyset(){
+        notifyDataSetChanged();
+    }
 
 }

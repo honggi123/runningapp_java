@@ -267,10 +267,16 @@ public class runActivity extends AppCompatActivity implements
                     sendWriter.flush();
 
                     while(true){
+                        String writer = input.readLine();
                         read = input.readLine();
+                        String[] splited = read.split("@");
 
                         if(read!=null){
-                            mHandler.post(new msgUpdate(read));
+                            if(splited[0].equals("chkonline")){
+
+                            }else{
+                                mHandler.post(new msgUpdate(writer,read));
+                            }
                         }
                     }
                 } catch (IOException e) {
@@ -1078,7 +1084,7 @@ public class runActivity extends AppCompatActivity implements
                         public void run() {
                             super.run();
                             try {
-                                sendWriter.println(UserID +"@"+ToUserId+"@"+sendmsg);
+                                sendWriter.println("msg@"+UserID +"@"+ToUserId+"@"+sendmsg);
                                 sendWriter.flush();
                                 message.setText("");
                             } catch (Exception e) {
@@ -1104,6 +1110,7 @@ public class runActivity extends AppCompatActivity implements
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     Log.e("json",String.valueOf(jsonObject));
+                    String chkonlinemsg = "chkonline";
                     int fnum = jsonObject.getInt("fnum");
                     if(fnum>0){
                         myfrindInfoArrayList = new ArrayList<>();
@@ -1111,11 +1118,28 @@ public class runActivity extends AppCompatActivity implements
                             User user = new User();
                             user.setId(jsonObject.getString("friend"+i));
                             myfrindInfoArrayList.add(user);
+                            chkonlinemsg= chkonlinemsg+"@"+jsonObject.getString("friend"+i);
+                            //chkonline
                         }
                     }
 
                     viewfriendsdialog viewfriendsdialog = new viewfriendsdialog();
                     viewfriendsdialog.calldialog();
+
+                    String finalChkonlinemsg = chkonlinemsg;
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            super.run();
+                            try {
+                                sendWriter.println(finalChkonlinemsg);
+                                sendWriter.flush();
+                                message.setText("");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -1142,19 +1166,37 @@ public class runActivity extends AppCompatActivity implements
             requestQueue.add(smpr);
         }
     }
+    public void setonline(String[] onmember){
+        for(int i =0;i<=myfrindInfoArrayList.size()-1;i++){
+            for(int j =1;j<=onmember.length-1;j++){
+                if(myfrindInfoArrayList.get(i).getId().equals(onmember[j])){
+                    myfrindInfoArrayList.get(i).setRunonline(true);
+                }
+            }
+        }
+        myfriendlist_Adapter
+
+    }
 
     // 메시지 받고 뷰 업데이트 메소드
     class msgUpdate implements Runnable{
         private String msg;
+        private String writer;
         AlertDialog.Builder builder;
 
-        public msgUpdate(String str) {this.msg=str;
-        }
+        public msgUpdate(String writer,String str) {this.writer = writer; this.msg=str;}
 
         @Override
         public void run() {
+            speech("메시지가 도착했습니다.");
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            speech(writer+"님이"+msg);
             builder = new AlertDialog.Builder(runActivity.this);
-            builder.setTitle("메시지")        // 제목 설정
+            builder.setTitle(writer)        // 제목 설정
                     .setMessage(msg)        // 메세지 설정
                     .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
                     .setPositiveButton("확인", new DialogInterface.OnClickListener(){
@@ -1185,9 +1227,9 @@ public class runActivity extends AppCompatActivity implements
                 btn_msgsend.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        dig.dismiss();
                         addmsg = editmsg.getText().toString();
                         msgAdapter.addmsg(addmsg);
-                        dig.dismiss();
                     }
                 });
 

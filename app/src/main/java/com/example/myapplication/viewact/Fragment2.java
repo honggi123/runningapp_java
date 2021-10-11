@@ -494,7 +494,6 @@ public class Fragment2 extends Fragment {
         barChart.animateXY(1000, 1000);
         barChart.invalidate();
 
-
         barChart.getLegend().setTextSize(10f);
     }
 
@@ -527,7 +526,6 @@ public class Fragment2 extends Fragment {
                         arr_coach.add(coaching);
                         Log.e("coachjson",coaching.getChoachingjson());
                         Log.e("weeks_distance",String.valueOf( weeks_distance[i]));
-
                     }
                 } else {
                 }
@@ -545,7 +543,6 @@ public class Fragment2 extends Fragment {
                 // 서버에 데이터 보내고 응답 요청
                 RequestQueue requestQueue = Volley.newRequestQueue(getContext());
                 requestQueue.add(smpr);
-
     }
 
 

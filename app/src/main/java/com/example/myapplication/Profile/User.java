@@ -7,6 +7,15 @@ public class User {
     int t_rundistance;
     int t_time;
     Boolean select =false;
+    Boolean runonline = false;
+
+    public Boolean getRunonline() {
+        return runonline;
+    }
+
+    public void setRunonline(Boolean runonline) {
+        this.runonline = runonline;
+    }
 
     public Boolean getSelect() {
         return select;
