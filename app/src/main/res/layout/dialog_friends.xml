@@ -125,4 +125,28 @@
 
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/checkBox_sendloaction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="8dp"
+        android:text="위치 첨부"
+        app:layout_constraintBottom_toTopOf="@+id/rc_friends"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt1_findid" />
+
+    <TextView
+        android:id="@+id/txt_nomsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="메시지를 추가해보세요."
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/rc_message"
+        app:layout_constraintStart_toStartOf="@+id/rc_message"
+        app:layout_constraintTop_toTopOf="@+id/rc_message" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

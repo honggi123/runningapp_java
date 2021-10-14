@@ -89,4 +89,8 @@ public class RunMsgAdapter extends RecyclerView.Adapter<RunMsgAdapter.Holder> {
         arr_msg.add(msg1);
         notifyDataSetChanged();
     }
+
+    public int getmsgsize(){
+        return arr_msg.size();
+    }
 }

@@ -139,7 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:text="속력(km/h)"
+        android:text="평균페이스"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@+id/textView82"
         app:layout_constraintStart_toEndOf="@+id/textView7"

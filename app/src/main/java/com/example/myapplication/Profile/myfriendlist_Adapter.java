@@ -6,7 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,6 +51,11 @@ public class myfriendlist_Adapter extends RecyclerView.Adapter<myfriendlist_Adap
             }else{
                 holder.viewid_frditem.setTextColor(Color.BLACK);
             }
+            if(arr_myfriend.get(position).getRunonline()){
+                holder.runonline.setVisibility(View.VISIBLE);
+            }else{
+                holder.runonline.setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -60,23 +67,30 @@ public class myfriendlist_Adapter extends RecyclerView.Adapter<myfriendlist_Adap
 
     class Holder extends RecyclerView.ViewHolder {
         TextView viewid_frditem;
-
+        ImageView runonline;
         public Holder(View itemView) {
             super(itemView);
             viewid_frditem = itemView.findViewById(R.id.viewid_myfrditem);
+            runonline = itemView.findViewById(R.id.imgonline);
 
             if(fromwhere == 2){
                 viewid_frditem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        for(int i = 0;i<=arr_myfriend.size()-1;i++){
-                            arr_myfriend.get(i).setSelect(false);
-                        }
-                        selpos = getAdapterPosition();
-                        arr_myfriend.get(getAdapterPosition()).setSelect(true);
-                        notifyDataSetChanged();
 
-                        Log.e("selpos",selpos+"");
+                        if(arr_myfriend.get(getAdapterPosition()).getRunonline()){
+                            for(int i = 0;i<=arr_myfriend.size()-1;i++){
+                                arr_myfriend.get(i).setSelect(false);
+                            }
+                            selpos = getAdapterPosition();
+                            arr_myfriend.get(getAdapterPosition()).setSelect(true);
+                            notifyDataSetChanged();
+
+                            Log.e("selpos",selpos+"");
+                        }else{
+                            Toast.makeText(context,"러닝 중이 아닙니다.",Toast.LENGTH_SHORT);
+                        }
+
                     }
                 });
             }

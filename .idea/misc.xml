@@ -9,6 +9,7 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.24427083333333333" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.24427083333333333" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.25416666666666665" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_message_24.xml" value="0.36102564102564105" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/addruninfo.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/addshoes.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengedatesel.xml" value="0.23802083333333332" />
@@ -31,10 +32,12 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/fragment2.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/fragment3.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/fragment4.xml" value="0.264" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/friends_marker.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/image_item.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/join.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/leaderboard.xml" value="0.35052083333333334" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/leaderboard_item.xml" value="0.234375" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/locationmarker.xml" value="0.30833333333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/login.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/mailcheck.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/main.xml" value="0.2375" />

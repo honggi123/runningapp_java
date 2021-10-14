@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
@@ -57,7 +58,7 @@ public class MainAct extends AppCompatActivity {
         loginshared = getSharedPreferences("Login", MODE_PRIVATE);
 
         requestQueue = Volley.newRequestQueue(MainAct.this);
-
+        Log.e("Mainact","error1");
 
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -65,6 +66,7 @@ public class MainAct extends AppCompatActivity {
         logintype = loginshared.getString("logintype", null);
         mid = loginshared.getString("id", null);
 
+        Log.e("Mainact","error2");
         permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
@@ -79,7 +81,7 @@ public class MainAct extends AppCompatActivity {
             }
 
         };
-
+        Log.e("Mainact","error3");
     //처음화면
     getSupportFragmentManager().beginTransaction().add(R.id.mainframe, new Fragment1(MainAct.this)).commit(); //FrameLayout에 fragment.xml 띄우기
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -102,6 +104,7 @@ public class MainAct extends AppCompatActivity {
                 return true;
             }
         });
+        Log.e("Mainact","error4");
     }
 
     public void logout(){

@@ -59,22 +59,26 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.e("loginact","error1");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        Log.e("loginact","error2");
 
         edit_id = findViewById(R.id.edit_id);
         edit_pw = findViewById(R.id.edit_pw);
         btn_findid = findViewById(R.id.btn_findid);
         btn_pwfind = findViewById(R.id.btn_findpw);
+        Log.e("loginact","error3");
 
         btn_join = findViewById(R.id.btn_join);
         btn_login = findViewById(R.id.btn_login);
         btn_kakaologin = findViewById(R.id.btn_kakaologin);
-
+        Log.e("loginact","error4");
         session = Session.getCurrentSession();
         session.addCallback(sessionCallback);
-
+        Log.e("loginact","error5");
         // 로그인 정보 담는 sharedpref
         Loginshared = getSharedPreferences("Login", MODE_PRIVATE);
         loginedit = Loginshared.edit();

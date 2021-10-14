@@ -83,20 +83,22 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
         view_goalnum = layout.findViewById(R.id.view_goalnum);
         view_goalchk = layout.findViewById(R.id.view_goalchk);
         view_tdate.setText(tdate);
+        Log.e("oncreatevioew","error2");
 
         mapview = (MapView) layout.findViewById(R.id.mapview_runmenu);
         mapview.onCreate(savedInstanceState);
         mapview.onResume();
-
+        Log.e("oncreatevioew","error3");
         // 회원 투데이 러닝 정보 가져오기
         getinfo();
-
+        Log.e("oncreatevioew","error4");
         mapview.getMapAsync(this);
+        Log.e("oncreatevioew","error5");
 
-        
         btn_runstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("oncreatevioew","error6");
                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // 마쉬멜로우 이상버전부터 권한을 물어본다
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -105,9 +107,11 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
                     }
                     return;
                 }
+                Log.e("oncreatevioew","error7");
                 Intent intent = new Intent(context, Runbeforetimer_Activity.class);
+                Log.e("oncreatevioew","error8");
                 startActivity(intent);
-
+                Log.e("oncreatevioew","error9");
             }
         });
 
@@ -117,7 +121,7 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
                 choicedt();
             }
         });
-
+        Log.e("oncreatevioew","error10");
         return layout;
     }
     // 목표 설정 시 거리 목표 설정
@@ -128,27 +132,55 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback {
 
 
     @Override
+    public void onResume() {
+        Log.e("oncreatevioew","onresume");
+        super.onResume();
+    }
+
+    @Override
     public void onStart() {
+        Log.e("oncreatevioew","error11");
         super.onStart();
+        Log.e("oncreatevioew","error12");
         // 회원 투데이 러닝 정보 가져오기
         getinfo();
+        Log.e("oncreatevioew","error13");
+    }
+
+
+    @Override
+    public void onStop() {
+        Log.e("oncreatevioew","onstop");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.e("oncreatevioew","ondestory");
+        super.onDestroy();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Log.e("oncreatevioew","error11");
         mMap = googleMap;
         LatLng SEOUL = new LatLng(37.56, 126.97);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 15));
-
+        Log.e("oncreatevioew","error12");
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.e("oncreatevioew","error13");
             // 마쉬멜로우 이상버전부터 권한을 물어본다
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                Log.e("oncreatevioew","error14");
                 // 권한 체크(READ_PHONE_STATE의 requestCode를 1000으로 세팅
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
+                Log.e("oncreatevioew","error15");
             }
             return;
         }
+        Log.e("oncreatevioew","error16");
         mMap.setMyLocationEnabled(true);
+        Log.e("oncreatevioew","error17");
     }
 
 
