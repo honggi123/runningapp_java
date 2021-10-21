@@ -57,4 +57,7 @@ dependencies {
     implementation group: project.KAKAO_SDK_GROUP, name: 'usermgmt', version: project.KAKAO_SDK_VERSION
     implementation 'dev.dworks.libs:volleyplus:+'
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+
+
+
 }

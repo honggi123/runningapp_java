@@ -5,6 +5,7 @@ public class Msg {
     String msg;
     Boolean choice;
 
+
     Msg()
     {
         choice = false;

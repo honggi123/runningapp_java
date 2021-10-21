@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.myapplication">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -89,7 +91,11 @@
         <activity android:name=".Profile.viewsetting"></activity>
         <activity android:name=".Profile.addshoes"></activity>
         <activity android:name=".Profile.myinfo"></activity>
-        <service android:name=".Run.runService" />
+
+        <activity android:name=".Run.msgmapdialog"
+      ></activity>
+
+    <service android:name=".Run.runService" />
     </application>
 
 </manifest>

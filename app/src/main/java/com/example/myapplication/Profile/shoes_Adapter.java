@@ -10,14 +10,10 @@ import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.error.VolleyError;
 import com.android.volley.toolbox.Volley;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +27,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.myapplication.Challenge.viewchallenge_Activity;
-import com.example.myapplication.ImageAdapter;
 import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
@@ -108,7 +102,7 @@ public class shoes_Adapter extends RecyclerView.Adapter<shoes_Adapter.Holder> {
                 public Holder(View itemView) {
                     super(itemView);
                     image = itemView.findViewById(R.id.viewshoe_shoeitem);
-                    name = itemView.findViewById(R.id.name_shoeitem);
+                    name = itemView.findViewById(R.id.txt_writer);
                     wearview = itemView.findViewById(R.id.wear_checkitem);
                     progressBar = itemView.findViewById(R.id.bar_shoeitem);
                     distance = itemView.findViewById(R.id.distance_shoeitem);

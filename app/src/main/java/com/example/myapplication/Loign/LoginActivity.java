@@ -61,7 +61,9 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.e("loginact","error1");
 
-        super.onCreate(savedInstanceState);
+
+            super.onCreate(savedInstanceState);
+
         setContentView(R.layout.login);
 
         Log.e("loginact","error2");

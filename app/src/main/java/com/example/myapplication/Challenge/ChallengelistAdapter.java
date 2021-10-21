@@ -96,7 +96,7 @@ public class ChallengelistAdapter extends RecyclerView.Adapter<ChallengelistAdap
 
         public Holder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.name_shoeitem);
+            name = itemView.findViewById(R.id.txt_writer);
             date = itemView.findViewById(R.id.time_daychitem);
             g_distance = itemView.findViewById(R.id.g_distance_chitem);
             btn_viewch = itemView.findViewById(R.id.btn_viewruninfo);

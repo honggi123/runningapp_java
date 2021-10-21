@@ -93,6 +93,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -142,6 +143,8 @@ public class runActivity extends AppCompatActivity implements
     private Location mCurrentLocation;
     Handler timehandler;
     Handler Kcalhandler;
+    Handler setmsghandler;
+
     TextView view_time;
     Thread timethread;
     double latitude, longitude;
@@ -191,6 +194,7 @@ public class runActivity extends AppCompatActivity implements
     Button btn_msgsend;
     String chkonlinemsg;
 
+    ArrayList<friendmsg> friendmsgArrayList;
 
     // myfriend rc
     ArrayList<User> myfrindInfoArrayList;
@@ -205,6 +209,7 @@ public class runActivity extends AppCompatActivity implements
     SharedPreferences loginshared;
     String UserID;
 
+
     //dialog
     Dialog ViewFriendDialog;
 
@@ -217,7 +222,7 @@ public class runActivity extends AppCompatActivity implements
     private String ip = "3.143.9.214";
     private int port = 5001;
     TextView txt_nomsg;
-
+    TextView msg_num;
     TextView textView;
     Button connectbutton;
     Button chatbutton;
@@ -226,24 +231,15 @@ public class runActivity extends AppCompatActivity implements
     String sendmsg;
     String read;
     OutputStream socketoutputStream;
-    SharedPreferences msgshagredpref;
+
+    MarkerOptions startmakerOptions;
+    Bundle savedInstanceState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.savedInstanceState = savedInstanceState;
         setContentView(R.layout.runact);
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         
@@ -261,6 +257,8 @@ public class runActivity extends AppCompatActivity implements
         startService(serviceIntent);
 
 
+        friendmsgArrayList = new ArrayList<>();
+
         btn_run = findViewById(R.id.btn_run);
         btn_stop = findViewById(R.id.btn_stop);
         view_time = findViewById(R.id.time);
@@ -270,6 +268,7 @@ public class runActivity extends AppCompatActivity implements
         viewpace = findViewById(R.id.viewpace_runact);
         viewdistance = findViewById(R.id.distance_runActivity);
         viewkcal_runact = findViewById(R.id.viewkcal_runact);
+        msg_num = findViewById(R.id.msg_num);
 
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
@@ -293,6 +292,15 @@ public class runActivity extends AppCompatActivity implements
         // 메시지 초기화
         arr_msg = new ArrayList<>();
 
+        // 메시지 개수 보여주는 숫자 클릭이벤트
+        msg_num.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new msgboxdialog().calldialog();
+            }
+        });
+
+
         // 메시지 전송 위한 소켓 생성
         new Thread() {
             public void run() {
@@ -308,7 +316,6 @@ public class runActivity extends AppCompatActivity implements
 
                     String[] splited;
 
-
                     while(true){
                         read = input.readLine();
 
@@ -319,19 +326,35 @@ public class runActivity extends AppCompatActivity implements
                                     Log.e("chk","chkonline2");
                                     mHandler.post(new setonline2(splited));
                             }else if(splited[0].equals("msg")){
+                                // 친구 메시지 객체 생성
+                                friendmsg friendmsg = new friendmsg();
+
                                 // 상대방이 만약 위치값을 보냈다면
                                 String friendlocation;
                                 if(Boolean.parseBoolean(splited[4])){
                                     Log.e("splited[5]",splited[5]);
                                     // 구글 맵에 표시할 마커에 대한 옵션 설정
                                     mHandler2.post(new friendsloactionupdate(splited));
+                                    LatLng latLng = new LatLng(Double.parseDouble(splited[5]), Double.parseDouble(splited[6]));
+
+                                    friendmsg.setLoaction(latLng);
                                 }
 
                                 mHandler.post(new msgUpdate(splited[1],splited[3]));
+
+                                friendmsg.setId(splited[1]);
+                                friendmsg.setContent(splited[3]);
+                                friendmsgArrayList.add(friendmsg);
+
+                                Message message = setmsghandler.obtainMessage();
+                                Bundle bundle = new Bundle();
+                                bundle.putInt("size",friendmsgArrayList.size());
+                                message.setData(bundle);
+                                setmsghandler.sendMessage(message);
+
                             }
                         }
                     }
-
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -361,6 +384,17 @@ public class runActivity extends AppCompatActivity implements
                 int time = bundle.getInt("time");
             }
         };
+
+        setmsghandler = new Handler(Looper.getMainLooper()){
+            @Override
+            public void handleMessage(@NonNull Message msg) {
+                super.handleMessage(msg);
+                Bundle bundle = msg.getData();
+                int size = bundle.getInt("size");
+                msg_num.setText(size+"");
+            }
+        };
+
 
         timehandler = new Handler(Looper.getMainLooper()) {
             @Override
@@ -550,7 +584,6 @@ public class runActivity extends AppCompatActivity implements
                 }
             }
         });
-
     }
 
 
@@ -569,13 +602,13 @@ public class runActivity extends AppCompatActivity implements
         HttpURLConnection urlConn = null;
         try {
             String appKey = "l7xx5b0db2becaa848d483d7711ea0d3614c";
-            String startX = "126.9726353116142";
-            String startY = "37.55535952338017";
+            String startX = "127.096836";
+            String startY = "37.321257";
             String endX = "127.109999";
             String endY = "37.325168";
             String reqCoordType = "WGS84GEO";
             String resCoordType = "EPSG3857";
-            String startName = URLEncoder.encode("서울역", "UTF-8");
+            String startName = URLEncoder.encode("판교역", "UTF-8");
 
             String endName = URLEncoder.encode("죽전역", "UTF-8");
             uu = "https://apis.openapi.sk.com/tmap/routes/pedestrian?version=1&callback=result&appKey=" + appKey
@@ -601,7 +634,45 @@ public class runActivity extends AppCompatActivity implements
         } catch (IOException e) {
             e.printStackTrace();
         }
+        mMap.setOnMarkerClickListener(markerClickListener);
+
     }
+
+    //마커 클릭 리스너
+    GoogleMap.OnMarkerClickListener markerClickListener = new GoogleMap.OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            if(marker.getTitle() != null){
+                // 현재위치와 메시지를 보낸 곳의 위치
+                Location location1 = new Location("point A");
+                location1.setLatitude(lat);
+                location1.setLongitude(lng);
+
+                Location location2 = new Location("point B");
+                location2.setLatitude(marker.getPosition().latitude);
+                location2.setLongitude(marker.getPosition().longitude);
+
+                double kmdistance = ((location1.distanceTo(location2)) / 1000.00);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(runActivity.this);
+                                    builder.setTitle(marker.getTitle())        // 제목 설정
+                                            .setMessage("내용 : "+marker.getSnippet()+"\n(나와의 거리 : " + String.format("%.2f",kmdistance) +"킬로미터)")        // 메세지 설정
+                                            .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                                            .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                                                // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
+                                                public void onClick(DialogInterface dialog, int whichButton){
+                                                  dialog.dismiss();
+                                                }
+                                            });
+
+                                    AlertDialog dialog = builder.create();    // 알림창 객체 생성
+                                    dialog.show();    // 알림창 띄우기
+            }
+            return true;
+        }
+    };
+
+
 
     public void time_start() {
         timethread = new Thread(new Runnable() {
@@ -691,6 +762,7 @@ public class runActivity extends AppCompatActivity implements
     private double distanceTo(Location LatLng1,Location LatLng2){
         double distance = 0;
         distance = LatLng1.distanceTo(LatLng2);
+        Log.e("distanceto",distance+"");
         wholedistance += (int)distance;
         double kmdistance = (wholedistance / 1000.00);
         Log.e("kmdistance",""+kmdistance);
@@ -815,12 +887,12 @@ public class runActivity extends AppCompatActivity implements
         }
 
         public void setfirstmarker(double latitude, double longtitude){
-            MarkerOptions makerOptions = new MarkerOptions();
-            makerOptions // LatLng에 대한 어레이를 만들어서 이용할 수도 있다.
+           startmakerOptions = new MarkerOptions();
+            startmakerOptions // LatLng에 대한 어레이를 만들어서 이용할 수도 있다.
                     .position(new LatLng(latitude , longtitude));
 
             // 2. 마커 생성 (마커를 나타냄)
-            mMap.addMarker(makerOptions);
+            mMap.addMarker(startmakerOptions);
             startset = false;
         }
 
@@ -1076,31 +1148,9 @@ public class runActivity extends AppCompatActivity implements
             }
         }
 
-        public void chglocation(double lat,double lag){
-            Log.e("lat",lat+"");
-            Log.e("lag",lag+"");
 
-            Location locationA = new Location("point A");
-            Location locationB = new Location("point B");
 
-            if(startset){
-                setfirstmarker(lat,lag);
-            };
 
-            if (polystate) {
-                locationB.setLatitude(lat);
-                locationB.setLongitude(lag);
-
-                endLatLng = new LatLng(lat, lag);        //현재 위치를 끝점으로 설정
-                drawPath();                                            //polyline 그리기
-                locationA.setLatitude(startLatLng.latitude);
-                locationA.setLongitude(startLatLng.longitude);
-                startLatLng = new LatLng(lat, lag);        //시작점을 끝점으로 다시 설정
-
-                // 거리 측정
-                distanceTo(locationA,locationB);
-            }
-        }
 
 
         // 친구에게 메시지전송 클래스
@@ -1282,14 +1332,21 @@ public class runActivity extends AppCompatActivity implements
 
         @Override
         public void run() {
-            for(int i =0;i<=myfrindInfoArrayList.size()-1;i++){
-                for(int j =1;j<=onmember.length-1;j++){
-                    if(myfrindInfoArrayList.get(i).getId().equals(onmember[j])){
-                        Log.e("loginid",myfrindInfoArrayList.get(i).getId());
-                        myfrindInfoArrayList.get(i).setRunonline(true);
+
+                for(int i =0;i<=myfrindInfoArrayList.size()-1;i++){
+                    myfrindInfoArrayList.get(i).setRunonline(false);
+                    // 온라인 멤버 초기화
+                    for(int j =1;j<=onmember.length-1;j++){
+                        // onmember[0] : "chkonline"
+                        if(myfrindInfoArrayList.get(i).getId().equals(onmember[j])){
+                            Log.e("loginid",myfrindInfoArrayList.get(i).getId());
+                            myfrindInfoArrayList.get(i).setRunonline(true);
+                        }
                     }
+
                 }
-            }
+
+
             Log.e("myfrindInfoArrayListsize",myfrindInfoArrayList.size()+"");
             // 어레이리스트 온라인인 친구 위로 정렬
             int count = 0;
@@ -1311,35 +1368,7 @@ public class runActivity extends AppCompatActivity implements
             myfriend_adapter.notifyDataSetChanged();
         }
     }
-        public void setonline(String[] onmember){
-        for(int i =0;i<=myfrindInfoArrayList.size()-1;i++){
-            for(int j =1;j<=onmember.length-1;j++){
-                if(myfrindInfoArrayList.get(i).getId().equals(onmember[j])){
-                    Log.e("loginid",myfrindInfoArrayList.get(i).getId());
-                    myfrindInfoArrayList.get(i).setRunonline(true);
-                }
-            }
-        }
-            Log.e("myfrindInfoArrayListsize",myfrindInfoArrayList.size()+"");
-        // 어레이리스트 온라인인 친구 위로 정렬
-        int count = 0;
-        ArrayList<User> arronlilne = new ArrayList<>();
-        for(int i =0;i<=myfrindInfoArrayList.size()-1;i++){
-            Log.e("for문","friend");
-            if(myfrindInfoArrayList.get(i).getRunonline()){
-                Log.e("if문","friend");
-                arronlilne.add(myfrindInfoArrayList.get(i));
-                myfrindInfoArrayList.remove(i);
-            }
-        }
 
-        for(int i = 0;i<=arronlilne.size()-1;i++){
-            myfrindInfoArrayList.add(count,arronlilne.get(i));
-            count++;
-        }
-
-        myfriend_adapter.notifyDataSetChanged();
-    }
 
 
 
@@ -1353,18 +1382,20 @@ public class runActivity extends AppCompatActivity implements
 
         @Override
         public void run() {
+
             // 구글 맵에 표시할 마커에 대한 옵션 설정
             MarkerOptions makerOptions = new MarkerOptions();
 
-            makerOptions.position(new LatLng(Double.parseDouble(splited[5]), Double.parseDouble(splited[6])+0.00020))
-                    .icon(bitmapDescriptorFromVector(runActivity.this, R.drawable.ic_baseline_message_24))
+            makerOptions.position(new LatLng(Double.parseDouble(splited[5]), Double.parseDouble(splited[6])))
+                    .icon(bitmapDescriptorFromVector(runActivity.this, R.drawable.ic_baseline_email_24))
                     .title(splited[1])
                     .snippet(splited[3])
-                    .alpha(0.7f);
+                    .alpha(0.8f);
 
-            mMap.addMarker(makerOptions);
+        mMap.addMarker(makerOptions);
         }
     }
+
 
 
     // 메시지 받고 뷰 업데이트 메소드
@@ -1401,8 +1432,41 @@ public class runActivity extends AppCompatActivity implements
                     });
             AlertDialog dialog = builder.create();    // 알림창 객체 생성
             dialog.show();    // 알림창 띄우기
+
         }
     }
+
+     public class msgboxdialog {
+            Dialog dig;
+            Button btn_setdistance;
+            EditText pickerkm_distance;
+
+            public void calldialog() {
+                dig = new Dialog(runActivity.this);
+                // 액티비티의 타이틀바를 숨긴다.
+                dig.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                // 커스텀 다이얼로그의 레이아웃을 설정한다.
+                dig.setContentView(R.layout.msgboxdialog);
+                
+                RecyclerView my_recyclerView;
+                MsgboxAdapter msgboxAdapter;
+
+                //  리사이클러뷰 xml id
+                        my_recyclerView = dig.findViewById(R.id.rc_msgbox);
+                        // 라사이클러뷰에 넣기
+                        // 어댑터 객체 생성
+
+                        msgboxAdapter = new MsgboxAdapter(friendmsgArrayList,runActivity.this);
+
+                        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(runActivity.this);
+                        linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
+                        my_recyclerView.setLayoutManager(linearLayoutManager);
+                        // 어댑터 추가
+                        my_recyclerView.setAdapter(msgboxAdapter);
+
+                dig.show();
+            }
+        }
 
      public class inputmsgdialog {
             Dialog dig;
@@ -1430,12 +1494,10 @@ public class runActivity extends AppCompatActivity implements
                             msg.setMsg(addmsg);
                             arr_msg.add(msg);
                             msgAdapter.notifyDataSetChanged();
-
                             if(arr_msg.size() >=1){
                                 ViewFriendDialog.findViewById(R.id.txt_nomsg).setVisibility(View.INVISIBLE);
                             }
                         }
-
                     }
                 });
 
