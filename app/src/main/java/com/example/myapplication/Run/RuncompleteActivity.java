@@ -33,7 +33,6 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.ImageAdapter;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONArray;
@@ -97,7 +96,7 @@ public class RuncompleteActivity extends AppCompatActivity {
         double kmdistance = (distance / 1000.0);
         distanceView.setText(String.format("%.2f",kmdistance));
 
-        dateView.setText(new MainAct().getdate());
+        dateView.setText(getdate());
         kcalview.setText(String.format("%.2f",kcal));
 
         arr_photopath = getIntent().getStringArrayListExtra("arr_photopath");
@@ -153,7 +152,15 @@ public class RuncompleteActivity extends AppCompatActivity {
             }
         });
     }
+    public  String getdate(){
+        long now = System.currentTimeMillis();
 
+        Date date1 = new Date(now);
+
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd");
+        String date = simpleDate.format(date1);
+        return date;
+    }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -264,9 +271,10 @@ public class RuncompleteActivity extends AppCompatActivity {
             }
         }
         // 서버에 데이터 보내고 응답 요청
-//        RequestQueue requestQueue = Volley.newRequestQueue(RuncompleteActivity.this);
-//        requestQueue.add(smpr);
+        RequestQueue requestQueue = Volley.newRequestQueue(RuncompleteActivity.this);
+        requestQueue.add(smpr);
 
+        /*
         RequestQueue requestQueue = MainAct.getRequestQueue();
 
         if (requestQueue == null) {
@@ -275,6 +283,7 @@ public class RuncompleteActivity extends AppCompatActivity {
         } else {
             requestQueue.add(smpr);
         }
+*/
 
     }
     public void display_imgview(){

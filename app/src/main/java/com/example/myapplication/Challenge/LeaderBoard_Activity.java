@@ -17,10 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.MainAct;
-import com.example.myapplication.Profile.Fragment4;
 import com.example.myapplication.Profile.User;
-import com.example.myapplication.Profile.reqfrdlist_Adapter;
 import com.example.myapplication.R;
 
 import org.json.JSONArray;
@@ -95,16 +92,8 @@ public class LeaderBoard_Activity extends AppCompatActivity {
             smpr.addStringParam("cno", String.valueOf(cno));
 
             // 서버에 데이터 보내고 응답 요청
-//            RequestQueue requestQueue = Volley.newRequestQueue(LeaderBoard_Activity.this);
-//            requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(LeaderBoard_Activity.this);
+            RequestQueue requestQueue = Volley.newRequestQueue(LeaderBoard_Activity.this);
             requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
 
     }
 

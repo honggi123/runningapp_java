@@ -18,10 +18,10 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 import com.example.myapplication.Request.IdchkRequest;
 import com.example.myapplication.Request.SnsRegisterRequest;
+import com.example.myapplication.Run.RunMenuActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -122,7 +122,7 @@ public class snsjoinActivity extends AppCompatActivity {
                                             loginedit.commit();
 
                                             Toast.makeText(snsjoinActivity.this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(snsjoinActivity.this, MainAct.class);
+                                            Intent intent = new Intent(snsjoinActivity.this, RunMenuActivity.class);
                                             startActivity(intent);
                                             ActivityCompat.finishAffinity(snsjoinActivity.this);
 

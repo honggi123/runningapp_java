@@ -13,10 +13,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class ChallengelistAdapter extends RecyclerView.Adapter<ChallengelistAdapter.Holder> {
 
@@ -78,7 +80,7 @@ public class ChallengelistAdapter extends RecyclerView.Adapter<ChallengelistAdap
         double kmdistance = (arrayList.get(position).g_distance / 1000.00 );
         holder.g_distance.setText(String.format("%.2f",kmdistance));
 
-        String newdate =new MainAct().timetodate(arrayList.get(position).g_date);
+        String newdate = timetodate(arrayList.get(position).g_date);
         holder.date.setText(arrayList.get(position).s_date +" ~ "+newdate);
     }
 
@@ -97,12 +99,27 @@ public class ChallengelistAdapter extends RecyclerView.Adapter<ChallengelistAdap
         public Holder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.txt_writer);
-            date = itemView.findViewById(R.id.time_daychitem);
+            date = itemView.findViewById(R.id.time_daychitem2);
+
             g_distance = itemView.findViewById(R.id.g_distance_chitem);
             btn_viewch = itemView.findViewById(R.id.btn_viewruninfo);
         }
     }
 
+    public String timetodate(String olddate){
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat newformat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date = null;
+        String newdate = null;
+        try {
+            date = simpleDate.parse(olddate);
+            newdate =newformat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return newdate;
+    }
 
 
 }

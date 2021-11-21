@@ -21,10 +21,11 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.Join.JoinActivity;
 import com.example.myapplication.Join.snsjoinActivity;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 import com.example.myapplication.Request.IdchkRequest;
 import com.example.myapplication.Request.LoginRequest;
+import com.example.myapplication.RequestInterface;
+import com.example.myapplication.Run.RunMenuActivity;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
@@ -61,12 +62,14 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.e("loginact","error1");
 
-
-            super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 
         setContentView(R.layout.login);
 
         Log.e("loginact","error2");
+
+        //RequestInterface.singleton.getInstance().setContext(getApplicationContext`());
+
 
         edit_id = findViewById(R.id.edit_id);
         edit_pw = findViewById(R.id.edit_pw);
@@ -85,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
         Loginshared = getSharedPreferences("Login", MODE_PRIVATE);
         loginedit = Loginshared.edit();
         if(Loginshared.getBoolean("dologin",false)){
-            Intent intent = new Intent(LoginActivity.this, MainAct.class);
+            Intent intent = new Intent(LoginActivity.this, RunMenuActivity.class);
             startActivity(intent);
             finish();
         }
@@ -128,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                                 loginedit.commit();
 
                                 Toast.makeText(LoginActivity.this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, MainAct.class);
+                                Intent intent = new Intent(LoginActivity.this, RunMenuActivity.class);
                                 startActivity(intent);
                                 finish();
                             } else { // 회원등록에 실패한 경우
@@ -219,7 +222,7 @@ public class LoginActivity extends AppCompatActivity {
                                             loginedit.commit();
 
                                             Toast.makeText(LoginActivity.this, "이미 회원으로 등록되어있습니다..로그인 성공", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LoginActivity.this, MainAct.class);
+                                            Intent intent = new Intent(LoginActivity.this, RunMenuActivity.class);
                                             startActivity(intent);
                                             finish();
                                         } else { // 중복된 snsid 아이디가 없는 경우 -> 회원등록 액티비티
@@ -284,6 +287,14 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        session.clearCallbacks();
+        sessionCallback = null;
+    }
+
 }
 
 

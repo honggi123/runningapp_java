@@ -21,8 +21,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.Challenge.viewchallenge_Activity;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONObject;
@@ -35,9 +33,9 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
 
     String f_id;
     Context context;
-    Fragment4 fragment4;
+    ProfileMenuActivity fragment4;
 
-    public reqfrdlist_Adapter(String f_id, ArrayList<User> arr_id, Fragment4 fragment4){
+    public reqfrdlist_Adapter(String f_id, ArrayList<User> arr_id, ProfileMenuActivity fragment4){
         this.arr_friend = arr_id;
         this.f_id = f_id;
         this.fragment4 = fragment4;
@@ -167,16 +165,9 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
         smpr.addStringParam("tid",f_id);
 
         // 서버에 데이터 보내고 응답 요청
-//        RequestQueue requestQueue = Volley.newRequestQueue(context);
-//        requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
+        RequestQueue requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(smpr);
 
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(context);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
     }
 
 }

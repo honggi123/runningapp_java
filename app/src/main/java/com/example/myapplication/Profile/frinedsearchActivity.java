@@ -27,8 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.myapplication.Challenge.viewchallenge_Activity;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 import com.example.myapplication.Run.runActivity;
 
@@ -255,16 +253,9 @@ public class frinedsearchActivity extends AppCompatActivity {
                 smpr.addStringParam("tid",t_id);
 
                 // 서버에 데이터 보내고 응답 요청
-//                RequestQueue requestQueue = Volley.newRequestQueue(frinedsearchActivity.this);
-//                requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
+                RequestQueue requestQueue = Volley.newRequestQueue(frinedsearchActivity.this);
+                requestQueue.add(smpr);
 
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(frinedsearchActivity.this);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
 
     }
 }

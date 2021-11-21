@@ -69,6 +69,7 @@ public class EmailChkActivity extends AppCompatActivity {
                 // AsyncTask를 통해 HttpURLConnection 수행.
                 NetworkTask networkTask = new NetworkTask();
                 networkTask.execute(edit_mail.getText().toString());
+
             }
         });
 
@@ -136,11 +137,9 @@ public class EmailChkActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
             progressDialog = ProgressDialog.show(EmailChkActivity.this,
                     "Please Wait", null, true, true);
         }
-
 
         @Override
         protected void onPostExecute(String result) {
@@ -212,9 +211,7 @@ public class EmailChkActivity extends AppCompatActivity {
 
                 bufferedReader.close();
 
-
                 return sb.toString().trim();
-
 
             } catch (Exception e) {
 

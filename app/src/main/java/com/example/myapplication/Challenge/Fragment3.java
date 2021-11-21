@@ -1,8 +1,6 @@
 package com.example.myapplication.Challenge;
 
 
-import static android.app.Activity.RESULT_OK;
-
 import com.android.volley.Request;
 
 
@@ -15,50 +13,35 @@ import com.android.volley.toolbox.Volley;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.AlphabeticIndex;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.ImageAdapter;
-import com.example.myapplication.MainAct;
+import com.example.myapplication.Profile.ProfileMenuActivity;
 import com.example.myapplication.R;
-import com.example.myapplication.Run.RuncompleteActivity;
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.example.myapplication.Run.RunMenuActivity;
+import com.example.myapplication.viewact.ViewactMenuActivity;
 
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 
 
-public class Fragment3 extends Fragment {
+public class Fragment3 extends AppCompatActivity {
     Button btn_challengmake;
 
-    Context context;
     ArrayList<ChallengeInfo> arr_ch;
     ChallengelistAdapter adapter;
     RecyclerView recyclerView;
@@ -73,36 +56,49 @@ public class Fragment3 extends Fragment {
     RecyclerView rcmy;
     SharedPreferences loginshared;
 
+    RequestQueue requestQueue;
     String mid;
-    public Fragment3(Context context) {
-        this.context = context;
-    }
 
-    @Nullable
+    ImageView menurun;
+    ImageView menuviewact;
+    ImageView menuch;
+    ImageView menumy;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment3,container,false);
-        btn_challengmake = view.findViewById(R.id.btn_challengmake);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment3);
 
-        recyclerView = view.findViewById(R.id.rc_challenge);
+        btn_challengmake = findViewById(R.id.btn_challengmake);
 
-        rcfamous = view.findViewById(R.id.rc_famchallenge);
+        recyclerView = findViewById(R.id.rc_challenge);
 
-        rcmy = view.findViewById(R.id.rc_mych);
-        btn_viewexch = view.findViewById(R.id.btn_viewexch);
+        rcfamous = findViewById(R.id.rc_famchallenge);
 
-        loginshared = context.getSharedPreferences("Login", context.MODE_PRIVATE);
+        rcmy = findViewById(R.id.rc_mych);
+        btn_viewexch = findViewById(R.id.btn_viewexch);
+
+        loginshared = getSharedPreferences("Login", Context.MODE_PRIVATE);
 
         // 로그인 정보
         mid = loginshared.getString("id", null);
 
-        super.onCreate(savedInstanceState);
 
+        menurun = findViewById(R.id.btn_menurun);
+        Log.e("Frag3","10");
+        menuviewact = findViewById(R.id.btn_menuviewact);
+        Log.e("Frag3","11");
+        menuch = findViewById(R.id.btn_menuch);
+        Log.e("Frag3","12");
+        menumy = findViewById(R.id.btn_menumy);
+        Log.e("Frag3","13");
+
+        menuset();
 
         btn_challengmake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,Challengemake.class);
+                Intent intent = new Intent(Fragment3.this,Challengemake.class);
                 startActivityForResult(intent,102);
             }
         });
@@ -110,7 +106,7 @@ public class Fragment3 extends Fragment {
         btn_viewexch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,viewexchallenge.class);
+                Intent intent = new Intent(Fragment3.this,viewexchallenge.class);
                 startActivity(intent);
             }
         });
@@ -120,8 +116,8 @@ public class Fragment3 extends Fragment {
         getrecentcchinfo();
         getfamchinfo();
 
-        return view;
     }
+
 
 
     @Override
@@ -143,8 +139,9 @@ public class Fragment3 extends Fragment {
                     Log.e("mycjson",String.valueOf(jsonObject));
                     int c_num = jsonObject.getInt("num");
                     int joinc_num = jsonObject.getInt("joinc_num");
+                    arr_mych = new ArrayList<ChallengeInfo>();
                     if(c_num+joinc_num > 0) {
-                        arr_mych = new ArrayList<ChallengeInfo>();
+
                         JSONArray data = jsonObject.getJSONArray("data");
                         for(int i= 0; i < c_num+joinc_num; i++){
                             Log.e("mychdata",String.valueOf(data.get(i)));
@@ -173,7 +170,7 @@ public class Fragment3 extends Fragment {
 
                         adaptermy = new ChallengelistAdapter(arr_mych,2);
                         adaptermy.setfrg(Fragment3.this);
-                        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(context);
+                        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(Fragment3.this);
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         rcmy.setLayoutManager(linearLayoutManager);
                         rcmy.setAdapter(adaptermy);
@@ -194,18 +191,21 @@ public class Fragment3 extends Fragment {
         smpr.addStringParam("userID",id);
 
         // 서버에 데이터 보내고 응답 요청
-//        RequestQueue requestQueue = Volley.newRequestQueue(context);
-//        requestQueue.add(smpr);
+        requestQueue = Volley.newRequestQueue(Fragment3.this);
+        requestQueue.add(smpr);
 
+        /*
         RequestQueue requestQueue = MainAct.getRequestQueue();
 
         if (requestQueue == null) {
             Log.e("requestQueue","null");
-            requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue = Volley.newRequestQueue(Fragment3.this);
             requestQueue.add(smpr);
         } else {
             requestQueue.add(smpr);
         }
+
+         */
     }
 
     public void getrecentcchinfo(){
@@ -220,8 +220,9 @@ public class Fragment3 extends Fragment {
                 try {
                 JSONObject jsonObject = new JSONObject(response);
                     int c_num = jsonObject.getInt("num");
+                    arr_ch = new ArrayList<ChallengeInfo>();
                     if(c_num > 0) {
-                        arr_ch = new ArrayList<ChallengeInfo>();
+
                         JSONArray data = jsonObject.getJSONArray("data");
                         for(int i= 0; i < c_num; i++){
                             Log.e("rdata",String.valueOf(data.get(i)));
@@ -241,7 +242,7 @@ public class Fragment3 extends Fragment {
                         Log.e("arr",arr_ch.get(0).name);
                         adapter = new ChallengelistAdapter(arr_ch,2);
                         adapter.setfrg(Fragment3.this);
-                        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(context);
+                        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(Fragment3.this);
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         recyclerView.setLayoutManager(linearLayoutManager);
                         recyclerView.setAdapter(adapter);
@@ -259,17 +260,20 @@ public class Fragment3 extends Fragment {
                 });
 
                 // 서버에 데이터 보내고 응답 요청
-//                RequestQueue requestQueue = Volley.newRequestQueue(context);
-//                requestQueue.add(smpr);
+                requestQueue = Volley.newRequestQueue(Fragment3.this);
+                requestQueue.add(smpr);
+                /*
         RequestQueue requestQueue = MainAct.getRequestQueue();
 
         if (requestQueue == null) {
             Log.e("requestQueue","nulll");
-            requestQueue = Volley.newRequestQueue(getContext());
+            requestQueue = Volley.newRequestQueue(Fragment3.this);
             requestQueue.add(smpr);
         } else {
             requestQueue.add(smpr);
         }
+
+                 */
     }
 
 
@@ -286,9 +290,9 @@ public class Fragment3 extends Fragment {
                     JSONObject jsonObject = new JSONObject(response);
                     Log.e("famjson",String.valueOf(jsonObject));
                     int c_num = jsonObject.getInt("num");
+                    arr_chfamous = new ArrayList<ChallengeInfo>();
                     if(c_num > 0) {
 
-                        arr_chfamous = new ArrayList<ChallengeInfo>();
                         JSONArray data = jsonObject.getJSONArray("data");
                         for(int i= 0; i < c_num; i++){
                             Log.e("data",String.valueOf(data.get(i)));
@@ -321,7 +325,7 @@ public class Fragment3 extends Fragment {
 
                         adapterfam = new ChallengelistAdapter(arr_chfamous,2);
                         adapterfam.setfrg(Fragment3.this);
-                        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(context);
+                        LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(Fragment3.this);
                         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                         rcfamous.setLayoutManager(linearLayoutManager);
                         rcfamous.setAdapter(adapterfam);
@@ -340,17 +344,18 @@ public class Fragment3 extends Fragment {
         });
 
         // 서버에 데이터 보내고 응답 요청
-//        RequestQueue requestQueue = Volley.newRequestQueue(context);
-//        requestQueue.add(smpr);
+        requestQueue = Volley.newRequestQueue(Fragment3.this);
+        requestQueue.add(smpr);
 
-        RequestQueue requestQueue = MainAct.getRequestQueue();
+      //  RequestQueue requestQueue = MainAct.getRequestQueue();
 
+        /*
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(context);
             requestQueue.add(smpr);
         } else {
             requestQueue.add(smpr);
-        }
+        }*/
 
     }
 
@@ -425,24 +430,64 @@ public class Fragment3 extends Fragment {
         for(int i =0; i < arr_mych.size(); i++){
             if( cno == arr_mych.get(i).cno ){
                 adaptermy.remove(i);
-
             }
         }
+
         for(int i =0; i < arr_ch.size(); i++){
             if( cno == arr_ch.get(i).cno ){
                 adapter.remove(i);
-
             }
         }
+
         for(int i =0; i < arr_chfamous.size(); i++){
             if( cno == arr_chfamous.get(i).cno ){
                 adapterfam.remove(i);
 
             }
         }
+
     }
 
 
 
+    public void menuset(){
+        Log.e("menuset","1");
+        menurun.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Fragment3.this, RunMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        Log.e("menuset","2");
+        menuch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Fragment3.this, Fragment3.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        Log.e("menuset","3");
+        menuviewact.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Fragment3.this, ViewactMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        Log.e("menuset","4");
+        menumy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Fragment3.this, ProfileMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        Log.e("menuset","5");
+    }
 
 }

@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONArray;
@@ -102,17 +101,10 @@ public class viewexchallenge extends AppCompatActivity {
             smpr.addStringParam("userID", mid);
 
             // 서버에 데이터 보내고 응답 요청
-//            RequestQueue requestQueue = Volley.newRequestQueue(viewexchallenge.this);
-//            requestQueue.add(smpr);
-
-        RequestQueue requestQueue = MainAct.getRequestQueue();
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(viewexchallenge.this);
+            RequestQueue requestQueue = Volley.newRequestQueue(viewexchallenge.this);
             requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
+
+
 
     }
 }

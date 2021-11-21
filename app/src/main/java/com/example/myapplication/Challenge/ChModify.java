@@ -25,10 +25,13 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ChModify extends AppCompatActivity {
 
@@ -171,16 +174,31 @@ public class ChModify extends AppCompatActivity {
 
 
         if(startdate != null && enddate != null){
-            String newdate =new MainAct().timetodate(enddate);
+            String newdate =timetodate(enddate);
             view_date.setText(startdate + " ~ " + newdate);
         }else{
             startdate = challengeInfo.s_date;
             enddate = challengeInfo.g_date;
-            String newdate =new MainAct().timetodate(enddate);
+            String newdate =timetodate(enddate);
             view_date.setText(startdate +" ~ "+newdate);
         }
 
 
+    }
+
+    public String timetodate(String olddate){
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat newformat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date = null;
+        String newdate = null;
+        try {
+            date = simpleDate.parse(olddate);
+            newdate =newformat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return newdate;
     }
 
     @Override
@@ -244,17 +262,8 @@ public class ChModify extends AppCompatActivity {
         smpr.addStringParam("name", name);
 
         // 서버에 데이터 보내고 응답 요청
-//        RequestQueue requestQueue = Volley.newRequestQueue(ChModify.this);
-//        requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(ChModify.this);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
-
+        RequestQueue requestQueue = Volley.newRequestQueue(ChModify.this);
+        requestQueue.add(smpr);
 
 
     }

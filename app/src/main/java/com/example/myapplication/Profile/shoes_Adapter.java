@@ -27,7 +27,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONObject;
@@ -186,16 +185,9 @@ public class shoes_Adapter extends RecyclerView.Adapter<shoes_Adapter.Holder> {
                         smpr.addStringParam("shoe_id", shoe_id);
 
                         // 서버에 데이터 보내고 응답 요청
-//                        RequestQueue requestQueue = Volley.newRequestQueue(context);
-//                        requestQueue.add(smpr);
-                RequestQueue requestQueue = MainAct.getRequestQueue();
+                        RequestQueue requestQueue = Volley.newRequestQueue(context);
+                        requestQueue.add(smpr);
 
-                if (requestQueue == null) {
-                    requestQueue = Volley.newRequestQueue(context);
-                    requestQueue.add(smpr);
-                } else {
-                    requestQueue.add(smpr);
-                }
 
 
                     }

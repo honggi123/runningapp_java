@@ -62,12 +62,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
+
         <activity android:name=".Join.JoinActivity" />
-        <activity android:name=".MainAct" />
         <activity android:name=".Join.EmailChkActivity" />
         <activity android:name=".Run.runActivity" />
         <activity android:name=".Join.snsjoinActivity" />
         <activity android:name=".Run.Runbeforetimer_Activity" />
+
+
         <activity
             android:name=".Run.RuncompleteActivity"
             android:windowSoftInputMode="stateHidden|adjustResize" />
@@ -93,8 +98,17 @@
         <activity android:name=".Profile.myinfo"></activity>
 
         <activity android:name=".Run.msgmapdialog"
-      ></activity>
+            android:theme="@style/Theme.MyDialog"
+        ></activity>
 
+        <activity android:name=".Run.RunMenuActivity">
+        </activity>
+        <activity android:name=".viewact.ViewactMenuActivity">
+        </activity>
+        <activity android:name=".Challenge.Fragment3">
+        </activity>
+        <activity android:name=".Profile.ProfileMenuActivity">
+        </activity>
     <service android:name=".Run.runService" />
     </application>
 

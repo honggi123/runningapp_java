@@ -9,7 +9,6 @@ import com.android.volley.toolbox.Volley;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,8 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.Challenge.viewchallenge_Activity;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONObject;
@@ -88,16 +85,9 @@ public class distancegoalset_Activity extends AppCompatActivity {
                 smpr.addStringParam("dgoal",String.valueOf(distance));
 
         // 서버에 데이터 보내고 응답 요청
-//        RequestQueue requestQueue = Volley.newRequestQueue(distancegoalset_Activity.this);
-//        requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
+        RequestQueue requestQueue = Volley.newRequestQueue(distancegoalset_Activity.this);
+        requestQueue.add(smpr);
 
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(distancegoalset_Activity.this);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
 
     }
 }

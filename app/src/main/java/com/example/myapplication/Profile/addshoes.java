@@ -12,7 +12,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ClipData;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -43,10 +42,7 @@ import androidx.core.content.FileProvider;
 import androidx.loader.content.CursorLoader;
 
 import com.bumptech.glide.Glide;
-import com.example.myapplication.Challenge.viewchallenge_Activity;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
-import com.example.myapplication.viewact.addruninfo;
 
 import org.json.JSONObject;
 
@@ -406,16 +402,9 @@ public class addshoes extends AppCompatActivity {
             smpr.addStringParam("shoesname", shoesname);
 
             // 서버에 데이터 보내고 응답 요청
-//            RequestQueue requestQueue = Volley.newRequestQueue(addshoes.this);
-//            requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
+            RequestQueue requestQueue = Volley.newRequestQueue(addshoes.this);
+            requestQueue.add(smpr);
 
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(addshoes.this);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
 
     }
 }

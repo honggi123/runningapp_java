@@ -75,13 +75,12 @@ public class MsgboxAdapter extends RecyclerView.Adapter<MsgboxAdapter.Holder> {
                 public void onClick(View v) {
                     msgmapdialog msgmapdialog = new msgmapdialog();
                     Intent intent = new Intent(runActivity, msgmapdialog.getClass());
+                    intent.putExtra("lat",arr_msg.get(getAdapterPosition()).loaction.latitude);
+                    intent.putExtra("lng",arr_msg.get(getAdapterPosition()).loaction.longitude);
                     runActivity.startActivity(intent);
-
                 }
             });
         }
-
-
     }
 
 

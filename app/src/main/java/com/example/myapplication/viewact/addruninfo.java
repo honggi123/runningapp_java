@@ -41,9 +41,7 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.myapplication.Challenge.viewchallenge_Activity;
 import com.example.myapplication.ImageAdapter;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.R;
 
 import org.json.JSONArray;
@@ -362,16 +360,9 @@ public class addruninfo extends AppCompatActivity implements DatePickerDialog.On
             }
         }
         // 서버에 데이터 보내고 응답 요청
-//        RequestQueue requestQueue = Volley.newRequestQueue(addruninfo.this);
-//        requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
+        RequestQueue requestQueue = Volley.newRequestQueue(addruninfo.this);
+        requestQueue.add(smpr);
 
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(addruninfo.this);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
 
     }
 

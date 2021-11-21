@@ -4,24 +4,19 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.ExifInterface;
 import android.media.MediaScannerConnection;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -35,7 +30,6 @@ import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.speech.tts.TextToSpeech;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,8 +58,6 @@ import com.android.volley.error.VolleyError;
 import com.android.volley.misc.AsyncTask;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.myapplication.Coaching;
-import com.example.myapplication.MainAct;
 import com.example.myapplication.Profile.User;
 import com.example.myapplication.Profile.myfriendlist_Adapter;
 import com.example.myapplication.R;
@@ -78,7 +70,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -90,7 +81,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 
 
@@ -242,7 +232,8 @@ public class runActivity extends AppCompatActivity implements
         setContentView(R.layout.runact);
 
 
-        
+
+
         Log.e("error","error3");
 
         // 로그인 정보
@@ -458,7 +449,6 @@ public class runActivity extends AppCompatActivity implements
                             Log.e("prev_coachstate",prev_coachstate+"");
                             coachpass++;
                         }
-
 
                     }catch (JSONException e) {
                         e.printStackTrace();
@@ -1151,8 +1141,6 @@ public class runActivity extends AppCompatActivity implements
 
 
 
-
-
         // 친구에게 메시지전송 클래스
     public class viewfriendsdialog implements Runnable {
 
@@ -1306,17 +1294,9 @@ public class runActivity extends AppCompatActivity implements
         // 요청 객체에 보낼 데이터를 추가
         smpr.addStringParam("f_id", mid);
 
-        // 서버에 데이터 보내고 응답 요청
-//              RequestQueue requestQueue = Volley.newRequestQueue(context);
-//              requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(runActivity.this);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
+        // 서버에 데이터 보내고 응답 요
+              RequestQueue requestQueue = Volley.newRequestQueue(runActivity.this);
+              requestQueue.add(smpr);
 
 
 

@@ -29,11 +29,17 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.myapplication.MainAct;
+import com.example.myapplication.Profile.ProfileMenuActivity;
 import com.example.myapplication.R;
+import com.example.myapplication.Run.RunMenuActivity;
+import com.example.myapplication.viewact.ViewactMenuActivity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class viewchallenge_Activity extends AppCompatActivity {
 
@@ -54,6 +60,10 @@ public class viewchallenge_Activity extends AppCompatActivity {
     ImageView btn_chsetting;
     ProgressBar progressBar;
 
+    ImageView menurun;
+    ImageView menuviewact;
+    ImageView menuch;
+    ImageView menumy;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,10 +103,7 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 btn_join.setVisibility(View.INVISIBLE);
                 btn_chsetting.setVisibility(View.VISIBLE);
             }
-
         }
-
-
 
         //vwchinfo(challengeInfo.cno);
         setview();
@@ -190,7 +197,7 @@ public class viewchallenge_Activity extends AppCompatActivity {
 
     public void setview(){
         name.setText(challengeInfo.name);
-        String newdate =new MainAct().timetodate(challengeInfo.g_date);
+        String newdate =timetodate(challengeInfo.g_date);
         date.setText(challengeInfo.s_date +" ~ " + newdate);
         pnum.setText(String.valueOf(challengeInfo.num_member));
         creater.setText(challengeInfo.id);
@@ -207,6 +214,20 @@ public class viewchallenge_Activity extends AppCompatActivity {
         progressBar.setProgress(d);
     }
 
+    public String timetodate(String olddate){
+        SimpleDateFormat simpleDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat newformat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date = null;
+        String newdate = null;
+        try {
+            date = simpleDate.parse(olddate);
+            newdate =newformat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return newdate;
+    }
 
     public void endch(int cno){
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
@@ -257,19 +278,9 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 // 요청 객체에 보낼 데이터를 추가
                 smpr.addStringParam("cno", String.valueOf(cno));
 
-
                 // 서버에 데이터 보내고 응답 요청
-//                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-//                requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
-
+                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+                requestQueue.add(smpr);
     }
 
     public void joinch(int cno, String id){
@@ -310,22 +321,11 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 smpr.addStringParam("cno",String.valueOf(cno));
 
                 // 서버에 데이터 보내고 응답 요청
-//                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-//                requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
-
-
+                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+                requestQueue.add(smpr);
     }
 
         public void vwchinfo(int cno){     //  내 챌린지
-
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
             String serverUrl="http://3.143.9.214/viewchinfo.php";
 
@@ -367,16 +367,8 @@ public class viewchallenge_Activity extends AppCompatActivity {
             smpr.addStringParam("cno",String.valueOf(cno));
 
             // 서버에 데이터 보내고 응답 요청
-//            RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-//            requestQueue.add(smpr);
-            RequestQueue requestQueue = MainAct.getRequestQueue();
-
-            if (requestQueue == null) {
-                requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-                requestQueue.add(smpr);
-            } else {
-                requestQueue.add(smpr);
-            }
+            RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+            requestQueue.add(smpr);
 
         }
 
@@ -426,18 +418,8 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 Log.e("id",mid);
         Log.e("cno",String.valueOf(challengeInfo.cno));
                 // 서버에 데이터 보내고 응답 요청
-//                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-//                requestQueue.add(smpr);
-        RequestQueue requestQueue = MainAct.getRequestQueue();
-
-        if (requestQueue == null) {
-            requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-            requestQueue.add(smpr);
-        } else {
-            requestQueue.add(smpr);
-        }
-
-
+                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+                requestQueue.add(smpr);
     }
 
 
