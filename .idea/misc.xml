@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/android studio/myapp/app/src/main/res/drawable/back_et_mymsgbox.xml" value="0.3640625" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/borderline.xml" value="0.25416666666666665" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/drawable/chatactivity.xml" value="0.3640625" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/drawable/chatroomitem.xml" value="0.3640625" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/circleline.xml" value="0.26564102564102565" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.25416666666666665" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.24427083333333333" />
@@ -13,15 +16,32 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_mark_email_read_24.xml" value="0.36102564102564105" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_mark_email_unread_24.xml" value="0.36102564102564105" />
         <entry key="..\:/android studio/myapp/app/src/main/res/drawable/ic_baseline_message_24.xml" value="0.36102564102564105" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/drawable/other_msgbox.xml" value="0.3640625" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/activity_message.xml" value="0.23541666666666666" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/addruninfo.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/addshoes.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengedatesel.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengeitem.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengemodify.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/challengmake.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/chat_my_msgbox.xml" value="0.34791666666666665" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/chatactivity.xml" value="0.34791666666666665" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/chatcenteritem.xml" value="0.34791666666666665" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/chatroomitem.xml" value="0.34791666666666665" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/chdistancesel.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/choachingitem.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coach_managecategoryitem.xml" value="0.35052083333333334" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachingitem.xml" value="0.17083333333333334" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachinputinfo.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachmain.xml" value="0.35052083333333334" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachmanage.xml" value="0.35052083333333334" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachplan.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachplanitem.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachplanitem2.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachprofileitem.xml" value="0.234375" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachselect.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachselect_dialog.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/coachselitem.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/dialog_chgpw.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/dialog_distancegoal.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/dialog_friends.xml" value="0.23802083333333332" />
@@ -38,6 +58,7 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/fragment4.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/friends_marker.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/image_item.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/item_friends.xml" value="0.23541666666666666" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/join.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/leaderboard.xml" value="0.35052083333333334" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/leaderboard_item.xml" value="0.234375" />
@@ -46,18 +67,23 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/login.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/mailcheck.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/main.xml" value="0.2375" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/menuchat_general.xml" value="0.35052083333333334" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/msgboxdialog.xml" value="0.25364583333333335" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/msgboxitem.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/msgitem.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/mych.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/myfrienditem.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/myinfo.xml" value="0.25364583333333335" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/other_msgbox.xml" value="0.34791666666666665" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/pickdistance_dialog.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/picktime_dialog.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/questionmsgitem.xml" value="0.35052083333333334" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/reqfrinedlist_item.xml" value="0.2359375" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runact.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runbefore_timer.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runcomplete.xml" value="0.2375" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/runmsgitem.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/setmeminfo.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/setting.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/setting_item.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/shoesitem.xml" value="0.25364583333333335" />

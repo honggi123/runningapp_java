@@ -81,7 +81,7 @@ public class viewrunact extends AppCompatActivity {
             }
             if(arr_img.size() == 0){
                 // noimg 처리
-                arr_img.add("http://3.143.9.214/uploads/run.PNG");
+                arr_img.add("http://3.12.49.32/uploads/run.PNG");
             }
             adapter = new ImageAdapter_viewact(arr_img,viewrunact.this);
         } catch (JSONException e) {

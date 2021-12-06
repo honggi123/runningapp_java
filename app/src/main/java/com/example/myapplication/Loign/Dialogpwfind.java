@@ -125,7 +125,7 @@ public class Dialogpwfind {
             String searchKeyword0 = params[0];
             String searchKeyword1 = params[1];
 
-            String serverURL = "http://3.143.9.214/pwfind.php";
+            String serverURL = "http://3.12.49.32/pwfind.php";
             String postParameters = "id="+searchKeyword0+"&email=" + searchKeyword1;
 
             try {

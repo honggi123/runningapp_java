@@ -216,7 +216,7 @@ public class ChModify extends AppCompatActivity {
                 "기다려주세요..", null, true, true);
 
         // 안드로이드에서 보낼 데이터를 받을 php 서버 주소onDateSet
-        String serverUrl="http://3.143.9.214/chmodify.php";
+        String serverUrl="http://3.12.49.32/chmodify.php";
         // 파일 전송 요청 객체 생성[결과를 String으로 받음]
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
 

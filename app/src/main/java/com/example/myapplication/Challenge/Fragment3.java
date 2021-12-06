@@ -25,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Chat.GeneralUser.GChatRoomActivity;
 import com.example.myapplication.Profile.ProfileMenuActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.Run.RunMenuActivity;
@@ -63,7 +64,7 @@ public class Fragment3 extends AppCompatActivity {
     ImageView menuviewact;
     ImageView menuch;
     ImageView menumy;
-
+    ImageView menuchat;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,12 +84,12 @@ public class Fragment3 extends AppCompatActivity {
         // 로그인 정보
         mid = loginshared.getString("id", null);
 
-
+        menuchat = findViewById(R.id.btn_menuchat);
         menurun = findViewById(R.id.btn_menurun);
         Log.e("Frag3","10");
         menuviewact = findViewById(R.id.btn_menuviewact);
         Log.e("Frag3","11");
-        menuch = findViewById(R.id.btn_menuch);
+        menuch = findViewById(R.id.btn_menuchat);
         Log.e("Frag3","12");
         menumy = findViewById(R.id.btn_menumy);
         Log.e("Frag3","13");
@@ -128,7 +129,7 @@ public class Fragment3 extends AppCompatActivity {
     public void getmychinfo(String id){     //  내 챌린지
 
         // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-        String serverUrl="http://3.143.9.214/getmych.php";
+        String serverUrl="http://3.12.49.32/getmych.php";
 
         // 파일 전송 요청 객체 생성[결과를 String으로 받음]
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -211,7 +212,7 @@ public class Fragment3 extends AppCompatActivity {
     public void getrecentcchinfo(){
 
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                String serverUrl="http://3.143.9.214/getchallengeinfo.php";
+                String serverUrl="http://3.12.49.32/getchallengeinfo.php";
 
                 // 파일 전송 요청 객체 생성[결과를 String으로 받음]
                 SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -280,7 +281,7 @@ public class Fragment3 extends AppCompatActivity {
     public void getfamchinfo(){     // 인기 순
 
         // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-        String serverUrl="http://3.143.9.214/getfamchinfo.php";
+        String serverUrl="http://3.12.49.32/getfamchinfo.php";
 
         // 파일 전송 요청 객체 생성[결과를 String으로 받음]
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -483,6 +484,14 @@ public class Fragment3 extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Fragment3.this, ProfileMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        menuchat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Fragment3.this, GChatRoomActivity.class);
                 startActivity(intent);
                 finish();
             }

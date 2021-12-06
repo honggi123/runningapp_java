@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:padding="16dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv"
+        android:layout_width="45dp"
+        android:layout_height="46dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
+
+
+        android:src="@drawable/ic_baseline_person_24" />
+
+    <TextView
+        android:id="@+id/qid"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/iv"
+        android:text="name"
+        android:textColor="#333333"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/lastmsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/qid"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@id/iv"
+        android:maxWidth="250dp"
+        android:text="Hello android"
+        android:textColor="#333333"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/lmsg_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignBottom="@+id/qid"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="67dp"
+        android:layout_marginTop="-26dp"
+        android:layout_marginEnd="10dp"
+
+        android:layout_marginBottom="0dp"
+        android:text="13:35"
+        android:textSize="14sp"
+        android:visibility="visible" />
+</RelativeLayout>

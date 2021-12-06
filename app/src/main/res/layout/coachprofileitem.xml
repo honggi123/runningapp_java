@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="200dp"
+    android:layout_height="350dp"
+    android:layout_marginBottom="10dp"
+    android:background="#FFFFFF"
+    android:paddingEnd="10dp">
+
+
+    <TextView
+        android:id="@+id/coachname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="이름"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageView8"
+        app:layout_constraintStart_toStartOf="@+id/imageView8"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_account_circle_24" />
+
+    <TextView
+        android:id="@+id/coachcareer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="경력"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/coachname"
+        app:layout_constraintStart_toStartOf="@+id/coachname"
+        app:layout_constraintTop_toBottomOf="@+id/coachname" />
+
+    <TextView
+        android:id="@+id/coachdesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="자기소개"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/coachcareer"
+        app:layout_constraintStart_toStartOf="@+id/coachcareer"
+        app:layout_constraintTop_toBottomOf="@+id/coachcareer" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

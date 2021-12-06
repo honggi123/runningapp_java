@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
+
+    <TextView
+        android:id="@+id/weeknum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1주차"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rc_weekplan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/weeknum"
+        app:layout_constraintTop_toBottomOf="@+id/weeknum" />
+
+    <TextView
+        android:id="@+id/viewplandate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="날짜"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/weeknum"
+        app:layout_constraintStart_toEndOf="@+id/textView101"
+        app:layout_constraintTop_toTopOf="@+id/weeknum"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:text=")"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewplandate"
+        app:layout_constraintStart_toEndOf="@+id/viewplandate"
+        app:layout_constraintTop_toTopOf="@+id/viewplandate" />
+
+    <TextView
+        android:id="@+id/textView101"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="("
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewplandate"
+        app:layout_constraintStart_toEndOf="@+id/weeknum"
+        app:layout_constraintTop_toTopOf="@+id/viewplandate" />
+</androidx.constraintlayout.widget.ConstraintLayout>

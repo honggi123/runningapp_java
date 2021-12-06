@@ -8,7 +8,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.error.VolleyError;
-import com.android.volley.request.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import android.content.Intent;
@@ -25,9 +24,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Challenge.Fragment3;
+import com.example.myapplication.Chat.GeneralUser.GChatRoomActivity;
 import com.example.myapplication.Loign.LoginActivity;
+import com.example.myapplication.MySingleton;
 import com.example.myapplication.R;
-import com.example.myapplication.RequestInterface;
 import com.example.myapplication.Run.RunMenuActivity;
 import com.example.myapplication.viewact.ViewactMenuActivity;
 import com.kakao.usermgmt.UserManagement;
@@ -58,7 +58,9 @@ public class ProfileMenuActivity extends AppCompatActivity {
     ImageView menuviewact;
     ImageView menuch;
     ImageView menumy;
+    ImageView menuchat;
     RequestQueue requestQueue;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         Log.e("ProfileMenuAct","1");
@@ -80,12 +82,15 @@ public class ProfileMenuActivity extends AppCompatActivity {
         // 친구 요청 목록 리사이클러뷰
         rq_recyclerView = findViewById(R.id.rc_reqfriend);
         Log.e("ProfileMenuAct","9");
+        menuchat = findViewById(R.id.btn_menuchat);
+
+        MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
         menurun = findViewById(R.id.btn_menurun);
         Log.e("ProfileMenuAct","10");
         menuviewact = findViewById(R.id.btn_menuviewact);
         Log.e("ProfileMenuAct","11");
-        menuch = findViewById(R.id.btn_menuch);
+        menuch = findViewById(R.id.btn_menuchat);
         Log.e("ProfileMenuAct","12");
         menumy = findViewById(R.id.btn_menumy);
         Log.e("ProfileMenuAct","13");
@@ -125,7 +130,6 @@ public class ProfileMenuActivity extends AppCompatActivity {
             }
         });
         Log.e("ProfileMenuAct","20");
-
     }
 
 
@@ -133,9 +137,10 @@ public class ProfileMenuActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         Log.e("ProfileMenuAct","21");
+
         frdlistrequest(mid);
         Log.e("ProfileMenuAct","22");
-       // reqreqfriendinfo(mid);
+       reqreqfriendinfo(mid);
         Log.e("ProfileMenuAct","23");
     }
 
@@ -152,6 +157,7 @@ public class ProfileMenuActivity extends AppCompatActivity {
                     if(logout){
                         logout();
                         Intent intent = new Intent(ProfileMenuActivity.this, LoginActivity.class);
+                        startActivity(intent);
                         ProfileMenuActivity.this.finish();
                     }
                 }
@@ -160,7 +166,7 @@ public class ProfileMenuActivity extends AppCompatActivity {
     public void reqreqfriendinfo(String id){
         Log.e("reqreqfriendinfo","1");
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                String serverUrl="http://3.143.9.214/callfriendinfo.php";
+                String serverUrl="http://3.12.49.32/callfriendinfo.php";
         Log.e("reqreqfriendinfo","2");
                 // 파일 전송 요청 객체 생성[결과를 String으로 받음]
                 SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -219,12 +225,14 @@ public class ProfileMenuActivity extends AppCompatActivity {
                 }
                 });
         Log.e("reqreqfriendinfo","24");
+
                 // 요청 객체에 보낼 데이터를 추가
                 smpr.addStringParam("userID", id);
         Log.e("reqreqfriendinfo","25");
                 // 서버에 데이터 보내고 응답 요청
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                 requestQueue = Volley.newRequestQueue(getApplicationContext());
         Log.e("reqreqfriendinfo","26");
+
                 requestQueue.add(smpr);
         Log.e("reqreqfriendinfo","27");
         Log.e("getThreadPoolSize",requestQueue.getThreadPoolSize()+"");
@@ -239,24 +247,21 @@ public class ProfileMenuActivity extends AppCompatActivity {
         }
 
          */
-
     }
-
-
 
 
     public void frdlistrequest(String mid){
         Log.e("frdlistrequest","1");
               // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-              String serverUrl="http://3.143.9.214/myfriendinfo.php";
+              String serverUrl="http://3.12.49.32/myfriendinfo.php";
         Log.e("frdlistrequest","2");
               // 파일 전송 요청 객체 생성[결과를 String으로 받음]
               SimpleMultiPartRequest smpr = new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
       @Override
       public void onResponse(String response) {
 
-                  Log.e("frdlistrequest","3");
-                  /*
+                  Log.e("response",response);
+
           try {
                   JSONObject jsonObject = new JSONObject(response);
                   Log.e("frdlistrequest","4");
@@ -294,8 +299,7 @@ public class ProfileMenuActivity extends AppCompatActivity {
               } catch (Exception e) {
                   Log.e("frdlistrequest","19");
               e.printStackTrace();
-                  }*/
-
+                  }
               }
               }, new Response.ErrorListener() {
       @Override
@@ -306,13 +310,16 @@ public class ProfileMenuActivity extends AppCompatActivity {
               //smpr.setTag(ProfileMenuActivity.this);
         Log.e("frdlistrequest","21");
               // 요청 객체에 보낼 데이터를 추가
-         //     smpr.addStringParam("f_id", mid);
+        smpr.setShouldCache(false);
+             smpr.addStringParam("f_id", mid);
         Log.e("frdlistrequest","22");
 
               // 서버에 데이터 보내고 응답 요청
-               requestQueue = Volley.newRequestQueue(ProfileMenuActivity.this);
+                //requestQueue = Volley.newRequestQueue(ProfileMenuActivity.this);
         Log.e("frdlistrequest","23");
-              requestQueue.add(smpr);
+             // requestQueue.add(smpr);
+
+        MySingleton.getInstance(this).addToRequestQueue(smpr);
         Log.e("frdlistrequest","24");
               /*
         RequestQueue requestQueue = MainAct.getRequestQueue();
@@ -325,7 +332,6 @@ public class ProfileMenuActivity extends AppCompatActivity {
         }
 
                */
-
     }
 
     public void logout(){
@@ -362,8 +368,7 @@ public class ProfileMenuActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         Log.e("profileMenuAct","onstop");
-       //requestQueue.cancelAll(ProfileMenuActivity.this);
-        requestQueue.stop();
+       // requestQueue.stop();
     }
 
     @Override
@@ -411,6 +416,16 @@ public class ProfileMenuActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        menuchat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileMenuActivity.this, GChatRoomActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         Log.e("menuset","5");
     }
 

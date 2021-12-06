@@ -91,7 +91,7 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
 
     public void accept(String id,int position){
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-            String serverUrl="http://3.143.9.214/friendaccept.php";
+            String serverUrl="http://3.12.49.32/friendaccept.php";
 
             // 파일 전송 요청 객체 생성[결과를 String으로 받음]
             SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -131,7 +131,7 @@ public class reqfrdlist_Adapter extends RecyclerView.Adapter<reqfrdlist_Adapter.
     public void notaccept(String id,int position){
 
         // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-        String serverUrl="http://3.143.9.214/friendnotaccept.php";
+        String serverUrl="http://3.12.49.32/friendnotaccept.php";
 
         // 파일 전송 요청 객체 생성[결과를 String으로 받음]
         SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {

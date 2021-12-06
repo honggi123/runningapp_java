@@ -341,7 +341,7 @@ public class addshoes extends AppCompatActivity {
 
     public void addshoes(String shoesname){
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-            String serverUrl="http://3.143.9.214/addshoes.php";
+            String serverUrl="http://3.12.49.32/addshoes.php";
             ProgressDialog progressDialog;
                     progressDialog = ProgressDialog.show(addshoes.this,
                     "기다려주세요..", null, true, true);

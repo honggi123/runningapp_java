@@ -3,6 +3,7 @@ package com.example.myapplication.viewact;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.Coaching;
+import com.example.myapplication.viewact.Coach.Coaching;
 import com.example.myapplication.R;
-import com.example.myapplication.Run.Runbeforetimer_Activity;
+import com.example.myapplication.viewact.Coach.CoachActivity;
 
 import java.util.ArrayList;
 
@@ -40,16 +41,27 @@ public class CoachAdapter extends RecyclerView.Adapter<CoachAdapter.Holder> {
     public void onBindViewHolder(@NonNull Holder holder, @SuppressLint("RecyclerView") int position) {
         holder.coachname.setText(arr_coach.get(position).getName());
         holder.description.setText(arr_coach.get(position).getDescription());
-        holder.coachname.setOnClickListener(new View.OnClickListener() {
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Runbeforetimer_Activity.class);
-                intent.putExtra("coachjson",arr_coach.get(position).getChoachingjson());
-                context.startActivity(intent);
+                Log.e("coachname",holder.coachname.getText().toString());
+                if(holder.coachname.getText().equals("체중 감량")){
+                    Intent intent = new Intent(context, CoachActivity.class);
+                    intent.putExtra("coachname","diet");
+                    intent.putExtra("coach",arr_coach.get(position));
+                    context.startActivity(intent);
+                }else if(holder.coachname.getText().equals("레이스 준비")){
+                    Intent intent = new Intent(context, CoachActivity.class);
+                    intent.putExtra("coachname","race");
+                    intent.putExtra("coach",arr_coach.get(position));
+                    context.startActivity(intent);
+                }
             }
         });
-    }
 
+
+    }
 
     @Override
     public int getItemCount() { return arr_coach.size(); }

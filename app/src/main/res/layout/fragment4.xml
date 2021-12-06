@@ -262,6 +262,30 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/btn_menuchat"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@drawable/ic_baseline_wechat_24" />
+
+            <TextView
+                android:id="@+id/textchatmenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="채팅"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
                 android:id="@+id/btn_menumy"
                 android:layout_width="70dp"
                 android:layout_height="30dp"

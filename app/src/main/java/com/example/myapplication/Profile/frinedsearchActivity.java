@@ -99,7 +99,7 @@ public class frinedsearchActivity extends AppCompatActivity {
     public void friendchk(String f_id,String t_id){
 
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                String serverUrl="http://3.143.9.214/friendchk.php";
+                String serverUrl="http://3.12.49.32/friendchk.php";
 
                 // 파일 전송 요청 객체 생성[결과를 String으로 받음]
                 SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -140,7 +140,7 @@ public class frinedsearchActivity extends AppCompatActivity {
     public void friendaddorcancel(String f_id, String t_id){
 
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                String serverUrl="http://3.143.9.214/searchid.php";
+                String serverUrl="http://3.12.49.32/searchid.php";
 
                 // 파일 전송 요청 객체 생성[결과를 String으로 받음]
                 SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -216,7 +216,7 @@ public class frinedsearchActivity extends AppCompatActivity {
     public void reqfriend(String f_id,String t_id){
 
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                String serverUrl="http://3.143.9.214/addfriend.php";
+                String serverUrl="http://3.12.49.32/addfriend.php";
 
                 // 파일 전송 요청 객체 생성[결과를 String으로 받음]
                 SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {

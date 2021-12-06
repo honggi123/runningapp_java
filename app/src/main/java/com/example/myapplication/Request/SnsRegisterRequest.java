@@ -18,7 +18,7 @@ import java.util.Map;
 public class SnsRegisterRequest extends StringRequest {
 
     //서버 url 설정(php파일 연동)
-    final static  private String URL="http://3.143.9.214/SnsJoin.php";
+    final static  private String URL="http://3.12.49.32/SnsJoin.php";
     private Map<String,String> map;
 
     public SnsRegisterRequest(String userID, String userPassword,String snsID,String snstype, int method, Response.Listener<String> listener) {

@@ -29,6 +29,7 @@ import com.android.volley.Response;
 import com.android.volley.error.VolleyError;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.myapplication.MySingleton;
 import com.example.myapplication.Profile.ProfileMenuActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.Run.RunMenuActivity;
@@ -59,6 +60,8 @@ public class viewchallenge_Activity extends AppCompatActivity {
     String mid;
     ImageView btn_chsetting;
     ProgressBar progressBar;
+
+    RequestQueue requestQueue;
 
     ImageView menurun;
     ImageView menuviewact;
@@ -105,7 +108,7 @@ public class viewchallenge_Activity extends AppCompatActivity {
             }
         }
 
-        //vwchinfo(challengeInfo.cno);
+        vwchinfo(challengeInfo.cno);
         setview();
 
         chkjoinch();
@@ -231,7 +234,7 @@ public class viewchallenge_Activity extends AppCompatActivity {
 
     public void endch(int cno){
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                String serverUrl="http://3.143.9.214/endch.php";
+                String serverUrl="http://3.12.49.32/endch.php";
 
                 ProgressDialog progressDialog;
                         progressDialog = ProgressDialog.show(viewchallenge_Activity.this,
@@ -279,13 +282,14 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 smpr.addStringParam("cno", String.valueOf(cno));
 
                 // 서버에 데이터 보내고 응답 요청
-                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-                requestQueue.add(smpr);
+             //    requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+             //   requestQueue.add(smpr);
+        MySingleton.getInstance(this).addToRequestQueue(smpr);
     }
 
     public void joinch(int cno, String id){
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                String serverUrl="http://3.143.9.214/joinchallenge.php";
+                String serverUrl="http://3.12.49.32/joinchallenge.php";
 
                 // 파일 전송 요청 객체 생성[결과를 String으로 받음]
                 SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -321,13 +325,14 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 smpr.addStringParam("cno",String.valueOf(cno));
 
                 // 서버에 데이터 보내고 응답 요청
-                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-                requestQueue.add(smpr);
+               // RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+             //   requestQueue.add(smpr);
+        MySingleton.getInstance(this).addToRequestQueue(smpr);
     }
 
         public void vwchinfo(int cno){     //  내 챌린지
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-            String serverUrl="http://3.143.9.214/viewchinfo.php";
+            String serverUrl="http://3.12.49.32/viewchinfo.php";
 
             // 파일 전송 요청 객체 생성[결과를 String으로 받음]
             SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -367,14 +372,14 @@ public class viewchallenge_Activity extends AppCompatActivity {
             smpr.addStringParam("cno",String.valueOf(cno));
 
             // 서버에 데이터 보내고 응답 요청
-            RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-            requestQueue.add(smpr);
-
+          // RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+           // requestQueue.add(smpr);
+            MySingleton.getInstance(this).addToRequestQueue(smpr);
         }
 
     public void chkjoinch(){
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                String serverUrl="http://3.143.9.214/chkjoinchallenge.php";
+                String serverUrl="http://3.12.49.32/chkjoinchallenge.php";
 
                 // 파일 전송 요청 객체 생성[결과를 String으로 받음]
                 SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -418,9 +423,14 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 Log.e("id",mid);
         Log.e("cno",String.valueOf(challengeInfo.cno));
                 // 서버에 데이터 보내고 응답 요청
-                RequestQueue requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
-                requestQueue.add(smpr);
+              //   requestQueue = Volley.newRequestQueue(viewchallenge_Activity.this);
+               // requestQueue.add(smpr);
+        MySingleton.getInstance(this).addToRequestQueue(smpr);
     }
 
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        requestQueue.stop();
+    }
 }

@@ -172,7 +172,7 @@ public class Dialogidfind  {
 
             String searchKeyword1 = params[0];
 
-            String serverURL = "http://3.143.9.214/idfind.php";
+            String serverURL = "http://3.12.49.32/idfind.php";
             String postParameters = "email=" + searchKeyword1;
 
             try {

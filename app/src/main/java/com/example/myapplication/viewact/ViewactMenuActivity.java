@@ -9,7 +9,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.error.VolleyError;
-import com.android.volley.toolbox.Volley;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,11 +27,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Challenge.Fragment3;
+import com.example.myapplication.Chat.GeneralUser.GChatRoomActivity;
+import com.example.myapplication.MySingleton;
 import com.example.myapplication.Profile.ProfileMenuActivity;
 import com.example.myapplication.R;
-import com.example.myapplication.RequestInterface;
 import com.example.myapplication.Run.RunMenuActivity;
-import com.example.myapplication.Coaching;
+import com.example.myapplication.viewact.Coach.Coaching;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.YAxis;
@@ -83,12 +83,11 @@ public class ViewactMenuActivity extends AppCompatActivity {
     ImageView sungoal;
     RequestQueue requestQueue;
     SimpleMultiPartRequest smpr;
-
+    ImageView menuchat;
     ImageView menurun;
     ImageView menuviewact;
     ImageView menuch;
     ImageView menumy;
-
 
     Context context;
     WeakReference<ViewactMenuActivity> activityWeakReference;
@@ -105,10 +104,10 @@ public class ViewactMenuActivity extends AppCompatActivity {
         viewtotlatime = findViewById(R.id.view_totaltime);
         viewruncount = findViewById(R.id.view_runcount);
         btn_addruninfo = findViewById(R.id.addruninfo);
-
+        menuchat = findViewById(R.id.btn_menuchat);
         menurun = findViewById(R.id.btn_menurun);
         menuviewact = findViewById(R.id.btn_menuviewact);
-        menuch = findViewById(R.id.btn_menuch);
+        menuch = findViewById(R.id.btn_menuchat);
         menumy = findViewById(R.id.btn_menumy);
         Log.e("Viewact","3.5");
         mongoal = findViewById(R.id.mongoal);
@@ -129,12 +128,12 @@ public class ViewactMenuActivity extends AppCompatActivity {
         Log.e("Viewact","6");
         // 메뉴 초기화
         menuset();
-        //getweekruninfo(mid);
+        getweekruninfo(mid);
         requestrecentact(mid);
         Log.e("Viewact","7");
-        //getgoalinfo(mid);
+        getgoalinfo(mid);
         arr_coach = new ArrayList<Coaching>();
-        //getcoachinfo();
+        getcoachinfo();
         Log.e("Viewact","8");
         btn_addruninfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,10 +166,9 @@ public class ViewactMenuActivity extends AppCompatActivity {
     }
 
 
-
     public void getgoalinfo(String mid){
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-            String serverUrl="http://3.143.9.214/getgoalinfo.php";
+            String serverUrl="http://3.12.49.32/getgoalinfo.php";
 
             // 파일 전송 요청 객체 생성[결과를 String으로 받음]
             SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -189,7 +187,6 @@ public class ViewactMenuActivity extends AppCompatActivity {
                     String sat = jsonObject.getString("sat");
                     String sun = jsonObject.getString("sun");
 
-                    /*
                     chggoalview(mon,mongoal);
                     chggoalview(tue,tuegoal);
                     chggoalview(wed,wedgoal);
@@ -197,7 +194,6 @@ public class ViewactMenuActivity extends AppCompatActivity {
                     chggoalview(fri,frigoal);
                     chggoalview(sat,satgoal);
                     chggoalview(sun,sungoal);
-*/
 
             } else {
             }
@@ -208,7 +204,6 @@ public class ViewactMenuActivity extends AppCompatActivity {
             }, new Response.ErrorListener() {
                  @Override
                  public void onErrorResponse(VolleyError error) {
-
             }
             });
 
@@ -216,8 +211,9 @@ public class ViewactMenuActivity extends AppCompatActivity {
             smpr.addStringParam("id", mid);
 
             // 서버에 데이터 보내고 응답 요청
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-            requestQueue.add(smpr);
+       // requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //    requestQueue.add(smpr);
+        MySingleton.getInstance(this).addToRequestQueue(smpr);
 
         /*
         RequestQueue requestQueue = MainAct.getRequestQueue();
@@ -229,11 +225,8 @@ public class ViewactMenuActivity extends AppCompatActivity {
         } else {
             requestQueue.add(smpr);
         }
-
          */
-
     }
-
 
     public void chggoalview(String day, ImageView imageView){
         if(day.equals("true")){
@@ -249,7 +242,7 @@ public class ViewactMenuActivity extends AppCompatActivity {
 
     public void requestrecentact(String mid){
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-            String serverUrl="http://3.143.9.214/getrecentact.php";
+            String serverUrl="http://3.12.49.32/getrecentact.php";
         Log.e("request","1");
             // 파일 전송 요청 객체 생성[결과를 String으로 받음]
             SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -257,14 +250,14 @@ public class ViewactMenuActivity extends AppCompatActivity {
     public void onResponse(String response) {
         Log.e("request","2");
             try {
-           // JSONObject jsonObject = new JSONObject(response);
+            JSONObject jsonObject = new JSONObject(response);
                 Log.e("json",String.valueOf(response));
-          //  boolean success = jsonObject.getBoolean("success");
-         //   int num = jsonObject.getInt("num");
+            boolean success = jsonObject.getBoolean("success");
+           int num = jsonObject.getInt("num");
                 Log.e("request","3");
-         //   if(success) {
+            if(success) {
                 Log.e("request","4");
-        /*
+
                 arr_runinfo = new ArrayList<RunInfo>();
                 JSONArray data = jsonObject.getJSONArray("data");
                 for(int i= 0; i < num; i++){
@@ -301,14 +294,12 @@ public class ViewactMenuActivity extends AppCompatActivity {
                     // 라사이클러뷰에 넣기
                     adapter = new dayviewact_Adapter(arr_runinfo,num);
                 }
-
                 LinearLayoutManager linearLayoutManager =  new LinearLayoutManager(ViewactMenuActivity.this);
                 linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(adapter);
-                */
-          //  } else {
-           // }
+            } else {
+            }
             } catch (Exception e) {
             e.printStackTrace();
             }
@@ -323,8 +314,9 @@ public class ViewactMenuActivity extends AppCompatActivity {
             smpr.addStringParam("userID", mid);
         Log.e("request","6");
             // 서버에 데이터 보내고 응답 요청
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
-             requestQueue.add(smpr);
+      //  requestQueue = Volley.newRequestQueue(getApplicationContext());
+          //   requestQueue.add(smpr);
+        MySingleton.getInstance(this).addToRequestQueue(smpr);
         Log.e("request","7");
 /*
         RequestQueue requestQueue = MainAct.getRequestQueue();
@@ -341,10 +333,10 @@ public class ViewactMenuActivity extends AppCompatActivity {
     }
 
 
-            public void getweekruninfo(String mid){
+    public void getweekruninfo(String mid){
         Log.e("getweekruninfo","1");
                     // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                    String serverUrl="http://3.143.9.214/getweekruninfo.php";
+                    String serverUrl="http://3.12.49.32/getweekruninfo.php";
                 Log.e("getweekruninfo","2");
                     // 파일 전송 요청 객체 생성[결과를 String으로 받음]
                   smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -352,13 +344,11 @@ public class ViewactMenuActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 Log.e("getweekruninforesponse",String.valueOf(response));
                 Log.e("getweekruninfo","3");
-                /*
                     try {
                     JSONObject jsonObject = new JSONObject(response);
                     Log.e("weekjson",String.valueOf(jsonObject));
                     boolean success = jsonObject.getBoolean("success");
                     if(success) {
-
                         int tdistance = jsonObject.getInt("totaldistance");
                         int totaltime = jsonObject.getInt("totaltime");
                         int count = jsonObject.getInt("count");
@@ -385,7 +375,6 @@ public class ViewactMenuActivity extends AppCompatActivity {
                         for (int i = 0; i < weeks_distance.length-1; i++) {
                             if (weeks_distance[i] > max) {
                                 max = weeks_distance[i];
-
                             }
                         }
                         max = max / 1000;
@@ -400,7 +389,7 @@ public class ViewactMenuActivity extends AppCompatActivity {
                     } catch (Exception e) {
                     e.printStackTrace();
                     }
-                    */
+
                 Log.e("getweekruninfo","4");
                     }
                     },new Response.ErrorListener(){
@@ -414,10 +403,12 @@ public class ViewactMenuActivity extends AppCompatActivity {
                     smpr.addStringParam("userID", mid);
                 Log.e("getweekruninfo","7");
                     // 서버에 데이터 보내고 응답 요청
-                    requestQueue = Volley.newRequestQueue(getApplicationContext());
+                 //   requestQueue = Volley.newRequestQueue(getApplicationContext());
                 Log.e("getweekruninfo","8");
-                    requestQueue.add(smpr);
+                    //requestQueue.add(smpr);
+        MySingleton.getInstance(this).addToRequestQueue(smpr);
                 Log.e("getweekruninfo","9");
+
                 /*
                 RequestQueue requestQueue = MainAct.getRequestQueue();
 
@@ -448,8 +439,8 @@ public class ViewactMenuActivity extends AppCompatActivity {
             barChart.clear();
             barChart.getXAxis().setValueFormatter(null);
             Log.e("onActivityResult","5");
-           // getweekruninfo(mid);
-           // requestrecentact(mid);
+            getweekruninfo(mid);
+            requestrecentact(mid);
             Log.e("onActivityResult","6");
         }
     }
@@ -542,7 +533,7 @@ public class ViewactMenuActivity extends AppCompatActivity {
 
     public void getcoachinfo(){
                 // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                String serverUrl="http://3.143.9.214/getcoach.php";
+                String serverUrl="http://3.12.49.32/getcoach.php";
 
         ViewactMenuActivity viewactMenuActivity = activityWeakReference.get();
 
@@ -562,13 +553,14 @@ public class ViewactMenuActivity extends AppCompatActivity {
                         JSONObject data = jsonObject1.getJSONObject(i);
                         Coaching coaching =  new Coaching();
                         coaching.setName(data.getString("name"));
-                        coaching.setEndtime(data.getInt("time"));
                         coaching.setDescription(data.getString("description"));
-                        coaching.setChoachingjson(data.getString("coachjson"));
+
                         coaching.setReg_date(data.getString("reg_date"));
+                        coaching.setQuestion(data.getString("question"));
                         arr_coach.add(coaching);
-                        Log.e("coachjson",coaching.getChoachingjson());
-                        Log.e("weeks_distance",String.valueOf( weeks_distance[i]));
+                        Log.e("coachjson",coaching.getQuestion());
+                        Log.e("weeks_distance",String.valueOf(weeks_distance[i]));
+                        coachAdapter.notifyDataSetChanged();
                     }
                 } else {
                 }
@@ -579,14 +571,13 @@ public class ViewactMenuActivity extends AppCompatActivity {
                 }, new Response.ErrorListener() {
         @Override
         public void onErrorResponse(VolleyError error) {
-
                 }
                 });
 
          // 서버에 데이터 보내고 응답 요청
-        requestQueue = Volley.newRequestQueue(ViewactMenuActivity.this);
-        requestQueue.add(smpr);
-
+        //requestQueue = Volley.newRequestQueue(ViewactMenuActivity.this);
+        //requestQueue.add(smpr);
+        MySingleton.getInstance(this).addToRequestQueue(smpr);
         /*RequestQueue requestQueue = MainAct.getRequestQueue();
         if (requestQueue == null) {
             requestQueue = Volley.newRequestQueue(getContext());
@@ -613,7 +604,7 @@ public class ViewactMenuActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         Log.e("Frag2","onstop");
-        requestQueue.stop();
+
     }
 
     @Override
@@ -663,6 +654,14 @@ public class ViewactMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ViewactMenuActivity.this, ProfileMenuActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        menuchat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ViewactMenuActivity.this, GChatRoomActivity.class);
                 startActivity(intent);
                 finish();
             }

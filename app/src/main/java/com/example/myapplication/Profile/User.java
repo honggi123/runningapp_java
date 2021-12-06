@@ -8,6 +8,16 @@ public class User {
     int t_time;
     Boolean select =false;
     Boolean runonline = false;
+    Boolean coachuser;
+
+
+    public void setCoachuser(Boolean coachuser) {
+        this.coachuser = coachuser;
+    }
+
+    public Boolean getCoachuser() {
+        return coachuser;
+    }
 
     public Boolean getRunonline() {
         return runonline;

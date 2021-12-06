@@ -1,9 +1,12 @@
 package com.example.myapplication.Loign;
 
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,12 +22,14 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.example.myapplication.Chat.CoachUser.CChatroomActivity;
+import com.example.myapplication.Chat.MySocketService;
 import com.example.myapplication.Join.JoinActivity;
 import com.example.myapplication.Join.snsjoinActivity;
+import com.example.myapplication.MySingleton;
 import com.example.myapplication.R;
 import com.example.myapplication.Request.IdchkRequest;
 import com.example.myapplication.Request.LoginRequest;
-import com.example.myapplication.RequestInterface;
 import com.example.myapplication.Run.RunMenuActivity;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.ISessionCallback;
@@ -57,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     // 로그인 정보 담는 shared
     SharedPreferences Loginshared;
     SharedPreferences.Editor loginedit;
-
+    MySocketService socketService;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.e("loginact","error1");
@@ -69,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.e("loginact","error2");
 
         //RequestInterface.singleton.getInstance().setContext(getApplicationContext`());
-
+        MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
 
         edit_id = findViewById(R.id.edit_id);
         edit_pw = findViewById(R.id.edit_pw);
@@ -88,10 +93,11 @@ public class LoginActivity extends AppCompatActivity {
         Loginshared = getSharedPreferences("Login", MODE_PRIVATE);
         loginedit = Loginshared.edit();
         if(Loginshared.getBoolean("dologin",false)){
-            Intent intent = new Intent(LoginActivity.this, RunMenuActivity.class);
-            startActivity(intent);
-            finish();
+           // Intent intent = new Intent(LoginActivity.this, RunMenuActivity.class);
+            //startActivity(intent);
+           // finish();
         }
+
         // 카카오 로그인 버튼
         btn_kakaologin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,10 +136,20 @@ public class LoginActivity extends AppCompatActivity {
                                 loginedit.putString("id",mID);
                                 loginedit.commit();
 
-                                Toast.makeText(LoginActivity.this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, RunMenuActivity.class);
-                                startActivity(intent);
-                                finish();
+                                socketconn(mID);
+                                if(Boolean.parseBoolean(jsonObject.getString("coachuser"))){
+
+                                    Toast.makeText(LoginActivity.this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, CChatroomActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }else{
+                                    Toast.makeText(LoginActivity.this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(LoginActivity.this, RunMenuActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
                             } else { // 회원등록에 실패한 경우
                                 Toast.makeText(LoginActivity.this, "아이디나 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show();
                                 return;
@@ -173,6 +189,28 @@ public class LoginActivity extends AppCompatActivity {
     }
 
 
+    public void socketconn(String mid){
+        ServiceConnection mConnection = new ServiceConnection() {
+            public void onServiceConnected(ComponentName name,
+                                           IBinder service) {
+                // 서비스와 연결되었을 때 호출되는 메서드
+                // 서비스 객체를 전역변수로 저장
+                Log.e("CChatroomAct","seviceconnect");
+                MySocketService.LocalBinder mb = (MySocketService.LocalBinder) service;
+                socketService = mb.getService(); // 서비스가 제공하는 메소드 호출하여
+                socketService.setMid(mid);
+                socketService.serverconn();
+            }
+
+            public void onServiceDisconnected(ComponentName name) {
+                // 서비스와 연결이 끊겼을 때 호출되는 메서드
+            }
+        };
+
+        Intent intent2 = new Intent(LoginActivity.this, MySocketService.class);
+        bindService(intent2,mConnection,BIND_AUTO_CREATE); // startService 버튼 클릭시 시작
+        startService(intent2);
+    }
 
 
     public class SessionCallback implements ISessionCallback {

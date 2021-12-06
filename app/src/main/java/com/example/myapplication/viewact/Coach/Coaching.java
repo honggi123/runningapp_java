@@ -1,12 +1,36 @@
-package com.example.myapplication;
+package com.example.myapplication.viewact.Coach;
 
-public class Coaching {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Coaching implements Serializable {
 
     String name;
-    int endtime;
+
     String choachingjson;
     String reg_date;
     String description;
+    String question;
+    int qcount;
+
+    public int getQcount() {
+        return qcount;
+    }
+
+    public void setQcount(int qcount) {
+        this.qcount = qcount;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
 
     public String getReg_date() {
         return reg_date;
@@ -32,9 +56,6 @@ public class Coaching {
         this.name = name;
     }
 
-    public int getEndtime() {
-        return endtime;
-    }
 
     public String getChoachingjson() {
         return choachingjson;
@@ -44,9 +65,7 @@ public class Coaching {
         this.choachingjson = choachingjson;
     }
 
-    public void setEndtime(int endtime) {
-        this.endtime = endtime;
-    }
+
 
 
 }

@@ -16,7 +16,7 @@ import java.util.Map;
 public class IdchkRequest extends StringRequest {
 
     //서버 url 설정(php파일 연동)
-    final static  private String URL="http://3.143.9.214/IDchk.php";
+    final static  private String URL="http://3.12.49.32/IDchk.php";
     private Map<String,String>map;
 
     public IdchkRequest(String userID, String snsid, int method, Response.Listener<String> listener) {

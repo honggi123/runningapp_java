@@ -105,7 +105,7 @@ public class myinfo extends AppCompatActivity {
 
     public void request(String mid){
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-            String serverUrl="http://3.143.9.214/getuserinfo.php";
+            String serverUrl="http://3.12.49.32/getuserinfo.php";
 
             // 파일 전송 요청 객체 생성[결과를 String으로 받음]
             SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -159,7 +159,7 @@ public class myinfo extends AppCompatActivity {
 
             public void setinforequest(String mid,String gender,int height, int weight){
                     // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-                    String serverUrl="http://3.143.9.214/setmyinfo.php";
+                    String serverUrl="http://3.12.49.32/setmyinfo.php";
 
                     // 파일 전송 요청 객체 생성[결과를 String으로 받음]
                     SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {

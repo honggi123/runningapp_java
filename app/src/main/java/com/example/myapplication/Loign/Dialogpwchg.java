@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.example.myapplication.R;
 
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -53,7 +52,7 @@ public class Dialogpwchg {
         dig.setContentView(R.layout.dialog_chgpw);
         editnewpw = dig.findViewById(R.id.edit_pwchg);
         editnewpwchk = dig.findViewById(R.id.edit_pwchkchg);
-        btn_pwchg = dig.findViewById(R.id.btn_pwchg);
+        btn_pwchg = dig.findViewById(R.id.btn_runnumnext);
         txt_pwsame = dig.findViewById(R.id.txt_pwsame);
         getPwstandardfalse = dig.findViewById(R.id.txt_pwstandardfalse);
         txt_pwnosmae = dig.findViewById(R.id.txt_pwnosame);
@@ -167,7 +166,7 @@ public class Dialogpwchg {
             String searchKeyword0 = params[0];
             String searchKeyword1 = params[1];
 
-            String serverURL = "http://3.143.9.214/pwchg.php";
+            String serverURL = "http://3.12.49.32/pwchg.php";
             String postParameters = "id=" + searchKeyword0 + "&pw="+searchKeyword1;
 
             try {

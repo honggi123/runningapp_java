@@ -14,7 +14,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/choicename"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:gravity="center|center_horizontal"
@@ -83,7 +83,7 @@
             android:visibility="gone" />
 
         <Button
-            android:id="@+id/btn_pwchg"
+            android:id="@+id/btn_runnumnext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -171,7 +171,7 @@ public class EmailChkActivity extends AppCompatActivity {
 
             String searchKeyword1 = params[0];
 
-            String serverURL = "http://3.143.9.214/mail.php";
+            String serverURL = "http://3.12.49.32/mail.php";
             String postParameters = "email=" + searchKeyword1;
 
             try {
