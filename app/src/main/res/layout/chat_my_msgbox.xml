@@ -4,23 +4,11 @@
     android:layout_height="wrap_content"
     android:paddingEnd="10dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-
-        android:layout_marginTop="20dp"
-
-        android:src="@drawable/ic_baseline_person_24" />
-
     <TextView
         android:id="@+id/mid"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="16dp"
-        android:layout_toLeftOf="@+id/iv"
         android:textColor="#333333" />
 
     <TextView
@@ -28,13 +16,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/mid"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
         android:layout_marginRight="16dp"
-        android:layout_toLeftOf="@id/iv"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/back_et_mymsgbox"
+        android:backgroundTint="#ff8800"
         android:maxWidth="250dp"
         android:padding="12dp"
         android:text="Hello android"
-        android:textColor="#000000" />
+        android:textColor="#FFFFFF" />
 
     <TextView
         android:id="@+id/mmsg_time"

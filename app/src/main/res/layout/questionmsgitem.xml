@@ -5,7 +5,7 @@
     android:padding="16dp">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv"
+        android:id="@+id/oprofile"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:src="@drawable/ic_baseline_person_24" />
@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@+id/iv"
+        android:layout_toRightOf="@+id/oprofile"
         android:text="name"
         android:textColor="#333333" />
 
@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/qid"
         android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/iv"
+        android:layout_toRightOf="@id/oprofile"
         android:background="@drawable/back_et_mymsgbox"
         android:backgroundTint="#DFD7D7"
         android:maxWidth="250dp"

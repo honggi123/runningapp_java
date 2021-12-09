@@ -1,9 +1,7 @@
 package com.example.myapplication.Run;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -65,7 +63,7 @@ public class MsgboxAdapter extends RecyclerView.Adapter<MsgboxAdapter.Holder> {
 
         public Holder(View itemView){
             super(itemView);
-            wt = itemView.findViewById(R.id.txt_writer);
+            wt = itemView.findViewById(R.id.name);
             content = itemView.findViewById(R.id.txt_msgcontent);
             btn_locate = itemView.findViewById(R.id.btn_goloaction);
 

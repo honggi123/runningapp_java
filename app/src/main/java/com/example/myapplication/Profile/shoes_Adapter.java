@@ -101,7 +101,7 @@ public class shoes_Adapter extends RecyclerView.Adapter<shoes_Adapter.Holder> {
                 public Holder(View itemView) {
                     super(itemView);
                     image = itemView.findViewById(R.id.viewshoe_shoeitem);
-                    name = itemView.findViewById(R.id.txt_writer);
+                    name = itemView.findViewById(R.id.name);
                     wearview = itemView.findViewById(R.id.wear_checkitem);
                     progressBar = itemView.findViewById(R.id.bar_shoeitem);
                     distance = itemView.findViewById(R.id.distance_shoeitem);

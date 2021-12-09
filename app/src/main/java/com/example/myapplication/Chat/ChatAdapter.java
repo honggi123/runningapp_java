@@ -8,17 +8,22 @@ import com.android.volley.request.SimpleMultiPartRequest;
 import com.android.volley.error.VolleyError;
 import com.android.volley.toolbox.Volley;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Chat.CoachUser.SetMemInfo;
 import com.example.myapplication.MySingleton;
 import com.example.myapplication.R;
 
@@ -39,18 +44,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Holder> {
     SimpleDateFormat format1 = new SimpleDateFormat ( "HH:mm");
     String coachname;
     String coachid;
+    Context context;
+    String userid;
+    String usercat;
+
+    int rno;
 
     public ChatAdapter(ArrayList<MessageItem> arrmsg,String loginid) {
         this.arrmsg = arrmsg;
         this.loginid = loginid;
-
     }
-
 
     @NonNull
     @Override
     public ChatAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+         context = parent.getContext();
         this.parent = parent;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = null;
@@ -91,11 +99,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Holder> {
         }else if(type ==2){
             Log.e("coachid",coachid);
             Log.e("arrmsg.get(position).getId())",arrmsg.get(position).getId());
+            /*
             if(coachid.equals(arrmsg.get(position).getId())){
                 holder.oid.setText(coachname);
             }else{
                 holder.oid.setText(arrmsg.get(position).getId());
             }
+
+             */
 
             holder.omsg.setText(arrmsg.get(position).getMessage());
             Log.e("type",holder.oid.getId()+"");
@@ -127,6 +138,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Holder> {
         TextView qid;
         TextView qmsg;
         TextView qtime;
+        ImageView oprofile;
 
         public Holder(View itemView) {
             super(itemView);
@@ -142,6 +154,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Holder> {
                 oid = itemView.findViewById(R.id.oid);
                 omsg = itemView.findViewById(R.id.omsg);
                 otime = itemView.findViewById(R.id.omsg_time);
+                oprofile = itemView.findViewById(R.id.oprofile);
             }
         }
     }
@@ -160,11 +173,23 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.Holder> {
         }
     }
 
+    public void setRno(int rno) {
+        this.rno = rno;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
     public void setCoachname(String coachname) {
         this.coachname = coachname;
     }
 
     public void setCoachid(String coachid) {
         this.coachid = coachid;
+    }
+
+    public void setUsercat(String usercat) {
+        this.usercat = usercat;
     }
 }

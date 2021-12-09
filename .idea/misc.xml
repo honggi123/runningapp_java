@@ -57,6 +57,7 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/fragment3.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/fragment4.xml" value="0.264" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/friends_marker.xml" value="0.25364583333333335" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/groupseldialog.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/image_item.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/item_friends.xml" value="0.23541666666666666" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/join.xml" value="0.264" />
@@ -68,6 +69,7 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/mailcheck.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/main.xml" value="0.2375" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/menuchat_general.xml" value="0.35052083333333334" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/moduserinfo.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/msgboxdialog.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/msgboxitem.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/msgitem.xml" value="0.25364583333333335" />
@@ -89,6 +91,8 @@
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/shoesitem.xml" value="0.25364583333333335" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/snsjoin.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/tdistancegoal_set.xml" value="0.23802083333333332" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/userinfo.xml" value="0.25364583333333335" />
+        <entry key="..\:/android studio/myapp/app/src/main/res/layout/useritem.xml" value="0.2375" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/viewchallenge.xml" value="0.4" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/viewdaychallengeitem.xml" value="0.23802083333333332" />
         <entry key="..\:/android studio/myapp/app/src/main/res/layout/viewexchallenge.xml" value="0.23802083333333332" />

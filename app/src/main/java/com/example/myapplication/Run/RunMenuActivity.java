@@ -105,7 +105,6 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
     BufferedReader input;
     Socket socket;
 
-
     ImageView menurun;
     ImageView menuviewact;
     ImageView menuch;
@@ -172,7 +171,7 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
 
        mapview = (MapView) findViewById(R.id.mapview_runmenu);
         mapview.onCreate(savedInstanceState);
-
+        mapview.getMapAsync(this);
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview_runmenu);
 
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview_runmenu);
@@ -282,17 +281,19 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
     public void onDestroy() {
         super.onDestroy();
         Log.e("oncreatevioew","ondestory");
+
         if(mapview != null){
             mapview.getOverlay().clear();
             mapview.removeAllViews();
+
             mapview.onDestroy();
             mapview = null;
         }
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-/*
         Log.e("oncreatevioew","error11");
         mMap = googleMap;
         LatLng SEOUL = new LatLng(37.56, 126.97);
@@ -301,7 +302,7 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
         if (ContextCompat.checkSelfPermission(RunMenuActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(RunMenuActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             Log.e("oncreatevioew","error13");
             // 마쉬멜로우 이상버전부터 권한을 물어본다
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
                 Log.e("oncreatevioew","error14");
                 // 권한 체크(READ_PHONE_STATE의 requestCode를 1000으로 세팅
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
@@ -310,9 +311,8 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
             return;
         }
         Log.e("oncreatevioew","error16");
-      //  mMap.setMyLocationEnabled(true);
+       mMap.setMyLocationEnabled(true);
         Log.e("oncreatevioew","error17");
-*/
     }
 
 
@@ -529,106 +529,6 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
             RequestQueue requestQueue = MySingleton.getInstance(getApplicationContext()).getRequestQueue();
             requestQueue.add(smpr);
             }
-
-            /*
-    public  class NetworkTask extends AsyncTask<String, Void, String> {
-
-        String errorString = null;
-        RunMenuActivity context;
-
-        private WeakReference<RunMenuActivity> activityWeakReference;
-
-        NetworkTask(RunMenuActivity context){
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            TextView view_ttime = context.findViewById(R.id.viewdistance_frag1);
-            TextView view_tdistance = context.findViewById(R.id.viewtime_frag1);
-            ImageView view_goalchk = context.findViewById(R.id.view_goalchk);
-            Button btn_goalset = context.findViewById(R.id.btn_goalset_frag1);
-            TextView view_goalnum = context.findViewById(R.id.view_goalnum);
-
-        }
-
-
-        @Override
-        protected String doInBackground(String... params) {
-
-            String searchKeyword1 = params[0];
-            String searchKeyword2 = params[1];
-
-            String serverURL = "http://3.12.49.32/Getdailyinfo.php";
-            String postParameters = "id=" + searchKeyword1+"&date="+searchKeyword2;
-
-            try {
-                URL url = new URL(serverURL);
-                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
-
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
-                httpURLConnection.setRequestMethod("POST");
-                httpURLConnection.setDoInput(true);
-                httpURLConnection.connect();
-
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                outputStream.write(postParameters.getBytes("UTF-8"));
-                outputStream.flush();
-                outputStream.close();
-
-                int responseStatusCode = httpURLConnection.getResponseCode();
-
-                InputStream inputStream;
-                if (responseStatusCode == HttpURLConnection.HTTP_OK) {
-                    inputStream = httpURLConnection.getInputStream();
-                } else {
-                    inputStream = httpURLConnection.getErrorStream();
-                }
-
-                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-                StringBuilder sb = new StringBuilder();
-                String line;
-
-                while ((line = bufferedReader.readLine()) != null) {
-                    sb.append(line);
-                }
-
-                bufferedReader.close();
-
-                return sb.toString().trim();
-            } catch (Exception e) {
-
-                errorString = e.toString();
-                return null;
-            }
-        }
-
-
-        public  String TimeToFormat(int time){
-            String totaltime = null;
-            int sec = time % 60;
-            if (time > 3600) {
-                int bun = time / 60 % 60;
-                int hour = time / 3600;
-                totaltime = String.format("%02d", hour) + ":" + String.format("%02d", bun) + ":" + String.format("%02d", sec);
-            } else {
-                int bun = time / 60 % 60;
-                totaltime = String.format("%02d", bun) + ":" + String.format("%02d", sec);
-            }
-            return totaltime;
-        }
-    }
-*/
 
 
     public void menuset(){

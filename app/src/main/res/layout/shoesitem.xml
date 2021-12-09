@@ -9,7 +9,7 @@
     android:paddingEnd="10dp">
 
     <TextView
-        android:id="@+id/txt_writer"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -42,7 +42,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/viewshoe_shoeitem"
-        app:layout_constraintTop_toBottomOf="@+id/txt_writer" />
+        app:layout_constraintTop_toBottomOf="@+id/name" />
 
     <ImageView
         android:id="@+id/wear_checkitem"

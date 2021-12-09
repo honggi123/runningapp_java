@@ -1,6 +1,7 @@
 package com.example.myapplication.Chat;
 
 
+import com.airbnb.lottie.L;
 import com.android.volley.toolbox.Volley;
 
 import android.app.AlertDialog;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,16 +81,20 @@ public class ChatActivity extends AppCompatActivity {
     Boolean isService;
     MySocketService socketService;
     private String[] splited;
-    ConstraintLayout coachselbutton;
+    ConstraintLayout layoutsetmem;
 
     Button btn_accept;
     Button btn_refuse;
 
     Intent sendintent;
     Gson gson;
+    Button btn_setmem;
 
     String coachname;
     String question;
+    TextView oid;
+    TextView tid;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,15 +106,10 @@ public class ChatActivity extends AppCompatActivity {
         btn_send = findViewById(R.id.btn_msgsend);
         etmsg = findViewById(R.id.etmsg);
 
-        coachselbutton = findViewById(R.id.coachselbutton);
-
+        btn_setmem = findViewById(R.id.btn_setmem);
         Boolean coach = Boolean.parseBoolean(getIntent().getStringExtra("coach"));
-        if(coach){
-            coachselbutton.setVisibility(View.VISIBLE);
-            btn_accept = findViewById(R.id.btn_coachaccept);
-            btn_refuse = findViewById(R.id.btn_coachrefuse);
-            setcoachaccept();
-        }
+        layoutsetmem = findViewById(R.id.layoutsetmem);
+        tid = findViewById(R.id.tid);
 
         gson = new Gson();
 
@@ -123,12 +124,14 @@ public class ChatActivity extends AppCompatActivity {
         // 라사이클러뷰에 넣기
         // 어댑터 객체 생성
         arrmsg = new ArrayList<MessageItem>();
-
         if(chatroom.getCoachid().equals(mid)){
             otherid = chatroom.getUserid();
+            tid.setText(otherid);
         }else{
-            otherid =chatroom.getCoachid();
+            otherid = chatroom.getCoachid();
+            tid.setText(chatroom.getCoachname());
         }
+
 
         // 질문 작성지 추가
         addquestionmsg();
@@ -138,9 +141,37 @@ public class ChatActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         my_recyclerView.setLayoutManager(linearLayoutManager);
         // 어댑터 추가
-        my_recyclerView.setAdapter(chatAdapter);
         chatAdapter.setCoachname(chatroom.getCoachname());
         chatAdapter.setCoachid(chatroom.coachuserid);
+        chatAdapter.setUserid(chatroom.userid);
+        chatAdapter.setRno(chatroom.getNo());
+
+        my_recyclerView.setAdapter(chatAdapter);
+
+
+        String msg = getIntent().getStringExtra("msg");
+
+        if(!msg.equals("null")){
+            Log.e("msg","notnull");
+            msg = "["+msg+"]";
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(msg);
+                for(int i= 0; i< jsonArray.length(); i++){
+                    MessageItem messageItem = gson.fromJson(jsonArray.get(i).toString(), MessageItem.class);
+                    messageItem.setName(chatroom.getCoachname());
+                    Log.e("msgitem",chatroom.getCoachname());
+                    Log.e("msgitemuserid",messageItem.getId());
+                    arrmsg.add(messageItem);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            chatAdapter.notifyDataSetChanged();
+        }
+
+        my_recyclerView.scrollToPosition(my_recyclerView.getAdapter().getItemCount() - 1);
 
         /*
         socketsingleton  = Socketsingleton.getInstance(getApplicationContext());
@@ -161,6 +192,7 @@ public class ChatActivity extends AppCompatActivity {
         }
         Log.e("otherid",otherid);
 
+
         Gson gson = new Gson();
 
         notifyhandler = new Handler(Looper.getMainLooper()) {
@@ -169,9 +201,44 @@ public class ChatActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 chatAdapter.notifyDataSetChanged();
                 my_recyclerView.scrollToPosition(my_recyclerView.getAdapter().getItemCount() - 1);
-
             }
         };
+
+        if(mid.equals(chatroom.getCoachid())){
+
+            getcoachornot(chatroom.getCoachid(),chatroom.getUserid());
+
+            btn_setmem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
+                    builder.setTitle("코칭 회원으로 등록하시겠습니까?")        // 제목 설정
+                            .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                            .setPositiveButton("확인", new DialogInterface.OnClickListener(){
+                                // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
+                                public void onClick(DialogInterface dialog, int whichButton){
+                                    //원하는 클릭 이벤트를 넣으시면 됩니다.
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(ChatActivity.this, SetMemInfo.class);
+                                    intent.putExtra("chatroomno",String.valueOf(chatroom.getNo()));
+                                    intent.putExtra("coachid",chatroom.getCoachid());
+                                    intent.putExtra("userid",chatroom.getUserid());
+                                    startActivityForResult(intent,500);
+
+                                }
+                            })
+                            .setNegativeButton("취소", new DialogInterface.OnClickListener(){
+                                // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
+                                public void onClick(DialogInterface dialog, int whichButton){
+                                    //원하는 클릭 이벤트를 넣으시면 됩니다.
+                                    dialog.dismiss();
+                                }
+                            });
+                    AlertDialog dialog = builder.create();    // 알림창 객체 생성
+                    dialog.show();    // 알림창 띄우기
+                }
+            });
+        }
 
 
 
@@ -244,6 +311,20 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+         if(requestCode == 500){
+                    if(resultCode != RESULT_OK){ // 값이 성공적으로 반환되었을때
+                        return;
+                    }
+                    // 코드 작성
+             getcoachornot(chatroom.getCoachid(),chatroom.getUserid());
+
+         }
+
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         Log.e("chatroom","onpause");
@@ -304,23 +385,6 @@ public class ChatActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     boolean success = jsonObject.getBoolean("success");
                     if(success) {
-                        String msg = jsonObject.getString("msg");
-
-                        if(!msg.equals("null")){
-                            Log.e("msg","notnull");
-                            msg = "["+msg+"]";
-                            JSONArray jsonArray = new JSONArray(msg);
-                            for(int i= 0; i< jsonArray.length(); i++){
-                                MessageItem messageItem = gson.fromJson(jsonArray.get(i).toString(), MessageItem.class);
-                                messageItem.setName(chatroom.getCoachname());
-                                Log.e("msgitem",chatroom.getCoachname());
-                                Log.e("msgitemuserid",messageItem.getId());
-                                arrmsg.add(messageItem);
-                            }
-                            chatAdapter.notifyDataSetChanged();
-                        }
-
-                        my_recyclerView.scrollToPosition(my_recyclerView.getAdapter().getItemCount() - 1);
 
                     } else {
                     }
@@ -343,72 +407,12 @@ public class ChatActivity extends AppCompatActivity {
         requestQueue.add(smpr);
     }
 
-    public void setcoachaccept(){
-        btn_accept.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
-                                    builder.setTitle(chatroom.getUserid()+"님을 코칭 하시겠습니까?")        // 제목 설정
-                                            .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
-                                            .setPositiveButton("확인", new DialogInterface.OnClickListener(){
-                                                // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
-                                                public void onClick(DialogInterface dialog, int whichButton){
-                                                  //원하는 클릭 이벤트를 넣으시면 됩니다.
-                                                    dialog.dismiss();
-                                                    Intent intent = new Intent(ChatActivity.this, SetMemInfo.class);
-                                                    intent.putExtra("question",question);
-                                                    intent.putExtra("chatroomno",String.valueOf(chatroom.getNo()));
-                                                    startActivity(intent);
-                                                }
-                                            })
-                                            .setNegativeButton("취소", new DialogInterface.OnClickListener(){
-                                                // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
-                                                public void onClick(DialogInterface dialog, int whichButton){
-                                                  //원하는 클릭 이벤트를 넣으시면 됩니다.
-                                                    dialog.dismiss();
-                                                }
-                                            });
-
-                                    AlertDialog dialog = builder.create();    // 알림창 객체 생성
-                                    dialog.show();    // 알림창 띄우기
-
-            }
-        });
-
-        btn_refuse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ChatActivity.this);
-                builder.setTitle(chatroom.getUserid()+"님의 신청을 거부 하시겠습니까?")        // 제목 설정
-                        .setMessage("다시.거부하면 채팅방은 삭제됩니다.")
-                        .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
-                        .setPositiveButton("확인", new DialogInterface.OnClickListener(){
-                            // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
-                            public void onClick(DialogInterface dialog, int whichButton){
-                                //원하는 클릭 이벤트를 넣으시면 됩니다.
-                                chatroomdelrequest(String.valueOf(chatroom.getNo()));
-                                finish();
-                                dialog.dismiss();
-                            }
-                        })
-                        .setNegativeButton("취소", new DialogInterface.OnClickListener(){
-                            // 취소 버튼 클릭시 설정, 왼쪽 버튼입니다.
-                            public void onClick(DialogInterface dialog, int whichButton){
-                                //원하는 클릭 이벤트를 넣으시면 됩니다.
-                                dialog.dismiss();
-                            }
-                        });
-
-                AlertDialog dialog = builder.create();    // 알림창 객체 생성
-                dialog.show();    // 알림창 띄우기
-            }
-        });
-    }
 
 
-    public void chatroomdelrequest(String rno){
+
+    public void getcoachornot(String cid,String uid){
             // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
-            String serverUrl="http://3.143.9.214/chatroomdel.php";
+            String serverUrl="http://3.12.49.32/getcoachornot.php";
 
             // 파일 전송 요청 객체 생성[결과를 String으로 받음]
             SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
@@ -418,10 +422,15 @@ public class ChatActivity extends AppCompatActivity {
             JSONObject jsonObject = new JSONObject(response);
             boolean success = jsonObject.getBoolean("success");
             if(success) {
-            // 업로드 성공
-            finish();
+                int num = jsonObject.getInt("num");
+                Log.e("num",num+"");
+                if(num > 0){
+                    btn_setmem.setVisibility(View.GONE);
+                }else{
+                    btn_setmem.setVisibility(View.VISIBLE);
+                }
+
             } else {
-            // 업로드 실패
             }
             } catch (Exception e) {
             e.printStackTrace();
@@ -434,8 +443,8 @@ public class ChatActivity extends AppCompatActivity {
             });
 
             // 요청 객체에 보낼 데이터를 추가
-            smpr.addStringParam("rno", rno);
-
+            smpr.addStringParam("coachID", cid);
+             smpr.addStringParam("userID", uid);
 
             // 서버에 데이터 보내고 응답 요청
             RequestQueue requestQueue = MySingleton.getInstance(getApplicationContext()).getRequestQueue();

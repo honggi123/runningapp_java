@@ -3,158 +3,238 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:backgroundTint="#68919090">
 
-    <Button
-        android:id="@+id/btn_setsdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="선택"
-        app:layout_constraintBottom_toBottomOf="@+id/editsdate"
-        app:layout_constraintStart_toEndOf="@+id/editsdate"
-        app:layout_constraintTop_toTopOf="@+id/editsdate" />
 
-    <TextView
-        android:id="@+id/textView116"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="특이 사항"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_setgroup" />
-
-    <TextView
-        android:id="@+id/textView114"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="일주일 운동 횟수"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editsdate" />
-
-    <TextView
-        android:id="@+id/textView105"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="회원의 정보를 저장하세요"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView106"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="러닝 목표"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView105" />
-
-    <TextView
-        android:id="@+id/textView111"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="코칭 시작일"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editgoal" />
-
-    <TextView
-        android:id="@+id/textView112"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="그룹"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="@+id/editweekcount"
-        app:layout_constraintTop_toBottomOf="@+id/editweekcount" />
-
-    <EditText
-        android:id="@+id/editgoal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/textView106"
-        app:layout_constraintTop_toBottomOf="@+id/textView106" />
-
-    <EditText
-        android:id="@+id/editmemo"
+    <View
+        android:id="@+id/view8"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/textView116"
-        app:layout_constraintTop_toBottomOf="@+id/textView116" />
+        android:layout_height="5dp"
+        android:background="#8A000000"
+        app:layout_constraintEnd_toStartOf="@+id/textView108"
+        app:layout_constraintStart_toStartOf="@+id/weeknumt"
+        app:layout_constraintTop_toBottomOf="@+id/weeknumt" />
 
-    <EditText
-        android:id="@+id/editsdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/textView111"
-        app:layout_constraintTop_toBottomOf="@+id/textView111" />
-
-    <EditText
-        android:id="@+id/editweekcount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintStart_toStartOf="@+id/textView114"
-        app:layout_constraintTop_toBottomOf="@+id/textView114" />
-
-    <TextView
-        android:id="@+id/editgroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:editable="false"
-        android:text="전체"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="@+id/textView112"
-        app:layout_constraintTop_toBottomOf="@+id/textView112" />
-
-    <Button
-        android:id="@+id/btn_setgroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:text="선택"
-        app:layout_constraintBottom_toBottomOf="@+id/editgroup"
-        app:layout_constraintStart_toEndOf="@+id/editgroup"
-        app:layout_constraintTop_toBottomOf="@+id/textView112" />
-
-    <Button
-        android:id="@+id/btn_memset"
+    <ScrollView
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="24dp"
-        android:text="저장"
-        android:textSize="24sp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+
+            <View
+                android:id="@+id/view9"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:background="#8A000000"
+                app:layout_constraintEnd_toEndOf="@+id/sdate"
+                app:layout_constraintStart_toStartOf="@+id/sdate"
+                app:layout_constraintTop_toBottomOf="@+id/sdate" />
+
+            <View
+                android:id="@+id/view6"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginEnd="5dp"
+                android:background="#8A000000"
+                app:layout_constraintEnd_toStartOf="@+id/textView108"
+                app:layout_constraintStart_toStartOf="@+id/weeknumt"
+                app:layout_constraintTop_toBottomOf="@+id/weeknumt" />
+
+            <Button
+                android:id="@+id/btn_memset"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="32dp"
+                android:backgroundTint="#7E766D"
+                android:text="저장"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/editmemo" />
+
+            <TextView
+                android:id="@+id/tid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:background="#68919090"
+                android:padding="10dp"
+                android:text="회원 정보"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/editgroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/back_et_mymsgbox"
+                android:editable="false"
+
+                android:padding="5dp"
+                android:text="전체"
+                android:textSize="18dp"
+                app:layout_constraintStart_toStartOf="@+id/textView112"
+                app:layout_constraintTop_toBottomOf="@+id/textView112" />
+
+            <EditText
+                android:id="@+id/editmemo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="50dp"
+                android:ems="10"
+                android:hint="예) 부상정보, 특이사항 등"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView116"
+                app:layout_constraintTop_toBottomOf="@+id/textView116" />
+
+            <TextView
+                android:id="@+id/textView108"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="회"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@+id/weeknumt"
+                app:layout_constraintStart_toEndOf="@+id/weeknumt"
+                app:layout_constraintTop_toTopOf="@+id/weeknumt"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <TextView
+                android:id="@+id/textView106"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="러닝 목표"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/id"
+                app:layout_constraintTop_toBottomOf="@+id/id" />
+
+            <TextView
+                android:id="@+id/textView116"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="메모"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView110"
+                app:layout_constraintTop_toBottomOf="@+id/textView110" />
+
+            <TextView
+                android:id="@+id/id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="18dp"
+                app:layout_constraintStart_toStartOf="@+id/textView105"
+                app:layout_constraintTop_toBottomOf="@+id/textView105" />
+
+            <EditText
+                android:id="@+id/editgoal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:textSize="18dp"
+                app:layout_constraintStart_toStartOf="@+id/textView106"
+                app:layout_constraintTop_toBottomOf="@+id/textView106" />
+
+            <TextView
+                android:id="@+id/textView105"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="회원 아이디"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tid" />
+
+            <TextView
+                android:id="@+id/textView114"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="일주일 코칭 횟수 선택"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/sdate"
+                app:layout_constraintTop_toBottomOf="@+id/sdate" />
+
+            <TextView
+                android:id="@+id/textView112"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="그룹 선택"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/textView114"
+                app:layout_constraintTop_toBottomOf="@+id/weeknumt" />
+
+            <TextView
+                android:id="@+id/textView111"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="코칭 시작일 선택"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/editgoal"
+                app:layout_constraintTop_toBottomOf="@+id/editgoal" />
+
+
+            <TextView
+                android:id="@+id/textView110"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="#68919090"
+                android:padding="10dp"
+                android:text="추가 정보"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/editgroup"
+                app:layout_constraintTop_toBottomOf="@+id/editgroup" />
+
+            <TextView
+                android:id="@+id/sdate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="18dp"
+                app:layout_constraintStart_toStartOf="@+id/textView111"
+                app:layout_constraintTop_toBottomOf="@+id/textView111" />
+
+            <TextView
+                android:id="@+id/weeknumt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textSize="18dp"
+                app:layout_constraintStart_toStartOf="@+id/textView114"
+                app:layout_constraintTop_toBottomOf="@+id/textView114" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

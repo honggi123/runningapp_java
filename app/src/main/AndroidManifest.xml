@@ -67,7 +67,7 @@
         <activity android:name=".Chat.CoachUser.CChatroomActivity"></activity>
 
         <activity android:name=".Chat.CoachUser.CManageActivity"></activity>
-
+        <activity android:name=".Chat.CoachUser.ViewUserinfo"></activity>
         <activity android:name=".Join.JoinActivity" />
         <activity android:name=".Join.EmailChkActivity" />
         <activity android:name=".Run.runActivity" />
@@ -102,7 +102,7 @@
         <activity android:name=".Run.msgmapdialog"
             android:theme="@style/Theme.MyDialog"
         ></activity>
-
+        <activity android:name=".Chat.CoachUser.ModUserInfo"></activity>
         <activity android:name=".Chat.GeneralUser.GChatRoomActivity"></activity>
         <activity android:name=".viewact.Coach.CoachActivity">
 

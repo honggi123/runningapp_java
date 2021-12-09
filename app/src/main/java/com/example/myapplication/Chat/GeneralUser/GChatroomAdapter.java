@@ -3,6 +3,7 @@ package com.example.myapplication.Chat.GeneralUser;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.error.VolleyError;
+import com.android.volley.request.SimpleMultiPartRequest;
 import com.example.myapplication.Chat.ChatActivity;
 import com.example.myapplication.Chat.Chatroom;
+import com.example.myapplication.Chat.MessageItem;
+import com.example.myapplication.MySingleton;
 import com.example.myapplication.R;
 
 import org.json.JSONArray;
@@ -99,14 +107,57 @@ public class GChatroomAdapter extends RecyclerView.Adapter<GChatroomAdapter.Hold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ChatActivity.class);
-                    intent.putExtra("chatroominfo",arr_chatroom.get(getAdapterPosition()));
-                    intent.putExtra("coach","false");
-                    ((GChatRoomActivity) context).startActivityForResult(intent,200);
+
+                    getchatroomrequest(arr_chatroom.get(getAdapterPosition()).getNo(),
+                            arr_chatroom.get(getAdapterPosition()).getCoachid(),getAdapterPosition());
                 }
             });
         }
     }
+
+    public void getchatroomrequest(int rno,String coachid,int position){
+        // 안드로이드에서 보낼 데이터를 받을 php 서버 주소
+        String serverUrl="http://3.12.49.32/getchatroommsg.php";
+
+        // 파일 전송 요청 객체 생성[결과를 String으로 받음]
+        SimpleMultiPartRequest smpr= new SimpleMultiPartRequest(Request.Method.POST, serverUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("chatmsg",response);
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    boolean success = jsonObject.getBoolean("success");
+                    if(success) {
+                        String msg = jsonObject.getString("msg");
+
+                        Intent intent = new Intent(context, ChatActivity.class);
+                        intent.putExtra("chatroominfo",arr_chatroom.get(position));
+                        intent.putExtra("coach","false");
+                        intent.putExtra("msg",msg);
+                        Log.e("msgprint",msg);
+                        ((GChatRoomActivity) context).startActivityForResult(intent,200);
+
+                    } else {
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+
+        // 요청 객체에 보낼 데이터를 추가
+        smpr.addStringParam("rno", String.valueOf(rno));
+        smpr.addStringParam("cid", coachid);
+
+        // 서버에 데이터 보내고 응답 요청
+        RequestQueue requestQueue = MySingleton.getInstance(context.getApplicationContext()).getRequestQueue();
+        requestQueue.add(smpr);
+    }
+
 
 
 

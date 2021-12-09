@@ -76,7 +76,7 @@ public class dayviewact_Adapter extends RecyclerView.Adapter<dayviewact_Adapter.
             super(itemView);
             viewdistance = itemView.findViewById(R.id.viewdistance_daychitem);
             viewtime = itemView.findViewById(R.id.time_daychitem);
-            viewdate = itemView.findViewById(R.id.txt_writer);
+            viewdate = itemView.findViewById(R.id.name);
             btn_viewruninfo = itemView.findViewById(R.id.btn_viewruninfo);
         }
     }
