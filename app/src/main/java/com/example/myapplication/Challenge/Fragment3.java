@@ -161,6 +161,7 @@ public class Fragment3 extends AppCompatActivity {
                         }
                         Log.e("size",String.valueOf(arr_mych.size()));
 
+
                        Comparator<ChallengeInfo> compare = new Comparator<ChallengeInfo>() {
                            @Override public int compare(ChallengeInfo lhs, ChallengeInfo rhs) {
                                return (rhs.getReg_date()).compareTo(lhs.getReg_date());

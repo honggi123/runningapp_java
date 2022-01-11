@@ -107,7 +107,7 @@ public class ViewactMenuActivity extends AppCompatActivity {
         menuchat = findViewById(R.id.btn_menuchat);
         menurun = findViewById(R.id.btn_menurun);
         menuviewact = findViewById(R.id.btn_menuviewact);
-        menuch = findViewById(R.id.btn_menuchat);
+        menuch = findViewById(R.id.btn_menuch);
         menumy = findViewById(R.id.btn_menumy);
         Log.e("Viewact","3.5");
         mongoal = findViewById(R.id.mongoal);
@@ -176,7 +176,7 @@ public class ViewactMenuActivity extends AppCompatActivity {
     public void onResponse(String response) {
             try {
             JSONObject jsonObject = new JSONObject(response);
-            Log.e("json",jsonObject+"");
+            Log.e("jsongoalinfo",jsonObject+"");
             boolean success = jsonObject.getBoolean("success");
             if(success) {
                     String mon = jsonObject.getString("mon");
@@ -465,7 +465,9 @@ public class ViewactMenuActivity extends AppCompatActivity {
                 jsonList.add(0.0f);
             }else{
                 Float kmdistance = (weeks_distance[i] / 1000f);
-                jsonList.add(kmdistance);
+                String kd =String.format("%.2f",kmdistance);
+                Log.e("kmdistance",kmdistance+"");
+                jsonList.add(Float.parseFloat(kd));
             }
         }
 
@@ -500,6 +502,7 @@ public class ViewactMenuActivity extends AppCompatActivity {
 
         ArrayList<BarEntry> entries = new ArrayList<>();
         for (int i = 0; i < valList.size(); i++) {
+            Log.e("valList.get(i)",valList.get(i)+"");
             entries.add(new BarEntry(valList.get(i),i));
         }
         //valList.get(i)
@@ -623,7 +626,6 @@ public class ViewactMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ViewactMenuActivity.this, RunMenuActivity.class);
-
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 Log.e("destroy1",ViewactMenuActivity.this.isDestroyed()+"");
@@ -658,6 +660,7 @@ public class ViewactMenuActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         menuchat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

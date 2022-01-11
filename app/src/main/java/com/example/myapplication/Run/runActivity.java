@@ -251,18 +251,18 @@ public class runActivity extends AppCompatActivity implements
         friendmsgArrayList = new ArrayList<>();
         Log.e("runactivity","log5");
 
-        btn_camera2 = findViewById(R.id.button23);
+
 
         btn_run = findViewById(R.id.btn_run);
         btn_stop = findViewById(R.id.btn_stop);
         view_time = findViewById(R.id.time);
-        btn_viewfriends = findViewById(R.id.btn_viewfriends);
+
         Log.e("runactivity","log6");
          mapView = (MapView) findViewById(R.id.map);
         viewpace = findViewById(R.id.viewpace_runact);
         viewdistance = findViewById(R.id.distance_runActivity);
         viewkcal_runact = findViewById(R.id.viewkcal_runact);
-        msg_num = findViewById(R.id.msg_num);
+
         Log.e("runactivity","log7");
         mapView.onCreate(savedInstanceState);
         Log.e("runactivity","log8");
@@ -287,13 +287,6 @@ public class runActivity extends AppCompatActivity implements
         // 메시지 초기화
         arr_msg = new ArrayList<>();
 
-        // 메시지 개수 보여주는 숫자 클릭이벤트
-        msg_num.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new msgboxdialog().calldialog();
-            }
-        });
         Log.e("runactivity","log14");
         // 메시지 전송 위한 소켓 생성
         /*
@@ -484,25 +477,8 @@ public class runActivity extends AppCompatActivity implements
             Log.e("runactivity","log36");
         }
 
-        // 활동중인 친구보기
-        btn_viewfriends.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("runactivity","log37");
-                frdlistrequest(UserID);
-                Log.e("runactivity","log38");
 
-            }
-        });
-        btn_camera2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(runActivity.this,runActivity.class);
-                intent.putExtra("coachjson",getIntent().getStringExtra("coachjson"));
-                startActivity(intent);
-                finish();
-            }
-        });
+
 
         // 카메라 모양 클릭 버튼
 
@@ -643,10 +619,11 @@ public class runActivity extends AppCompatActivity implements
         HttpURLConnection urlConn = null;
         try {
             String appKey = "l7xx5b0db2becaa848d483d7711ea0d3614c";
-            String startX = "127.096836";
-            String startY = "37.321257";
-            String endX = "127.109999";
-            String endY = "37.325168";
+            String startX = "127.097428";
+            String startY = "37.506623";
+
+            String endX = "127.114597";
+            String endY = "37.514322";
             String reqCoordType = "WGS84GEO";
             String resCoordType = "EPSG3857";
             String startName = URLEncoder.encode("판교역", "UTF-8");
@@ -953,13 +930,13 @@ public class runActivity extends AppCompatActivity implements
                             startLatLng = new LatLng(lat, lng);        //시작점을 끝점으로 다시 설정
                             Log.e("runactivity","log119");
                             // 거리 측정
-
                             distanceTo(locationA,locationB);
                             Log.e("runactivity","log120");
                             walk[0]++;
                         }
                     }
                 };
+
                 Log.e("runactivity","log121");
                fusedLocationClient.requestLocationUpdates( mLocationRequest, locationCallback,Looper.myLooper() );
                 Log.e("runactivity","log122");
@@ -975,8 +952,8 @@ public class runActivity extends AppCompatActivity implements
             Log.e("runactivity","log124");
             Log.e("startset?",startset+"1");
             mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(2000);    // 위치가 update되는 주기
-            mLocationRequest.setFastestInterval(2000);  // 위치 획득 후 update되는 주기
+            mLocationRequest.setInterval(6000);    // 위치가 update되는 주기
+            mLocationRequest.setFastestInterval(600);  // 위치 획득 후 update되는 주기
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         }
 
@@ -984,8 +961,8 @@ public class runActivity extends AppCompatActivity implements
             Log.e("startset?",startset+"2");
 
             mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(15000);    // 위치가 update되는 주기
-            mLocationRequest.setFastestInterval(15000);  // 위치 획득 후 update되는 주기
+            mLocationRequest.setInterval(6000);    // 위치가 update되는 주기
+            mLocationRequest.setFastestInterval(6000);  // 위치 획득 후 update되는 주기
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             Log.e("runactivity","log126");
 //        PRIORITY_HIGH_ACCURACY : 배터리소모를 고려하지 않으며 정확도를 최우선으로 고려
@@ -1405,11 +1382,9 @@ public class runActivity extends AppCompatActivity implements
                         }
                     }
                 };
-
-
             }
-
         }
+
 
 
     public void frdlistrequest(String mid){

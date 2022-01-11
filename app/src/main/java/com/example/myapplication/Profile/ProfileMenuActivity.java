@@ -90,7 +90,7 @@ public class ProfileMenuActivity extends AppCompatActivity {
         Log.e("ProfileMenuAct","10");
         menuviewact = findViewById(R.id.btn_menuviewact);
         Log.e("ProfileMenuAct","11");
-        menuch = findViewById(R.id.btn_menuchat);
+        menuch = findViewById(R.id.btn_menuch);
         Log.e("ProfileMenuAct","12");
         menumy = findViewById(R.id.btn_menumy);
         Log.e("ProfileMenuAct","13");

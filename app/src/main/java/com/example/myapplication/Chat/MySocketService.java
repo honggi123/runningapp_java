@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -34,6 +35,8 @@ public class MySocketService extends Service {
     String read ="";
     IntentFilter filter = new IntentFilter();
     public final IBinder mBinder = new LocalBinder();
+
+
 
     public class LocalBinder extends Binder {
         public MySocketService getService() {

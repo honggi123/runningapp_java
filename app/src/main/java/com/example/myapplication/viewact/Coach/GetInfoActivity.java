@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,7 +32,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.MySingleton;
 import com.example.myapplication.R;
-import com.example.myapplication.Socketsingleton;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -77,9 +77,7 @@ public class GetInfoActivity extends AppCompatActivity implements DatePickerDial
     ArrayList<String> arrq;
     LinearLayout prognum;
 
-    OutputStream socketoutputStream;
-    PrintWriter sendWriter;
-    Socketsingleton socketsingleton;
+    Intent sendintent;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,14 +108,9 @@ public class GetInfoActivity extends AppCompatActivity implements DatePickerDial
 
         rccoachuser = findViewById(R.id.rc_coachuser);
 
-        // 소켓
-        socketsingleton = socketsingleton.getInstance(getApplicationContext());
-        try {
-            socketoutputStream = socketsingleton.getSocket().getOutputStream();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        sendWriter = new PrintWriter(socketoutputStream);
+        sendintent = new Intent("send");
+        sendintent.setPackage("com.example.myapplication");
+
 
         // 아이디 설정
         loginshared = getSharedPreferences("Login", MODE_PRIVATE);
@@ -249,7 +242,6 @@ public class GetInfoActivity extends AppCompatActivity implements DatePickerDial
             }
 
 
-
     public void showdatepicker(){
         final Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -336,28 +328,24 @@ public class GetInfoActivity extends AppCompatActivity implements DatePickerDial
                         msg += "@"+qjsonObject.toString();
                         AlertDialog.Builder builder = new AlertDialog.Builder(GetInfoActivity.this);
                         String finalMsg = msg;
+
+
+                        String finalCoachid = coachid;
                         builder.setTitle("코치에게 신체정보 와 질문지를 포함한 신청서를 전송하겠습니까?")        // 제목 설정
-                                                    .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
+                                .setCancelable(false)        // 뒤로 버튼 클릭시 취소 가능 설정
                                 .setPositiveButton("확인", new DialogInterface.OnClickListener(){
                                     // 확인 버튼 클릭시 설정, 오른쪽 버튼입니다.
                                     public void onClick(DialogInterface dialog, int whichButton){
                                         //원하는 클릭 이벤트를 넣으시면 됩니다.
 
-                                        // 메시지 보내기
-                                        new Thread() {
-                                            @Override
-                                            public void run() {
-                                                super.run();
-                                                try {
-                                                    sendWriter.println(json);
-                                                    //  sendWriter.println(n);
-                                                    sendWriter.flush();
+                                        /*
+                                        sendintent.putExtra("send","coachask@"+mid+
+                                                "@"+mid+"@"+finalCoachid+"@"+strToday+"@"+json.toString()+"@"+finalMsg);
 
-                                                }catch (Exception e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                                        }.start();
+                                        */
+                                        sendintent.putExtra("send",finalMsg);
+
+                                        getApplicationContext().sendBroadcast(sendintent);
 
                                         finish();
                                     }
@@ -372,8 +360,6 @@ public class GetInfoActivity extends AppCompatActivity implements DatePickerDial
 
                         AlertDialog dialog = builder.create();    // 알림창 객체 생성
                         dialog.show();    // 알림창 띄우기
-
-
 
 
                     } else {

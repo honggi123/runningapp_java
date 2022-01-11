@@ -368,6 +368,9 @@ public class ChatActivity extends AppCompatActivity {
         question = gson.toJson(qmessageItem,MessageItem.class);
 
         arrmsg.add(qmessageItem);
+
+
+
     }
 
 

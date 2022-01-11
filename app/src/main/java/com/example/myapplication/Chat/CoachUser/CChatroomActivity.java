@@ -146,6 +146,7 @@ public class CChatroomActivity extends AppCompatActivity {
             if (intent.getAction().equals("action")) {
                 // 브로드캐스트 수신받았을 때 실행할 내용
                 String read = intent.getStringExtra("read");
+                Log.e("read",read);
                 splited = read.split("@");
                 if(splited[0].equals("newask")){
                     Log.e("read","newask");
@@ -242,9 +243,9 @@ public class CChatroomActivity extends AppCompatActivity {
                             dialog.dismiss();
                         }
                     });
-
+            Toast.makeText(CChatroomActivity.this, mid+"님 으로부터 새로운 코칭 신청서가 도착했습니다.", Toast.LENGTH_SHORT).show();
             AlertDialog dialog = builder.create();    // 알림창 객체 생성
-            dialog.show();    // 알림창 띄우기
+           // dialog.show();    // 알림창 띄우기
         }
     }
 

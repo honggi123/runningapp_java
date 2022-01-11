@@ -150,7 +150,7 @@ public class frinedsearchActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(response);
                 Log.e("json",String.valueOf(jsonObject));
                 boolean success = jsonObject.getBoolean("success");
-                boolean have = jsonObject.getBoolean("haveid");
+                boolean have = jsonObject.getBoolean("havefriend");
                 if(success) {
                     if(have){
                         JSONObject jsonObject2  =jsonObject.getJSONObject("user");

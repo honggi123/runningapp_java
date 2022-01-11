@@ -15,6 +15,7 @@ public class ChallengeInfo implements Serializable {
     String reg_date;
 
     public ChallengeInfo() {
+
     }
 
     public int getN_distance() {

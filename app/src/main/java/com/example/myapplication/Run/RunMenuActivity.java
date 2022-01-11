@@ -254,7 +254,7 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
         super.onStart();
         Log.e("oncreatevioew", "error12");
         // 회원 투데이 러닝 정보 가져오기
-        //getinfo();
+        getinfo();
         Log.e("oncreatevioew", "error13");
         mapview.onStart();
 
@@ -354,10 +354,7 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
 
 
     public static class RequestGetInfo {
-
     }
-
-
 
     public void getinfo(){
 
@@ -374,7 +371,6 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
                     if(jsonObject.getString("info").equals("null")){
                         // 오늘의 활동이 없어서 데이터들 못 받아 온 경우
                         view_tdistance.setText("0");
-
 
                         view_ttime.setText("00:00");
                     }else{
@@ -395,7 +391,7 @@ public class RunMenuActivity extends AppCompatActivity implements OnMapReadyCall
                     // 목표 받아오기
                     if(jsonObject.getString("goalset").equals("null")){
                         // 오늘의 목표가 없어서 데이터들 못 받아 온 경우
-                        view_goalnum.setText("목표를 설정해주세요.");
+                        view_goalnum.setText("목표 없음.");
                         view_goalnum.setTextSize(20f);
                     }else{
                         view_goalnum.setTextSize(35f);

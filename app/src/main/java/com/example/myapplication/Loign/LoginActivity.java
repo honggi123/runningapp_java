@@ -71,6 +71,13 @@ public class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.login);
 
+        SharedPreferences loginshared;
+        String mid;
+
+        loginshared = getSharedPreferences("Login", MODE_PRIVATE);
+        mid = loginshared.getString("id", null);
+
+
         Log.e("loginact","error2");
 
         //RequestInterface.singleton.getInstance().setContext(getApplicationContext`());

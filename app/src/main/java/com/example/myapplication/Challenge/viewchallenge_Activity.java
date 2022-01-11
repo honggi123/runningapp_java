@@ -93,8 +93,6 @@ public class viewchallenge_Activity extends AppCompatActivity {
         mid = loginshared.getString("id", null);
         btn_join.setEnabled(false);
 
-
-
         if(where == 1){
             Log.e("whereafter",where+"");
             btn_join.setVisibility(View.INVISIBLE);
@@ -153,8 +151,6 @@ public class viewchallenge_Activity extends AppCompatActivity {
                 }).show();
             }
         });
-
-
 
 
 
@@ -349,7 +345,8 @@ public class viewchallenge_Activity extends AppCompatActivity {
                                 Log.e("data",String.valueOf(data.get(i)));
                                 JSONObject dataJSONObject = data.getJSONObject(i);
                                 name.setText(dataJSONObject.getString("name"));
-                                date.setText(dataJSONObject.getString("s_date") +" ~ " + dataJSONObject.getString("e_date"));
+                                String d1 =timetodate(dataJSONObject.getString("e_date"));
+                                date.setText(dataJSONObject.getString("s_date") +" ~ " + d1);
                                 pnum.setText(String.valueOf(Integer.parseInt(dataJSONObject.getString("num_member"))));
                                 creater.setText(dataJSONObject.getString("id"));
                                 double kmdistance = (Integer.parseInt(dataJSONObject.getString("g_distance")) / 1000.00);
@@ -428,9 +425,5 @@ public class viewchallenge_Activity extends AppCompatActivity {
         MySingleton.getInstance(this).addToRequestQueue(smpr);
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        requestQueue.stop();
-    }
+
 }

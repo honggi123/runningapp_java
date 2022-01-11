@@ -92,7 +92,6 @@ public class Challengedatemk_Activity extends AppCompatActivity implements DateP
                                                        dialog.dismiss();
                                                    }
                                                });
-
                                        AlertDialog dialog = builder.create();    // 알림창 객체 생성
                                        dialog.show();    // 알림창 띄우기
                }else if(s_date.compareTo(e_date) > 0){
@@ -110,6 +109,8 @@ public class Challengedatemk_Activity extends AppCompatActivity implements DateP
 
                    AlertDialog dialog = builder.create();    // 알림창 객체 생성
                    dialog.show();    // 알림창 띄우기
+
+
                }else{
                    // 시작날짜를 현재 날짜랑 같거나 느리게 설정 했을 경우
                    edit.putString("startdate",format.format(s_date));

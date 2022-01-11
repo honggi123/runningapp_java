@@ -64,6 +64,7 @@ public class distancegoalset_Activity extends AppCompatActivity {
                             if(success) {
                                 // 업로드 성공
                                 Toast.makeText(distancegoalset_Activity.this, "목표 설정이 되었습니다.", Toast.LENGTH_SHORT).show();
+
                                 finish();
                             } else {
                                 // 업로드 실패

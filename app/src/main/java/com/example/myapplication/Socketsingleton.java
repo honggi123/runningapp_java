@@ -7,8 +7,10 @@ import com.example.myapplication.Chat.CoachUser.CChatroomActivity;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.net.InetAddress;
 import java.net.Socket;
 
 public class Socketsingleton {
@@ -19,18 +21,36 @@ public class Socketsingleton {
     private String ip = "3.12.49.32";
     private int port = 3001;
     public static BufferedReader input;
-
-    String mid;
-    String read;
-
+    OutputStream socketoutputStream;
+    PrintWriter sendWriter;
 
 
-        private Socketsingleton(Context context) {
+    private Socketsingleton(Context context) {
             ctx = context;
+        // 소켓 생성
+        new Thread() {
+            public void run() {
+                try {
+                    InetAddress serverAddr = InetAddress.getByName(ip);
+                    socket = new Socket(serverAddr, port);
+                    socketoutputStream = socket.getOutputStream();
+                    sendWriter = new PrintWriter(socketoutputStream);
+                    BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    sendWriter.println("nova11");
+                    sendWriter.flush();
+
+                    String[] splited;
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } }}.start();
         }
 
-        public Socketsingleton getinstance(Context context){
+
+
+    public Socketsingleton getinstance(Context context){
             ctx = context;
+
             if(instance== null){
                 instance = new Socketsingleton(context);
             }
@@ -41,6 +61,7 @@ public class Socketsingleton {
             if(socket == null){
                 Log.e("setsocket","null");
             }
+
         Socketsingleton.socket = socket;
     }
 
@@ -55,6 +76,26 @@ public class Socketsingleton {
         return socket;
         }
 
+
+    public void sendmsg(String msg) throws IOException {
+        socketoutputStream = getSocket().getOutputStream();
+        sendWriter = new PrintWriter(socketoutputStream);
+        // 메시지 보내기
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    sendWriter.println(msg);
+                    //  sendWriter.println(n);
+                    sendWriter.flush();
+
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
 
 
     public BufferedReader getInput() {
@@ -73,7 +114,4 @@ public class Socketsingleton {
         }
 
 
-    public void setMid(String mid) {
-        this.mid = mid;
-    }
 }
